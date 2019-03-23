@@ -1,0 +1,9 @@
+{
+  "compilerOptions": {
+    "strict": true,
+    "module": "commonjs",
+    "target": "ES6",
+    "jsx": "react",
+    "resolveJsonModule": true
+  }
+}

@@ -1,0 +1,88 @@
+{
+  "name": "nf-player",
+  "version": "0.6.1",
+  "description": "The Native Format Smart Player, JS Edition",
+  "main": "dist/index.js",
+  "types": "dist/index.d.ts",
+  "files": [
+    "src",
+    "dist"
+  ],
+  "bin": {
+    "nf-player": "./dist/cli.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git@github.com:spotify/NFPlayerJS.git"
+  },
+  "scripts": {
+    "test": "jest",
+    "clean": "rm -rf ./dist ./dist-debug .cache .cache-demo .cache-debug",
+    "setup": "npm i && npm run build && cd ./demo && npm i",
+    "setup:ci": "npm ci && npm run build && cd ./demo && npm ci",
+    "start": "NODE_OPTIONS=--max-old-space-size=8196 run-p start:*",
+    "start:lib": "tsc -b -w",
+    "start:demo": "parcel --out-dir demo/dist --cache-dir .cache-demo ./demo/src/index.html",
+    "debug-harness": "parcel serve debug-harness/index.html --out-dir dist-debug --cache-dir .cache-debug",
+    "build": "npm run clean && tsc -b",
+    "build:demo": "cd demo && parcel build ./src/index.html --public-url ./",
+    "docs:gen": "typedoc --tsconfig ./tsconfig.json --excludeNotExported --out ./demo/dist/docs src/ --exclude '**/*.test.ts' --mode file",
+    "deploy": "npm run build && npm run build:demo && npm run docs:gen && cd ./demo && gh-pages -d ./dist"
+  },
+  "author": "Drew Petersen <kirbysayshi@gmail.com>",
+  "license": "Apache-2.0",
+  "dependencies": {
+    "cross-fetch": "^3.0.1",
+    "debug": "^4.1.1",
+    "meow": "^5.0.0",
+    "nf-grapher": "^1.2.24",
+    "pseudo-audio-param": "^1.3.1",
+    "soundtouch-ts": "^1.1.1",
+    "tempy": "^0.2.1",
+    "wav-decoder": "^1.3.0",
+    "wav-encoder": "^1.3.0"
+  },
+  "devDependencies": {
+    "@types/debug": "^4.1.0",
+    "@types/jest": "^23.3.10",
+    "@types/meow": "^5.0.0",
+    "@types/pseudo-audio-param": "^1.3.0",
+    "@types/tempy": "^0.2.0",
+    "@typescript-eslint/eslint-plugin": "^1.4.2",
+    "@typescript-eslint/parser": "^1.4.2",
+    "eslint": "^5.14.1",
+    "eslint-config-prettier": "^4.1.0",
+    "eslint-plugin-notice": "^0.7.8",
+    "eslint-plugin-prettier": "^3.0.1",
+    "gh-pages": "^1.2.0",
+    "husky": "^1.3.1",
+    "jest": "^23.6.0",
+    "lint-staged": "^8.1.4",
+    "npm-run-all": "^4.1.5",
+    "parcel-bundler": "^1.11.0",
+    "prettier": "^1.16.4",
+    "ts-jest": "^23.10.5",
+    "typedoc": "^0.13.0",
+    "typescript": "^3.3.3",
+    "web-audio-test-api": "^0.5.2"
+  },
+  "husky": {
+    "hooks": {
+      "pre-commit": "lint-staged"
+    }
+  },
+  "lint-staged": {
+    "*.{js,json,css,md,ts,tsx}": [
+      "prettier --write",
+      "git add"
+    ],
+    "*.{js,ts,tsx}": [
+      "eslint --fix",
+      "git add"
+    ]
+  },
+  "//browserslist": "this is to prevent parcel from causing babel to transpile anything and injecting regenerator runtime",
+  "browserslist": [
+    "chrome 69"
+  ]
+}

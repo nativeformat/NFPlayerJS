@@ -1,0 +1,162 @@
+{
+  "graph": {
+    "id": "240c4146-2308-485b-8139-66e3d7f9f3b6",
+    "loadingPolicy": "allContentPlaythrough",
+    "nodes": [
+      {
+        "id": "93973b2f-b19d-4907-9afe-fd04532a4f07",
+        "kind": "com.nativeformat.plugin.file.file",
+        "config": {
+          "file": "/TNG-Crysknife007-16-899-s.91e05b63.wav",
+          "when": 0,
+          "duration": 16899000000,
+          "offset": 0
+        },
+        "params": {}
+      },
+      {
+        "id": "574abbed-67b4-4676-a8c0-93ba770a6a2e",
+        "kind": "com.nativeformat.plugin.file.file",
+        "config": {
+          "file": "/TNG-Crysknife007-16-899-s.91e05b63.wav",
+          "when": 16299000000,
+          "duration": 16899000000,
+          "offset": 0
+        },
+        "params": {}
+      },
+      {
+        "id": "f1843726-05bf-4057-acb0-e9206dfed176",
+        "kind": "com.nativeformat.plugin.waa.gain",
+        "config": {},
+        "params": {
+          "gain": [
+            {
+              "name": "setValueAtTime",
+              "args": {
+                "value": 0,
+                "startTime": 0
+              }
+            },
+            {
+              "name": "setValueAtTime",
+              "args": {
+                "value": 0.0001,
+                "startTime": 0.0001
+              }
+            },
+            {
+              "name": "exponentialRampToValueAtTime",
+              "args": {
+                "value": 1,
+                "endTime": 300000000
+              }
+            },
+            {
+              "name": "setValueAtTime",
+              "args": {
+                "value": 1,
+                "startTime": 16599000000
+              }
+            },
+            {
+              "name": "exponentialRampToValueAtTime",
+              "args": {
+                "value": 0.0001,
+                "endTime": 16899000000
+              }
+            }
+          ]
+        }
+      },
+      {
+        "id": "1040dc92-a0d3-4eec-aa8b-c095908cce40",
+        "kind": "com.nativeformat.plugin.waa.gain",
+        "config": {},
+        "params": {
+          "gain": [
+            {
+              "name": "setValueAtTime",
+              "args": {
+                "value": 0,
+                "startTime": 0
+              }
+            },
+            {
+              "name": "setValueAtTime",
+              "args": {
+                "value": 0.0001,
+                "startTime": 16299000000
+              }
+            },
+            {
+              "name": "exponentialRampToValueAtTime",
+              "args": {
+                "value": 1,
+                "endTime": 16599000000
+              }
+            },
+            {
+              "name": "setValueAtTime",
+              "args": {
+                "value": 1,
+                "startTime": 32898000000
+              }
+            },
+            {
+              "name": "exponentialRampToValueAtTime",
+              "args": {
+                "value": 0.0001,
+                "endTime": 33198000000
+              }
+            }
+          ]
+        }
+      },
+      {
+        "id": "18b01832-6c33-402e-a0c0-e216b869533f",
+        "kind": "com.nativeformat.plugin.time.loop",
+        "config": {
+          "when": 0,
+          "duration": 32598000000,
+          "loopCount": -1
+        },
+        "params": {}
+      },
+      {
+        "id": "e83e8c62-8419-425f-b8d1-857b2e1c926c",
+        "kind": "com.nativeformat.plugin.time.loop",
+        "config": {
+          "when": 600000000,
+          "duration": 32598000000,
+          "loopCount": -1
+        },
+        "params": {}
+      }
+    ],
+    "edges": [
+      {
+        "id": "42076344-b4c4-4399-b79f-f1f860339d46",
+        "source": "93973b2f-b19d-4907-9afe-fd04532a4f07",
+        "target": "f1843726-05bf-4057-acb0-e9206dfed176"
+      },
+      {
+        "id": "59079a39-1fb5-43a5-adee-c96b560fd4da",
+        "source": "574abbed-67b4-4676-a8c0-93ba770a6a2e",
+        "target": "1040dc92-a0d3-4eec-aa8b-c095908cce40"
+      },
+      {
+        "id": "8c33d997-f690-4d7c-a534-2057792cca70",
+        "source": "f1843726-05bf-4057-acb0-e9206dfed176",
+        "target": "18b01832-6c33-402e-a0c0-e216b869533f"
+      },
+      {
+        "id": "afbcbc83-8577-46df-8687-f497e558b273",
+        "source": "1040dc92-a0d3-4eec-aa8b-c095908cce40",
+        "target": "e83e8c62-8419-425f-b8d1-857b2e1c926c"
+      }
+    ],
+    "scripts": []
+  },
+  "version": "1.2.24"
+}

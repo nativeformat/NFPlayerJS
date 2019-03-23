@@ -1,0 +1,11 @@
+.vscode
+.DS_Store
+node_modules
+build
+release
+dist
+dist-debug
+.cache-debug
+.cache-demo
+demo/.cache
+coverage

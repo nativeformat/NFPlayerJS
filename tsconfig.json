@@ -1,0 +1,16 @@
+{
+  "compilerOptions": {
+    "strict": true,
+    "module": "commonjs",
+    "target": "ES6",
+    "jsx": "react",
+    "outDir": "./dist",
+    "emitDecoratorMetadata": true,
+    "experimentalDecorators": true,
+    "declaration": true,
+    "lib": ["es2015", "es2016.array.include", "dom"],
+    "resolveJsonModule": true
+  },
+  "include": ["src/**/*"],
+  "exclude": ["./package.json"]
+}

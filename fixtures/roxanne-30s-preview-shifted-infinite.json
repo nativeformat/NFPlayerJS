@@ -1,0 +1,103 @@
+{
+  "graph": {
+    "id": "a6784e70-168d-4e3d-af49-7c6d33f81e37",
+    "loadingPolicy": "allContentPlaythrough",
+    "nodes": [
+      {
+        "id": "3a01d0ae-ba6e-4c6b-b754-5642ec081500",
+        "kind": "com.nativeformat.plugin.file.file",
+        "config": {
+          "file": "https://p.scdn.co/mp3-preview/6975d56d8fb372f33a9b6414899fa9c5bc4cb8e1?cid=774b29d4f13844c495f206cafdad9c86",
+          "when": 0,
+          "duration": 47315000000,
+          "offset": 0
+        },
+        "params": {}
+      },
+      {
+        "id": "e5809254-3aab-482b-b6d9-296dd17d8a5c",
+        "kind": "com.nativeformat.plugin.time.stretch",
+        "config": {},
+        "params": {
+          "pitchRatio": [
+            {
+              "name": "setValueAtTime",
+              "args": {
+                "value": 1,
+                "startTime": 0
+              }
+            },
+            {
+              "name": "setValueAtTime",
+              "args": {
+                "value": 1.0594630943592953,
+                "startTime": 2574000000
+              }
+            },
+            {
+              "name": "setValueAtTime",
+              "args": {
+                "value": 1.122462048309373,
+                "startTime": 9554000000
+              }
+            },
+            {
+              "name": "setValueAtTime",
+              "args": {
+                "value": 1.1892071150027212,
+                "startTime": 13064000000
+              }
+            },
+            {
+              "name": "setValueAtTime",
+              "args": {
+                "value": 1.2599210498948732,
+                "startTime": 16535000000
+              }
+            },
+            {
+              "name": "setValueAtTime",
+              "args": {
+                "value": 1.3348398541700344,
+                "startTime": 20006000000
+              }
+            },
+            {
+              "name": "setValueAtTime",
+              "args": {
+                "value": 1.4142135623730951,
+                "startTime": 23476000000
+              }
+            }
+          ],
+          "stretch": [],
+          "formantRatio": []
+        }
+      },
+      {
+        "id": "5b9ed8f6-4d26-4b3d-a5eb-57035abfc70c",
+        "kind": "com.nativeformat.plugin.time.loop",
+        "config": {
+          "when": 9593000000,
+          "duration": 17315000000,
+          "loopCount": -1
+        },
+        "params": {}
+      }
+    ],
+    "edges": [
+      {
+        "id": "83a72f5b-06e4-41be-9369-dee74d522928",
+        "source": "3a01d0ae-ba6e-4c6b-b754-5642ec081500",
+        "target": "e5809254-3aab-482b-b6d9-296dd17d8a5c"
+      },
+      {
+        "id": "1d9faf61-d2eb-49ed-93f5-821d26d43969",
+        "source": "e5809254-3aab-482b-b6d9-296dd17d8a5c",
+        "target": "5b9ed8f6-4d26-4b3d-a5eb-57035abfc70c"
+      }
+    ],
+    "scripts": []
+  },
+  "version": "1.2.24"
+}
