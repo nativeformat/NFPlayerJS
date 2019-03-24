@@ -100,6 +100,7 @@
 				<p>A <a href="./src/cli.ts">CLI</a> also ships with this package!</p>
 				<pre><code class="language-sh">$ npx nf-player save --duration 120 --input-file ./fixtures/roxanne-30s-preview-shifted-infinite.json --output-file ./roxanne.wav</code></pre>
 				<p>The above command will load the Score JSON, download the audio files, and render 120 seconds of audio to a file called <code>tng.wav</code>. This should happen in about 5 seconds of realtime, depending on your computer and internet connection.</p>
+				<p>The CLI depends on <a href="https://ffmpeg.org/">ffmpeg</a> being present in <code>$PATH</code> for file decoding. On a mac this can be accomplished using <a href="https://brew.sh/">homebrew</a> <code>brew install ffmpeg</code></p>
 				<h1 id="raison-d-tre-thought_balloon-">Raison D&#39;être :thought_balloon:</h1>
 				<p>Given a way to <a href="https://github.com/spotify/NFGrapher">describe arbitrary audio experiences over time</a>, we needed a player to play them. This repo serves as a reference implementation of the patterns required to process a Grapher Score, as well as a testbed for new features and API design.</p>
 				<p>Due to the nature of Grapher Scores, this player is capable of playback experiences that are generally outside the realm of a standard &quot;track based&quot; audio player, such as Winamp, Spotify, or VLC, and closer to an audio game engine. These include:</p>
