@@ -25,9 +25,18 @@ type XAudioBufferOptions = {
   sampleRate: number;
 };
 
-// Originally from https://github.com/audiojs/audio-buffer/, MIT Licensed. Converted to TS.
-// https://github.com/audiojs/audio-buffer/blob/master/LICENSE
-
+/**
+ * An implementation of AudioBuffer as seen in the Web Audio API. The
+ * AudioBuffer in Web Audio is tied to the browser, and only recently it became
+ * possible to instantiate an AudioBuffer without a Web Audio Context. This
+ * implementation allows for a fully WebAudio-free player, while still allowing
+ * for easy interop with the Web Audio API when needed when still in a browser
+ * environment.
+ *
+ * Originally from https://github.com/audiojs/audio-buffer/, MIT Licensed.
+ * Converted to TS.
+ * https://github.com/audiojs/audio-buffer/blob/master/LICENSE
+ */
 export class XAudioBuffer {
   sampleRate: number; // float
   length: number; // unsigned long
