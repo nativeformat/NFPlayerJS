@@ -63,12 +63,13 @@
 		<div class="col-8 col-content">
 			<div class="tsd-panel tsd-typography">
 				<p style="text-align: center;" align="center">
-					<img alt="NFPlayerJS" src="NFPlayerJS.png" width="400" />
+					<!-- Using an absolute URL here for the generated documentation -->
+					<img alt="NFPlayerJS" src="https://github.com/spotify/NFPlayerJS/raw/master/NFPlayerJS.png" width="400" />
 				</p>
 				<p><a href="LICENSE"><img src="https://img.shields.io/github/license/spotify/NFPlayerJS.svg" alt="License"></a>
 					<a href="https://slackin.spotify.com"><img src="https://slackin.spotify.com/badge.svg" alt="Spotify FOSS Slack"></a>
 				<a href="http://clayallsopp.github.io/readme-score?url=https://github.com/spotify/NFPlayerJS"><img src="http://readme-score-api.herokuapp.com/score.svg?url=https://github.com/spotify/NFPlayerJS" alt="Readme Score"></a></p>
-				<p>A JavaScript/TypeScript audio engine capable of multitrack time stretching, pitch shifting, declarative effects, faster than realtime processing, and more!</p>
+				<p>A JavaScript/TypeScript audio engine for the Web and Server capable of multitrack time stretching, pitch shifting, declarative effects, faster than realtime processing, and more!</p>
 				<h1 id="getting-started-browser-">Getting Started (Browser) 🚀</h1>
 				<ol>
 					<li>Install the player: <code>npm install --save nf-player</code></li>
@@ -107,10 +108,20 @@
 					<li>evolving or generative playback (subtle changes over time, procedurally generated changes)</li>
 					<li>adaptive playback (user input, such as location)</li>
 				</ul>
-				<p>By providing a unifying, declarative format to describe these experiences (and with a matching player implementation), they can be shared by multiple platforms, such as multiple apps on your phone, websites, or physical devices. This is notably different from device or platform specific APIs like the Web Audio API, Core Audio, or Windows Audio Graphs, which often require imperative coding using programming languages specific to each. Composable time stretching, for example, is not possible without abandoning most (if not all) of the ergonomics of the Web Audio API.</p>
+				<p>By providing a unifying, declarative format to describe these experiences (and with a matching player implementation), they can be shared by multiple platforms, such as apps on your phone, websites, or physical devices. This is notably different from device or platform specific APIs like the Web Audio API, Core Audio, or Windows Audio Graphs, which often require imperative coding using programming languages specific to each. Composable time stretching, for example, is not possible without abandoning most (if not all) of the ergonomics of the Web Audio API.</p>
 				<h1 id="architecture-triangular_ruler-">Architecture :triangular_ruler:</h1>
-				<p>A Grapher Score describes, basically, an audio processing graph, where each node of the graph is either a producer of audio, a consumer, or both, in the case of transformation. The edges of the graph control where the audio &quot;flows&quot;. This is basically the same as the <a href="https://developer.mozilla.org/en-US/docs/Web/API/Web_Audio_API">Web Audio API</a>, except instead of an imperative creation of the graph by the programmer, building it up piece by piece, a Grapher Score is a complete declarative description of the graph, including all the nodes, edges, and changes in values over time (Audio Parameter Commands). It can be de/serialized from/to JSON, and can be thought of as a JSON description of what to load, play, and change over time. It is given to the Player whole, and processed as a whole. Changes are described as <em>Mutations</em> to the Score, which are currently limted to adding and removing scheduled audio parameter changes. Multiple scores can be loaded, processed, and played by the Player, which allows for seamless switching between scores, and therefore seamless audio playback.</p>
+				<p>A Grapher Score describes, basically, an audio processing graph, where each node of the graph is either a producer of audio, a consumer, or both, in the case of transformation. The edges of the graph control where the audio &quot;flows&quot;.</p>
+				<p style="text-align: center;" align="center">
+					<a target="_blank" href=""><img src="charts/Audio Graph.png" alt="A chart displaying an Audio Graph, showing a file node connected to a gain node connected to a stretch node connected to a destination node, and another file node connected to a gain node connected to a loop node connected to the same stretch node." /></a>
+				</p>
+				<p>This is basically the same as the <a href="https://developer.mozilla.org/en-US/docs/Web/API/Web_Audio_API">Web Audio API</a>, except instead of an imperative creation of the graph by the programmer, building it up piece by piece, a Grapher Score is a complete declarative description of the graph, including all the nodes, edges, and changes in values over time (Audio Parameter Commands). It can be de/serialized from/to JSON, and can be thought of as a JSON description of what to load, play, and change over time. It is given to the Player whole, and processed as a whole. Changes are described as <em>Mutations</em> to the Score, which are currently limted to adding and removing scheduled audio parameter changes. Multiple scores can be loaded, processed, and played by the Player, which allows for seamless switching between scores, and therefore seamless audio playback.</p>
+				<p style="text-align: center;" align="center">
+					<a target="_blank" href=""><img src="charts/Enqueuing Scores.png" alt="A chart showing that the user can enqueue a Score in the player, receive feedback when it's loaded, and then later enqueue a copy of the score with a slight modification to produce a seamless audio transition." width="600" /></a>
+				</p>
 				<p>Once given to the Player, a Grapher Score is traversed, recursively, each render quantum (default is 8192 samples, ~0.185 seconds). Each node/plugin requests samples for the current quantum from its ancestors in the graph, passing its own notion of the current render time, which could be dilated due to time stretching or shifted due to looping. Each node/plugin applies whatever processing it wants by reading the config and audio params of the node for the current time, then forwards the resulting samples. All the buffers are then mixed down and written using the Web Audio API (or in the case of a CLI, a chunk of a WAV file).</p>
+				<p style="text-align: center;" align="center">
+					<a target="_blank" href="charts/Score Time Processing.png"><img alt="A chart that shows how each node requests samples from its ancestor in the graph until it has enouch samples to fulfill the request from its ancestor." src="charts/Score Time Processing.png" width="600" /></a>
+				</p>
 				<p>Passing and modifying the current notion of time, recursively through ancestors, is what sets this player apart from other players built on top of APIs like Web Audio: a Stretch node, for example, can affect time for an entire subgraph, requiring that subgraph to be rendered much faster than realtime. This is extremely powerful (an entire graph could be audibly &quot;sped up&quot; like fast forwarding a tape cassette) but requires this processing model.</p>
 				<p>It should also be noted that all &quot;leaves&quot; of the Grapher Score are implicitly connected to the <a href="/src/nodes/SPDestinationNode.ts">(internal) output node</a>. Therefore, many Scores look like discontiguous graphs.</p>
 				<h1 id="basic-capabilities-">Basic Capabilities 🎧</h1>
@@ -130,7 +141,7 @@
 				<h1 id="limitations-">Limitations 🤖</h1>
 				<ul>
 					<li>Loads all audio files into memory all at once using <a href="https://developer.mozilla.org/en-US/docs/Web/API/Fetch_API"><code>fetch</code></a> / <a href="https://developer.mozilla.org/en-US/docs/Web/API/BaseAudioContext/decodeAudioData">decodeAudioData</a></li>
-					<li>Only supports whatever audio formats the platform supports (due to using <a href="https://developer.mozilla.org/en-US/docs/Web/API/BaseAudioContext/decodeAudioData">decodeAudioData</a>)</li>
+					<li>Only supports whatever audio formats the platform supports (due to using <a href="https://developer.mozilla.org/en-US/docs/Web/API/BaseAudioContext/decodeAudioData">decodeAudioData</a>). The CLI shells out to ffmpeg to avoid this limitation.</li>
 					<li>No DRM / EME support (the EME API does not provide faster-than-realtime access to the audio samples)</li>
 					<li>Does all processing on the main thread (but with fairly low CPU usage). This could be mitigated by running the entire player in a Web Worker or, eventually, Audio Worklet.</li>
 				</ul>
