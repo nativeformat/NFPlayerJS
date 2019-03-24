@@ -1,0 +1,23 @@
+participant User
+participant NFPlayer
+participant Driver
+User ->> NFPlayer: enqueueScore(scoreJSON)
+note left of NFPlayer: Player will parse, fetch/decode all sources, and report back when loaded.
+NFPlayer -->> User: Ok, it's loaded!
+User ->> NFPlayer: start playing!
+NFPlayer ->> Driver: start playing!
+NFPlayer -->> User: Ok!
+loop Player Render Loop
+Driver -->> NFPlayer: need 8192 samples
+	note right of NFPlayer: Request samples from all loaded Scores. renderTime += 8192 samples
+	NFPlayer ->> Driver: 8192 samples
+end
+note left of User: User decides to mutate score
+User -->> NFPlayer: getJson()
+NFPlayer ->> User: JSON of all processing Scores
+note left of User: User finds Score in JSON, adds a new File node (source), and changes graphId to create an independent copy.
+User ->> NFPlayer: enqueueScore(modifiedScoreJSON)
+NFPlayer -->> User: Ok, it's loaded!
+User ->> NFPlayer: dequeueScore(scoreJSON.id)
+note left of User: Old copy has been dequeued, and new copy is now used for primary processing, resulting in seamless audio.
+NFPlayer -->> User: Score dequeued!

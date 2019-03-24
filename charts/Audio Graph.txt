@@ -1,0 +1,10 @@
+
+
+
+File Node 1: bass line ->> Gain Node 1
+Gain Node 1 ->> Stretch Node 1
+Stretch Node 1 ->> Audio Destination Node
+File Node 2: drum beat ->> Gain Node 2
+Gain Node 2 ->> Loop Node 2
+Loop Node 2 ->> Stretch Node 1
+Audio Destination Node ->> Audio Driver (ScriptProcessorNode / AudioWorklet / CLI Loop)

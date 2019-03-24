@@ -1,0 +1,26 @@
+participant DestinationNode
+participant StretchNode1
+participant LoopNode1
+participant FileNode1
+
+note right of DestinationNode: I need 8192 samples for time=10 seconds.
+DestinationNode -->> StretchNode1: 
+
+note right of StretchNode1: I have compressed time by 2, give me 8192 samples for time=20 seconds.
+StretchNode1 -->> LoopNode1: 
+
+note right of LoopNode1: We are 0% through loop 20 (starts at 0 seconds, 1 second long), give me 8192 samples for time 0 seconds
+LoopNode1 -->> FileNode1: 
+
+FileNode1 ->> LoopNode1: 8192 samples
+LoopNode1 ->> StretchNode1: 8192 samples
+note left of StretchNode1: I process 8192 samples at 2x, which transforms into ~4096. I need more! Give me 8192 samples for time=(20 seconds + 8192 samples).
+
+StretchNode1 -->> LoopNode1: 
+note right of LoopNode1: We are ~18.5% through loop 20 (starts at 0 seconds, 1 second long), give me 8192 samples for time 0.185758 seconds
+LoopNode1 -->> FileNode1: 
+FileNode1 ->> LoopNode1: 8192 samples
+LoopNode1 ->> StretchNode1: 8192 samples
+note left of StretchNode1: I process, and now have a total transformed count of >= 8192. I have enough!
+StretchNode1 ->> DestinationNode: 8192 samples
+note left of DestinationNode: I can send these to the driver!
