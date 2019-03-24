@@ -8,4 +8,12 @@ script:
   - npm run setup:ci
   - npm run build
   - npm test -- --coverage
-  - npm run build:demo
+  - npm run predeploy:demo
+deploy:
+  provider: pages
+  github-token: $GITHUB_TOKEN
+  skip_cleanup: true
+  keep-history: true
+  local-dir: demo/dist/
+  on:
+    branch: master

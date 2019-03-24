@@ -27,7 +27,8 @@
     "build": "npm run clean && tsc -b",
     "build:demo": "cd demo && parcel build ./src/index.html --public-url ./",
     "docs:gen": "typedoc --tsconfig ./tsconfig.json --excludeNotExported --out ./demo/dist/docs src/ --exclude '**/*.test.ts' --mode file",
-    "deploy": "npm run build && npm run build:demo && npm run docs:gen && cd ./demo && gh-pages -d ./dist"
+    "predeploy:demo": "npm run build && npm run build:demo && npm run docs:gen",
+    "deploy:demo:manual": "npm run predeploy:demo && cd ./demo && gh-pages -d ./dist"
   },
   "author": "Drew Petersen <kirbysayshi@gmail.com>",
   "license": "Apache-2.0",

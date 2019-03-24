@@ -110,11 +110,13 @@ To build the library and start the development environment:
 $ npm start
 ```
 
-To build and publish the demo to [gh-pages](playground), run:
+To build and publish the demo to [gh-pages](playground) manually, run:
 
 ```sh
-$ npm run deploy
+$ npm run deploy:demo:manual
 ```
+
+Otherwise the demo is actually built and deployed on each push to master.
 
 There is also a more cut-down [debug environment](./debug-harness/index.ts) useful for debugging / developing single Scores or scripts:
 
