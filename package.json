@@ -21,7 +21,6 @@
     "setup": "npm i && npm run build && cd ./demo && npm i",
     "setup:ci": "npm ci && npm run build && cd ./demo && npm ci",
     "start": "NODE_OPTIONS=--max-old-space-size=8196 run-p start:*",
-    "start:lib": "tsc -b -w",
     "start:demo": "parcel --out-dir demo/dist --cache-dir .cache-demo ./demo/src/index.html",
     "debug-harness": "parcel serve debug-harness/index.html --out-dir dist-debug --cache-dir .cache-debug",
     "build": "npm run clean && tsc -b",
