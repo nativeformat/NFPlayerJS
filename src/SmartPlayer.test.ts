@@ -151,3 +151,20 @@ test('Enqueue/Dequeue a running Score', async () => {
   expect(scores).toHaveLength(1);
   expect(scores[0]).toEqual(JSON.parse(JSON.stringify(s)));
 });
+
+test('Grapher adjusts malformed Scores', async () => {
+  const ctx = new AudioContext() as TestAudioContext; // actually the test shim.
+  const renderer = new ScriptProcessorRenderer(ctx);
+  const p = new SmartPlayer(renderer);
+
+  const malformed = JSON.stringify({
+    graph: {
+      nodes: [GGainNode.create()]
+    }
+  });
+
+  const s = Score.from(JSON.parse(malformed));
+
+  await p.setJson(JSON.stringify(s));
+  expect(JSON.parse(p.getJson())).toHaveLength(1);
+});
