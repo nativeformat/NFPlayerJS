@@ -1,19 +1,26 @@
 language: node_js
 before_install:
-  - npm i -g npm@6.8
+- npm i -g npm@6.8
 cache: npm
 node_js:
-  - '10'
+- '10'
 script:
-  - npm run setup:ci
-  - npm run build
-  - npm test -- --coverage
-  - npm run predeploy:demo
+- npm run setup:ci
+- npm run build
+- npm test -- --coverage
+- npm run predeploy:demo
 deploy:
-  provider: pages
-  github-token: $GITHUB_TOKEN
-  skip_cleanup: true
-  keep-history: true
-  local-dir: demo/dist/
-  on:
-    branch: master
+  - provider: npm
+    email: kibysayshi@gmail.com
+    api_key:
+      secure: LFF+TBDO2lguN5rpciP09qUKWIoVVWA2arapTtX+zGMZHBa7QmDV+iBDZSLkf+5iJAgrgXsehIazXyQ7HKDad59y5kjJBOtQOqcSkENn1RTx10FHGvH/lrsO6FxLa5JD0r2cd9KdUjz2EC+4AlgrJo8wr6SKA2/cNOZ2gMVV/6cZVS/sPWfDx9Y1EDQwWlT+74G/vj4FFI+cuHQ2t28aywguaYdMQXPlORo0hXOde4JysewvO2mXcP9viMLg2qckEOeNo0ONDoQtJc4ZDJo7AmOqKmbf14sUQU04ejaw4RLveTe+ebkLYFKC72ABR0RN/VJIlUR78MZXTpJ9tM9A3iLRz1J4ca++3HQMcHQKOG+4P6lSk3bjyUg2pqrYLeUVzAoDIBABJUy0rbhiDMluKiPizO+Y9MmBf57d68+Ks+7ptDuVdYu6J01oyep0D2Mx25IlpgVOORMY05K1CbbWKNAdL8zn54SifqbCDVfDRgrMD0+iQC2D8gKMtOhap3OwtZWOEysUf5wwDz4cEzaeDcL5iOPwxKc6CpjyhdchJDxWozZTA+2wtSAUoddQ4c/iQM1FFQYQ5IugdVOA4/f66aWGftT0CzImT4jC1EHFF6QqAC5R5NAmpt6WaHDt3T/kmSIwXpDxnVq80nzK4t6k1VYjjQhum+IYMq1bx3g6DOM=
+    on:
+      tags: true
+      repo: spotify/NFPlayerJS
+  - provider: pages
+    github-token: $GITHUB_TOKEN
+    skip_cleanup: true
+    keep-history: true
+    local-dir: demo/dist/
+    on:
+      branch: master
