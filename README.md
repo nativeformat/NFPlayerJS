@@ -145,12 +145,12 @@ $ npm run debug-harness
 
 ### Publishing:
 
-- Ideally: `npm version [major|minor|patch]`, then PR.
-- Merge a package.json version change that is currently unpublished.
+- `npm version [major|minor|patch]`, then PR.
+- TravisCI will attempt to publish any tagged commit.
 
 ### Demo Deployment:
 
-- `npm run deploy`
+- The demo is deployed automatically on master builds using the TravisCI gh-pages provider.
 
 # Contributing 💖⌨️
 
