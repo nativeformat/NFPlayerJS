@@ -17,6 +17,7 @@ deploy:
     on:
       tags: true
       repo: spotify/NFPlayerJS
+      branch: master
   - provider: pages
     github-token: $GITHUB_TOKEN
     skip_cleanup: true
