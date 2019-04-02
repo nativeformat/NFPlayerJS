@@ -161,12 +161,12 @@
 				<h1 id="deployment-publishing-release-">Deployment / Publishing / Release 🚢</h1>
 				<h3 id="publishing-">Publishing:</h3>
 				<ul>
-					<li>Ideally: <code>npm version [major|minor|patch]</code>, then PR.</li>
-					<li>Merge a package.json version change that is currently unpublished.</li>
+					<li><code>npm version [major|minor|patch]</code>, then PR.</li>
+					<li>TravisCI will attempt to publish any tagged commit.</li>
 				</ul>
 				<h3 id="demo-deployment-">Demo Deployment:</h3>
 				<ul>
-					<li><code>npm run deploy</code></li>
+					<li>The demo is deployed automatically on master builds using the TravisCI gh-pages provider.</li>
 				</ul>
 				<h1 id="contributing-">Contributing 💖⌨️</h1>
 				<p>This project adheres to the <a href="https://github.com/spotify/code-of-conduct/blob/master/code-of-conduct.md">Open Code of Conduct</a>. By participating, you are expected to honor this code.</p>
