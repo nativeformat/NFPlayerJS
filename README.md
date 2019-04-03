@@ -81,7 +81,7 @@ This is basically the same as the [Web Audio API](https://developer.mozilla.org/
 Once given to the Player, a Grapher Score is traversed, recursively, each render quantum (default is 8192 samples, ~0.185 seconds). Each node/plugin requests samples for the current quantum from its ancestors in the graph, passing its own notion of the current render time, which could be dilated due to time stretching or shifted due to looping. Each node/plugin applies whatever processing it wants by reading the config and audio params of the node for the current time, then forwards the resulting samples. All the buffers are then mixed down and written using the Web Audio API (or in the case of a CLI, a chunk of a WAV file).
 
 <p style="text-align: center;" align="center">
-<a target="_blank" href="charts/Score Time Processing.png"><img alt="A chart that shows how each node requests samples from its ancestor in the graph until it has enouch samples to fulfill the request from its ancestor." src="charts/Score Time Processing.png" width="600" /></a>
+<a target="_blank" href="charts/Score Time Processing.png"><img alt="A chart that shows how each node requests samples from its ancestor in the graph until it has enough samples to fulfill the request from its ancestor." src="charts/Score Time Processing.png" width="600" /></a>
 </p>
 
 Passing and modifying the current notion of time, recursively through ancestors, is what sets this player apart from other players built on top of APIs like Web Audio: a Stretch node, for example, can affect time for an entire subgraph, requiring that subgraph to be rendered much faster than realtime. This is extremely powerful (an entire graph could be audibly "sped up" like fast forwarding a tape cassette) but requires this processing model.
