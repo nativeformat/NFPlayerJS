@@ -1,6 +1,6 @@
 {
   "name": "nf-player",
-  "version": "0.6.4",
+  "version": "0.6.5",
   "description": "The Native Format Smart Player, JS Edition",
   "main": "dist/index.js",
   "types": "dist/index.d.ts",
