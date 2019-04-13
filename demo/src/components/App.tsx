@@ -27,6 +27,7 @@ import {
 } from '../../../src';
 import { JSONEditor } from './JSONEditor/JSONEditor';
 import { CODEEditor } from './CODEEditor/CODEEditor';
+import { WaveVisualizer } from './WaveVisualizer/WaveVisualizer';
 import styled from 'styled-components';
 import { DemoTheme } from './Theme';
 import { Score } from 'nf-grapher';
@@ -45,7 +46,8 @@ const StyledApplication = styled.div`
 
 enum Panels {
   CODE,
-  JSON
+  JSON,
+  VISUALIZER
 }
 
 const initialAppState = {
@@ -90,15 +92,19 @@ export class App extends React.Component<AppProps, AppState> {
         <VerticalFitArea>
           <VerticalFixedSection>
             <button onClick={() => this.switchPanel(Panels.CODE)}>
-              {panel === Panels.CODE ? '>' : ''} CODE
+              {panel === Panels.CODE && '>'} CODE EDITOR
             </button>
             <button onClick={() => this.switchPanel(Panels.JSON)}>
-              {panel === Panels.JSON ? '>' : ''} JSON
+              {panel === Panels.JSON && '>'} JSON
+            </button>
+            <button onClick={() => this.switchPanel(Panels.VISUALIZER)}>
+              {panel === Panels.VISUALIZER && '>'} VISUALIZER
             </button>
           </VerticalFixedSection>
           <VerticalExpandableSection>
             {panel === Panels.JSON && <JSONEditor player={player} />}
             {panel === Panels.CODE && <CODEEditor player={player} />}
+            {panel === Panels.VISUALIZER && <WaveVisualizer player={player} />}
           </VerticalExpandableSection>
         </VerticalFitArea>
       </StyledApplication>
