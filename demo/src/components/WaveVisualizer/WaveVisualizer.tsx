@@ -26,36 +26,30 @@ import { examples, ExampleJSON } from '../../ExampleJSONScores';
 import { MonacoEditor } from '../Monaco';
 import { PlayerControlBar } from '../PlayerControlBar';
 import { PlayerWatcher } from '../PlayerWatcher';
-import { Score, TypedNode } from 'nf-grapher';
-import { ScoreVisualizer } from '../ScoreVisualizer';
+import { Score } from 'nf-grapher';
+import { FrequencyMonitor } from './FrequencyMonitor';
 import {
   VerticalFitArea,
   VerticalFixedSection,
   VerticalExpandableSection
 } from '../VerticalLayout';
 
-// Nodes within Grapher Scores are of type Node and are a 1:1 with their JSON
-// serialization. But if you call Score.from(obj) the nodes are "parsed" into
-// a TypedNode. This is a gotcha.
-const extractTypedNodes = (score: Score) =>
-  Score.from(score).graph.nodes as TypedNode[];
-
 type Props = {
   player: SmartPlayer;
+  analyser: AnalyserNode;
 };
 
 const initialState = {
   example: examples[0],
-  exampleTypedNodes: extractTypedNodes(examples[0].score),
   loading: false
 };
 
 type State = Readonly<{
   example: undefined | ExampleJSON;
-  exampleTypedNodes: TypedNode[];
   loading: boolean;
 }>;
 
+// Based on JSONEditor/JSONEditor
 export class WaveVisualizer extends React.Component<Props, State> {
   readonly state = initialState;
 
@@ -67,8 +61,7 @@ export class WaveVisualizer extends React.Component<Props, State> {
     );
 
     this.setState({
-      example: example,
-      exampleTypedNodes: example ? extractTypedNodes(example.score) : []
+      example: example
     });
 
     const { player } = this.props;
@@ -100,9 +93,6 @@ export class WaveVisualizer extends React.Component<Props, State> {
         this.setState({ loading: true });
         await player.setJson(editorJSON);
 
-        // We need these to visualize the score.
-        const exampleTypedNodes = extractTypedNodes(editorValue);
-
         // Only set the internal state to "user edited" if the current JSON is
         // likely user-edited.
         if (editorJSON !== exampleJSON) {
@@ -114,7 +104,7 @@ export class WaveVisualizer extends React.Component<Props, State> {
           });
         }
 
-        this.setState({ loading: false, exampleTypedNodes });
+        this.setState({ loading: false });
       }
     } catch (e) {}
 
@@ -122,9 +112,11 @@ export class WaveVisualizer extends React.Component<Props, State> {
   };
 
   render() {
-    const { player } = this.props;
-    const { example, loading, exampleTypedNodes } = this.state;
+    const { player, analyser } = this.props;
+    const { example, loading } = this.state;
 
+    // A buffer for analyser to place frequency values
+    const frequencies = new Uint8Array(analyser.frequencyBinCount);
     return (
       <VerticalFitArea>
         <VerticalFixedSection>
@@ -160,12 +152,10 @@ export class WaveVisualizer extends React.Component<Props, State> {
         </VerticalFixedSection>
         <VerticalExpandableSection>
           <PlayerWatcher player={player}>
-            {(currentTime, playing) =>
-              playing ? (
-                <ScoreVisualizer
-                  nodes={exampleTypedNodes}
-                  descriptions={player.getPlaybackDescription(currentTime)}
-                />
+            {(_, playing) => {
+              analyser.getByteFrequencyData(frequencies);
+              return playing ? (
+                <FrequencyMonitor frequencies={frequencies} />
               ) : (
                 <MonacoEditor
                   language={'json'}
@@ -174,8 +164,8 @@ export class WaveVisualizer extends React.Component<Props, State> {
                   }
                   valueDelegate={getValue => (this.getEditorValue = getValue)}
                 />
-              )
-            }
+              );
+            }}
           </PlayerWatcher>
         </VerticalExpandableSection>
       </VerticalFitArea>
