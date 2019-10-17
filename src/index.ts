@@ -40,3 +40,4 @@ export {
   PushCommandsMutation,
   ClearCommandsMutation
 } from './Mutations';
+export { XAudioBuffer } from './XAudioBuffer';
