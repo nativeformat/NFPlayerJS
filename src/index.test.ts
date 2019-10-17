@@ -26,4 +26,6 @@ test('Public API', () => {
   expect(NFSP.ScoreAudioParam).toBeDefined();
   expect(NFSP.TimeInstant).toBeDefined();
   expect(NFSP.ScriptProcessorRenderer).toBeDefined();
+  expect(NFSP.MemoryRenderer).toBeDefined();
+  expect(NFSP.BaseRenderer).toBeDefined();
 });
