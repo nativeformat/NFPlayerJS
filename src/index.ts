@@ -23,6 +23,7 @@ export { SmartPlayer, NodePlaybackDescription } from './SmartPlayer';
 export { ScriptProcessorRenderer } from './renderers/ScriptProcessorRenderer';
 export { BaseRenderer } from './renderers/BaseRenderer';
 export { MemoryRenderer } from './renderers/MemoryRenderer';
+export { RendererInfo, XAudioBufferFromInfo } from './renderers/RendererInfo';
 export { TimeInstant } from './time';
 export {
   ScoreAudioParam,
