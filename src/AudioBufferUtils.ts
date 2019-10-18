@@ -32,8 +32,11 @@ export function mixdown(
 
   for (let i = 0; i < buffers.length; i++) {
     const buffer = buffers[i];
-    for (let c = 0; c < buffer.numberOfChannels; c++) {
-      const sourceChan = buffer.getChannelData(c);
+    for (let c = 0; c < dest.numberOfChannels; c++) {
+      // copy either the matching or first source channel to the destination
+      // (this means a mono source will be converted to stereo)
+      const sourceIdx = c < buffer.numberOfChannels ? c : 0;
+      const sourceChan = buffer.getChannelData(sourceIdx);
       const destChan = dest.getChannelData(c);
       for (let s = 0; s < sourceChan.length; s++) {
         destChan[s] = destChan[s] + sourceChan[s];
