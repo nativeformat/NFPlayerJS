@@ -41,8 +41,8 @@ export class ScriptProcessorRenderer extends BaseRenderer {
       {
         channelCount: ctx.destination.channelCount,
         sampleRate: ctx.sampleRate,
-        // ScriptProcessorNode only accepts 256 - 8192.
-        quantumSize: Math.min(Math.max(quantumSize, 256), 8192),
+        // ScriptProcessorNode only accepts 0 - 16384.
+        quantumSize: Math.min(Math.max(quantumSize, 0), 16384),
         decode: (uri, ab: ArrayBuffer) =>
           new Promise<XAudioBuffer>((resolve, reject) => {
             dbg('decoding file %s', uri);
