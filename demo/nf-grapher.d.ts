@@ -179,7 +179,7 @@ export declare class AudioParam extends TypedParam<number> {
    * Specifies a curve to render based on the given float values.
    */
   setValueCurveAtTime(
-    values: number[],
+    values: Float32Array,
     startTime: number,
     duration: number
   ): AudioParam;

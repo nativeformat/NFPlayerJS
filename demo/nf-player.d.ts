@@ -94,7 +94,7 @@ declare class PseudoAudioParam {
     timeConstant: number
   ): PseudoAudioParam;
   setValueCurveAtTime(
-    values: number[],
+    values: Float32Array,
     time: number,
     duration: number
   ): PseudoAudioParam;
@@ -146,7 +146,7 @@ export interface SetTargetAtTimeCmd {
 export interface SetValueCurveAtTimeCmd {
   name: 'setValueCurveAtTime';
   args: {
-    values: number[];
+    values: Float32Array;
     startTime: number;
     duration: number;
   };
