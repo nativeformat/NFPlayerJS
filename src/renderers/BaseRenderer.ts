@@ -53,7 +53,7 @@ export const enum PlayingState {
 }
 
 export class BaseRenderer {
-  // Minimum is 256 for ScriptProcessorNode!
+  // Minimum is 0 for ScriptProcessorNode!
   static DEFAULT_QUANTUM_SIZE = 8192;
 
   protected samplesElapsed: number = 0;
