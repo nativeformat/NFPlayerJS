@@ -25,7 +25,7 @@
     "debug-harness": "parcel serve debug-harness/index.html --out-dir dist-debug --cache-dir .cache-debug",
     "build": "tsc -b",
     "prepublishOnly": "npm run build",
-    "build:demo": "cd demo && parcel build ./src/index.html --public-url ./",
+    "build:demo": "cd demo && NODE_OPTIONS=--max-old-space-size=8196 parcel build ./src/index.html --public-url ./",
     "docs:gen": "typedoc --tsconfig ./tsconfig.json --excludeNotExported --out ./demo/dist/docs src/ --exclude '**/*.test.ts' --mode file",
     "predeploy:demo": "npm run build && npm run build:demo && npm run docs:gen",
     "deploy:demo:manual": "npm run predeploy:demo && cd ./demo && gh-pages -d ./dist"
@@ -33,40 +33,38 @@
   "author": "Drew Petersen <kirbysayshi@gmail.com>",
   "license": "Apache-2.0",
   "dependencies": {
-    "cross-fetch": "^3.0.1",
+    "cross-fetch": "^3.0.4",
     "debug": "^4.1.1",
-    "meow": "^5.0.0",
     "nf-grapher": "^1.2.24",
     "pseudo-audio-param": "^1.3.1",
     "soundtouch-ts": "^1.1.1",
-    "tempy": "^0.2.1",
+    "tempy": "^0.5.0",
     "wav-decoder": "^1.3.0",
     "wav-encoder": "^1.3.0"
   },
   "devDependencies": {
-    "@commitlint/cli": "^7.5.2",
-    "@commitlint/config-conventional": "^7.5.0",
-    "@types/debug": "^4.1.0",
-    "@types/jest": "^23.3.10",
-    "@types/meow": "^5.0.0",
+    "@commitlint/cli": "^8.3.5",
+    "@commitlint/config-conventional": "^8.3.4",
+    "@types/debug": "^4.1.5",
+    "@types/jest": "^25.1.4",
+    "@types/node": "^13.9.2",
     "@types/pseudo-audio-param": "^1.3.0",
-    "@types/tempy": "^0.2.0",
-    "@typescript-eslint/eslint-plugin": "^1.4.2",
-    "@typescript-eslint/parser": "^1.4.2",
-    "eslint": "^5.14.1",
-    "eslint-config-prettier": "^4.1.0",
-    "eslint-plugin-notice": "^0.7.8",
-    "eslint-plugin-prettier": "^3.0.1",
-    "gh-pages": "^1.2.0",
-    "husky": "^1.3.1",
-    "jest": "^23.6.0",
-    "lint-staged": "^8.1.4",
+    "@typescript-eslint/eslint-plugin": "^2.24.0",
+    "@typescript-eslint/parser": "^2.24.0",
+    "eslint": "^6.8.0",
+    "eslint-config-prettier": "^6.10.0",
+    "eslint-plugin-notice": "^0.8.9",
+    "eslint-plugin-prettier": "^3.1.2",
+    "gh-pages": "^2.2.0",
+    "husky": "^4.2.3",
+    "jest": "^25.1.0",
+    "lint-staged": "^10.0.8",
     "npm-run-all": "^4.1.5",
-    "parcel-bundler": "^1.11.0",
-    "prettier": "^1.16.4",
-    "ts-jest": "^23.10.5",
-    "typedoc": "^0.13.0",
-    "typescript": "^3.3.3",
+    "parcel-bundler": "^1.12.4",
+    "prettier": "^1.19.1",
+    "ts-jest": "^25.2.1",
+    "typedoc": "^0.17.1",
+    "typescript": "^3.8.3",
     "web-audio-test-api": "^0.5.2"
   },
   "husky": {
@@ -82,12 +80,10 @@
   },
   "lint-staged": {
     "*.{js,json,css,md,ts,tsx}": [
-      "prettier --write",
-      "git add"
+      "prettier --write"
     ],
     "*.{js,ts,tsx}": [
-      "eslint --fix",
-      "git add"
+      "eslint --fix"
     ]
   },
   "//browserslist": "this is to prevent parcel from causing babel to transpile anything and injecting regenerator runtime",

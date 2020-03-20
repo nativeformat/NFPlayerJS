@@ -5,14 +5,14 @@
   "author": "Drew Petersen <kirbysayshi@gmail.com>",
   "license": "Apache-2.0",
   "dependencies": {
-    "monaco-editor": "^0.15.6",
-    "react": "^16.4.2",
-    "react-dom": "^16.4.2",
-    "styled-components": "^3.4.5"
+    "monaco-editor": "^0.20.0",
+    "react": "^16.13.1",
+    "react-dom": "^16.13.1",
+    "styled-components": "^5.0.1"
   },
   "devDependencies": {
-    "@types/react": "^16.4.11",
-    "@types/react-dom": "^16.0.7"
+    "@types/react": "^16.9.23",
+    "@types/react-dom": "^16.9.5"
   },
   "//browserslist": "this is to prevent parcel from causing babel to transpile anything and injecting regenerator runtime",
   "browserslist": [
