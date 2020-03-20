@@ -22,7 +22,6 @@
 
 import 'cross-fetch/polyfill';
 import * as Debug from 'debug';
-import * as meow from 'meow';
 import * as path from 'path';
 import { SmartPlayer } from './SmartPlayer';
 import { MemoryRenderer } from './renderers/MemoryRenderer';
@@ -51,8 +50,8 @@ const dbgdecoder = Debug('nf:cli-decoder');
 // folder.
 const pkg = require('../package.json');
 
-const cli = meow(
-  `
+const showHelpAndExit = () => {
+  console.log(`
 Usage
   $ nf-player <command> [options]
 
@@ -67,56 +66,18 @@ Global Options
   --quantum, -q [256]                 Size of the render quantum. A smaller value will
                                       produce more accurate Time Stretching and Pitch Shifting,
                                       but at the cost of CPU time.
-  --version, -v                       The version of this library.
+  --version, -v                       The version of this library. ${pkg.version}
+  --help, -h                          Display this help.
 
 Examples
   # Render 30 seconds of a score to a wav file:
   $ nf-player-cli save --duration 30 -i ./score.json -o ./output.wav
-`,
-  {
-    flags: {
-      quantum: {
-        type: 'string',
-        alias: 'q',
-        default: 256
-      },
-      // 'cache-dir': {
-      //   type: 'string',
-      //   alias: 'c',
-      //   default: path.join(process.cwd(), '.nf-player-cli-cache'),
-      // },
-      'input-file': {
-        type: 'string',
-        alias: 'i'
-      },
-      'output-file': {
-        type: 'string',
-        alias: 'o',
-        default: path.join(process.cwd(), 'nf-player.wav')
-      },
-      duration: {
-        type: 'string',
-        alias: 'd',
-        default: 60
-      },
-      seek: {
-        type: 'string',
-        alias: 's',
-        default: 0
-      }
-    }
-  }
-);
-
-type RawCLIFlags = {
-  quantum: string;
-  inputFile?: string;
-  outputFile: string;
-  duration: string;
-  seek: string;
+`);
+  process.exit(1);
 };
 
 type ParsedCLIFlags = {
+  command: 'save';
   quantum: number;
   inputFile: string;
   outputFile: string;
@@ -124,32 +85,93 @@ type ParsedCLIFlags = {
   seek: number;
 };
 
-function parseRawFlags(raw: RawCLIFlags): ParsedCLIFlags {
-  if (!raw.inputFile) throw new Error('Invalid CLI Options');
-  return {
-    ...raw,
-    inputFile: raw.inputFile,
-    quantum: parseInt(raw.quantum, 10),
-    duration: parseFloat(raw.duration),
-    seek: parseFloat(raw.seek)
+function parseRawFlags(): ParsedCLIFlags {
+  const parsed: ParsedCLIFlags = {
+    command: parseBareArg({ name: ['save'] }),
+
+    quantum: parseFlagArg({
+      long: '--quantum',
+      kind: 'number',
+      alias: '-q',
+      default: 256
+    }),
+
+    // cacheDir: parseArg({
+    //   long: 'cache-dir',
+    //   kind: 'string',
+    //   alias: 'c',
+    //   default: path.join(process.cwd(), '.nf-player-cli-cache'),
+    // }),
+
+    inputFile: parseFlagArg({
+      long: '--input-file',
+      kind: 'string',
+      alias: '-i',
+      required: true
+    }),
+
+    outputFile: parseFlagArg({
+      long: '--output-file',
+      kind: 'string',
+      alias: '-o',
+      default: path.join(process.cwd(), 'nf-player.wav')
+    }),
+
+    duration: parseFlagArg({
+      long: '--duration',
+      kind: 'number',
+      alias: '-d',
+      default: 60
+    }),
+
+    seek: parseFlagArg({
+      long: '--seek',
+      kind: 'number',
+      alias: '-s',
+      default: 0
+    })
   };
+
+  return parsed;
 }
 
 function go() {
+  if (
+    parseFlagArg({
+      long: '--help',
+      kind: 'boolean',
+      alias: '-h'
+    })
+  )
+    return showHelpAndExit();
+
+  if (
+    parseFlagArg({
+      long: '--version',
+      kind: 'boolean',
+      alias: '-v',
+      default: false
+    })
+  ) {
+    console.log(pkg.version);
+    return process.exit(1);
+  }
+
   let flags;
 
   try {
-    flags = parseRawFlags(cli.flags as RawCLIFlags);
+    flags = parseRawFlags();
   } catch (err) {
-    return cli.showHelp(1);
+    console.error(err);
+    return process.exit(1);
   }
 
   // TODO: add a `play` command for speaker playback.
 
-  if (cli.input.indexOf('save') > -1) {
+  if (flags.command === 'save') {
     saveToFile(flags);
   } else {
-    cli.showHelp(1);
+    return showHelpAndExit();
   }
 }
 
@@ -236,4 +258,65 @@ function decode(uri: string, buffer: ArrayBuffer): Promise<XAudioBuffer> {
     }
     resolve(audio);
   });
+}
+
+type StringToType<
+  T extends 'string' | 'number' | 'boolean'
+> = T extends 'string'
+  ? string
+  : T extends 'number'
+  ? number
+  : T extends 'boolean'
+  ? boolean
+  : never;
+
+function parseFlagArg<
+  KindName extends 'string' | 'number' | 'boolean',
+  Kind extends StringToType<KindName>
+>(config: {
+  long: string;
+  alias: string;
+  kind: KindName;
+  default?: Kind;
+  required?: boolean;
+}): Kind {
+  const longIdx = process.argv.indexOf(config.long);
+  const shortIdx = process.argv.indexOf(config.alias);
+
+  let value: any;
+
+  if (longIdx > -1) {
+    value = config.kind === 'boolean' ? true : process.argv[longIdx + 1];
+  } else if (shortIdx > -1) {
+    value = config.kind === 'boolean' ? true : process.argv[shortIdx + 1];
+  } else {
+    value = config.default;
+  }
+
+  if (config.required && value === undefined)
+    throw new Error(
+      `Required flag ${config.long} (${config.alias}) had no value.`
+    );
+
+  const parsed =
+    config.kind === 'boolean'
+      ? Boolean(value)
+      : config.kind === 'number'
+      ? Number(value)
+      : String(value);
+  return parsed as Kind;
+}
+
+function parseBareArg<Command extends string>(config: {
+  name: Command[];
+}): Command {
+  let command: Command | undefined;
+  for (let i = 0; i < config.name.length; i++) {
+    const idx = process.argv.indexOf(config.name[i]);
+    if (idx > -1) command = config.name[i];
+  }
+
+  if (command === undefined)
+    throw new Error(`Required command "${config.name}" not provided.`);
+  return command;
 }
