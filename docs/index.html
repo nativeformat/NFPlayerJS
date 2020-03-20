@@ -54,7 +54,7 @@
 					<a href="globals.html">Globals</a>
 				</li>
 			</ul>
-			<h1> nf-player</h1>
+			<h1>nf-player</h1>
 		</div>
 	</div>
 </header>
@@ -70,7 +70,9 @@
 					<a href="https://slackin.spotify.com"><img src="https://slackin.spotify.com/badge.svg" alt="Spotify FOSS Slack"></a>
 				<a href="http://clayallsopp.github.io/readme-score?url=https://github.com/spotify/NFPlayerJS"><img src="http://readme-score-api.herokuapp.com/score.svg?url=https://github.com/spotify/NFPlayerJS" alt="Readme Score"></a></p>
 				<p>A JavaScript/TypeScript audio engine for the Web and Server capable of multitrack time stretching, pitch shifting, declarative effects, faster than realtime processing, and more!</p>
-				<h1 id="getting-started-browser-">Getting Started (Browser) 🚀</h1>
+				<a href="#getting-started-browser-🚀" id="getting-started-browser-🚀" style="color: inherit; text-decoration: none;">
+					<h1>Getting Started (Browser) 🚀</h1>
+				</a>
 				<ol>
 					<li>Install the player: <code>npm install --save nf-player</code></li>
 					<li>Describe your audio experience using <a href="https://github.com/spotify/NFGrapher">NFGrapher</a> <code>npm install --save nf-grapher</code>, or use a prebuilt <a href="./fixtures">JSON Score</a>.</li>
@@ -96,12 +98,16 @@
 })();</code></pre>
 				<p>For more demos, check out the <a href="https://spotify.github.io/NFPlayerJS/">Playground</a>, which contains a live-coding environment, sample code, and sample JSON Scores, all in your browser!</p>
 				<p>There are also in-progress <a href="https://spotify.github.io/NFPlayerJS/docs/">API Docs</a>.</p>
-				<h1 id="getting-started-cli-">Getting Started (CLI) 🚀🚀</h1>
+				<a href="#getting-started-cli-🚀🚀" id="getting-started-cli-🚀🚀" style="color: inherit; text-decoration: none;">
+					<h1>Getting Started (CLI) 🚀🚀</h1>
+				</a>
 				<p>A <a href="./src/cli.ts">CLI</a> also ships with this package!</p>
 				<pre><code class="language-sh">$ npx nf-player save --duration 120 --input-file ./fixtures/roxanne-30s-preview-shifted-infinite.json --output-file ./roxanne.wav</code></pre>
 				<p>The above command will load the Score JSON, download the audio files, and render 120 seconds of audio to a file called <code>tng.wav</code>. This should happen in about 5 seconds of realtime, depending on your computer and internet connection.</p>
 				<p>The CLI depends on <a href="https://ffmpeg.org/">ffmpeg</a> being present in <code>$PATH</code> for file decoding. On a mac this can be accomplished using <a href="https://brew.sh/">homebrew</a> <code>brew install ffmpeg</code></p>
-				<h1 id="raison-d-tre-thought_balloon-">Raison D&#39;être :thought_balloon:</h1>
+				<a href="#raison-d39être-thought_balloon" id="raison-d39être-thought_balloon" style="color: inherit; text-decoration: none;">
+					<h1>Raison D&#39;être :thought_balloon:</h1>
+				</a>
 				<p>Given a way to <a href="https://github.com/spotify/NFGrapher">describe arbitrary audio experiences over time</a>, we needed a player to play them. This repo serves as a reference implementation of the patterns required to process a Grapher Score, as well as a testbed for new features and API design.</p>
 				<p>Due to the nature of Grapher Scores, this player is capable of playback experiences that are generally outside the realm of a standard &quot;track based&quot; audio player, such as Winamp, Spotify, or VLC, and closer to an audio game engine. These include:</p>
 				<ul>
@@ -110,7 +116,9 @@
 					<li>adaptive playback (user input, such as location)</li>
 				</ul>
 				<p>By providing a unifying, declarative format to describe these experiences (and with a matching player implementation), they can be shared by multiple platforms, such as apps on your phone, websites, or physical devices. This is notably different from device or platform specific APIs like the Web Audio API, Core Audio, or Windows Audio Graphs, which often require imperative coding using programming languages specific to each. Composable time stretching, for example, is not possible without abandoning most (if not all) of the ergonomics of the Web Audio API.</p>
-				<h1 id="architecture-triangular_ruler-">Architecture :triangular_ruler:</h1>
+				<a href="#architecture-triangular_ruler" id="architecture-triangular_ruler" style="color: inherit; text-decoration: none;">
+					<h1>Architecture :triangular_ruler:</h1>
+				</a>
 				<p>A Grapher Score describes, basically, an audio processing graph, where each node of the graph is either a producer of audio, a consumer, or both, in the case of transformation. The edges of the graph control where the audio &quot;flows&quot;.</p>
 				<p style="text-align: center;" align="center">
 					<a target="_blank" href="charts/Audio Graph.png"><img src="charts/Audio Graph.png" alt="A chart displaying an Audio Graph, showing a file node connected to a gain node connected to a stretch node connected to a destination node, and another file node connected to a gain node connected to a loop node connected to the same stretch node." /></a>
@@ -125,7 +133,9 @@
 				</p>
 				<p>Passing and modifying the current notion of time, recursively through ancestors, is what sets this player apart from other players built on top of APIs like Web Audio: a Stretch node, for example, can affect time for an entire subgraph, requiring that subgraph to be rendered much faster than realtime. This is extremely powerful (an entire graph could be audibly &quot;sped up&quot; like fast forwarding a tape cassette) but requires this processing model.</p>
 				<p>It should also be noted that all &quot;leaves&quot; of the Grapher Score are implicitly connected to the <a href="/src/nodes/SPDestinationNode.ts">(internal) output node</a>. Therefore, many Scores look like discontiguous graphs.</p>
-				<h1 id="basic-capabilities-">Basic Capabilities 🎧</h1>
+				<a href="#basic-capabilities-🎧" id="basic-capabilities-🎧" style="color: inherit; text-decoration: none;">
+					<h1>Basic Capabilities 🎧</h1>
+				</a>
 				<ul>
 					<li>Supported <a href="https://github.com/spotify/NFGrapher/blob/master/doc/smartplayer.md">Grapher Score Nodes</a>:<ul>
 							<li>Stretch (pitchshifting and timestretching, provided by a TS port of <a href="https://github.com/kirbysayshi/soundtouch-ts">SoundTouch</a>)</li>
@@ -139,16 +149,22 @@
 					<li>Realtime mutations of the current Score</li>
 					<li>Loading / Processing / Playing multiple Scores</li>
 				</ul>
-				<h1 id="limitations-">Limitations 🤖</h1>
+				<a href="#limitations-🤖" id="limitations-🤖" style="color: inherit; text-decoration: none;">
+					<h1>Limitations 🤖</h1>
+				</a>
 				<ul>
 					<li>Loads all audio files into memory all at once using <a href="https://developer.mozilla.org/en-US/docs/Web/API/Fetch_API"><code>fetch</code></a> / <a href="https://developer.mozilla.org/en-US/docs/Web/API/BaseAudioContext/decodeAudioData">decodeAudioData</a></li>
 					<li>Only supports whatever audio formats the platform supports (due to using <a href="https://developer.mozilla.org/en-US/docs/Web/API/BaseAudioContext/decodeAudioData">decodeAudioData</a>). The CLI shells out to ffmpeg to avoid this limitation.</li>
 					<li>No DRM / EME support (the EME API does not provide faster-than-realtime access to the audio samples)</li>
 					<li>Does all processing on the main thread (but with fairly low CPU usage). This could be mitigated by running the entire player in a Web Worker or, eventually, Audio Worklet.</li>
 				</ul>
-				<h1 id="capabilities-by-example-">Capabilities by Example 🏃‍♀️🏃‍♂️</h1>
+				<a href="#capabilities-by-example-🏃♀️🏃♂️" id="capabilities-by-example-🏃♀️🏃♂️" style="color: inherit; text-decoration: none;">
+					<h1>Capabilities by Example 🏃‍♀️🏃‍♂️</h1>
+				</a>
 				<p>See the <a href="https://spotify.github.io/NFPlayerJS/">Playground</a>!</p>
-				<h1 id="development-">Development 🏗</h1>
+				<a href="#development-🏗" id="development-🏗" style="color: inherit; text-decoration: none;">
+					<h1>Development 🏗</h1>
+				</a>
 				<p>Clone this repo, then:</p>
 				<pre><code class="language-sh">$ npm install</code></pre>
 				<p>To build the library and start the development environment:</p>
@@ -158,25 +174,39 @@
 				<p>Otherwise the demo is actually built and deployed on each push to master.</p>
 				<p>There is also a more cut-down <a href="./debug-harness/index.ts">debug environment</a> useful for debugging / developing single Scores or scripts:</p>
 				<pre><code class="language-sh">$ npm run debug-harness</code></pre>
-				<h1 id="deployment-publishing-release-">Deployment / Publishing / Release 🚢</h1>
-				<h3 id="publishing-">Publishing:</h3>
+				<a href="#deployment--publishing--release-🚢" id="deployment--publishing--release-🚢" style="color: inherit; text-decoration: none;">
+					<h1>Deployment / Publishing / Release 🚢</h1>
+				</a>
+				<a href="#publishing" id="publishing" style="color: inherit; text-decoration: none;">
+					<h3>Publishing:</h3>
+				</a>
 				<ul>
 					<li><code>npm version [major|minor|patch]</code>, then PR.</li>
 					<li>TravisCI will attempt to publish any tagged commit.</li>
 				</ul>
-				<h3 id="demo-deployment-">Demo Deployment:</h3>
+				<a href="#demo-deployment" id="demo-deployment" style="color: inherit; text-decoration: none;">
+					<h3>Demo Deployment:</h3>
+				</a>
 				<ul>
 					<li>The demo is deployed automatically on master builds using the TravisCI gh-pages provider.</li>
 				</ul>
-				<h1 id="contributing-">Contributing 💖⌨️</h1>
+				<a href="#contributing-💖⌨️" id="contributing-💖⌨️" style="color: inherit; text-decoration: none;">
+					<h1>Contributing 💖⌨️</h1>
+				</a>
 				<p>This project adheres to the <a href="https://github.com/spotify/code-of-conduct/blob/master/code-of-conduct.md">Open Code of Conduct</a>. By participating, you are expected to honor this code.</p>
-				<h1 id="license-">License 👩‍⚖️</h1>
+				<a href="#license-👩⚖️" id="license-👩⚖️" style="color: inherit; text-decoration: none;">
+					<h1>License 👩‍⚖️</h1>
+				</a>
 				<p><a href="./LICENSE">Apache 2.0</a></p>
-				<h2 id="acknowledgements">Acknowledgements</h2>
+				<a href="#acknowledgements" id="acknowledgements" style="color: inherit; text-decoration: none;">
+					<h2>Acknowledgements</h2>
+				</a>
 				<p>NFPlayerJS depends on <a href="https://github.com/kirbysayshi/soundtouch-ts">SoundTouch-TS</a> which is licensed under the <a href="https://www.gnu.org/licenses/lgpl-2.1.en.html">GNU Lesser General Public Library, version 2.1</a>.</p>
 				<p>To comply with section 6 of the LGPL, SoundTouch can be swapped out at runtime by any user by placing an API-compatible replacement at <code>window.SoundTouch</code> or <code>global.SoundTouch</code>.</p>
 				<p><a href="https://thenounproject.com/search/?q=cassete&amp;i=1394525">music player by SBTS from the Noun Project</a>.</p>
-				<h1 id="notes-">Notes 📝</h1>
+				<a href="#notes-📝" id="notes-📝" style="color: inherit; text-decoration: none;">
+					<h1>Notes 📝</h1>
+				</a>
 				<p><b id="fn-reasonable"></b> &quot;Reasonable&quot; is ambiguous, of course. In this case, it means &quot;expected CPU usage if audio is the primary purpose of the experience&quot;. For example, an authoring tool or enhanced listening experience. It&#39;s still unclear to if CPU usage is low enough for a background task like listening to a playlist.</p>
 			</div>
 		</div>
@@ -254,6 +284,9 @@
 						<a href="interfaces/linearramptovalueattimecmd.html" class="tsd-kind-icon">Linear<wbr>Ramp<wbr>ToValue<wbr>AtTime<wbr>Cmd</a>
 					</li>
 					<li class=" tsd-kind-interface">
+						<a href="interfaces/scoreaudioparamevent.html" class="tsd-kind-icon">Score<wbr>Audio<wbr>Param<wbr>Event</a>
+					</li>
+					<li class=" tsd-kind-interface">
 						<a href="interfaces/settargetattimecmd.html" class="tsd-kind-icon">Set<wbr>Target<wbr>AtTime<wbr>Cmd</a>
 					</li>
 					<li class=" tsd-kind-interface">
@@ -272,6 +305,9 @@
 						<a href="globals.html#commandsmutation" class="tsd-kind-icon">Commands<wbr>Mutation</a>
 					</li>
 					<li class=" tsd-kind-type-alias">
+						<a href="globals.html#loadingscore" class="tsd-kind-icon">Loading<wbr>Score</a>
+					</li>
+					<li class=" tsd-kind-type-alias">
 						<a href="globals.html#mutation" class="tsd-kind-icon">Mutation</a>
 					</li>
 					<li class=" tsd-kind-type-alias">
@@ -281,7 +317,13 @@
 						<a href="globals.html#nodeplaybackdescription" class="tsd-kind-icon">Node<wbr>Playback<wbr>Description</a>
 					</li>
 					<li class=" tsd-kind-type-alias">
+						<a href="globals.html#parsedcliflags" class="tsd-kind-icon">ParsedCLIFlags</a>
+					</li>
+					<li class=" tsd-kind-type-alias">
 						<a href="globals.html#pushcommandsmutation" class="tsd-kind-icon">Push<wbr>Commands<wbr>Mutation</a>
+					</li>
+					<li class=" tsd-kind-type-alias tsd-has-type-parameter">
+						<a href="globals.html#queuedeffect" class="tsd-kind-icon">Queued<wbr>Effect</a>
 					</li>
 					<li class=" tsd-kind-type-alias">
 						<a href="globals.html#rendererinfo" class="tsd-kind-icon">Renderer<wbr>Info</a>
@@ -289,8 +331,38 @@
 					<li class=" tsd-kind-type-alias">
 						<a href="globals.html#scoreaudioparamcmd" class="tsd-kind-icon">Score<wbr>Audio<wbr>Param<wbr>Cmd</a>
 					</li>
+					<li class=" tsd-kind-type-alias tsd-has-type-parameter">
+						<a href="globals.html#stringtotype" class="tsd-kind-icon">String<wbr>ToType</a>
+					</li>
+					<li class=" tsd-kind-type-alias">
+						<a href="globals.html#xaudiobufferoptions" class="tsd-kind-icon">XAudio<wbr>Buffer<wbr>Options</a>
+					</li>
+					<li class=" tsd-kind-variable">
+						<a href="globals.html#dbg_str" class="tsd-kind-icon">DBG_<wbr>STR</a>
+					</li>
+					<li class=" tsd-kind-variable">
+						<a href="globals.html#pseudoaudioparam" class="tsd-kind-icon">Pseudo<wbr>Audio<wbr>Param</a>
+					</li>
+					<li class=" tsd-kind-variable">
+						<a href="globals.html#shared_soundtouch_ctor" class="tsd-kind-icon">SHARED_<wbr>SOUNDTOUCH_<wbr>CTOR</a>
+					</li>
+					<li class=" tsd-kind-variable">
+						<a href="globals.html#dbg" class="tsd-kind-icon">dbg</a>
+					</li>
+					<li class=" tsd-kind-variable">
+						<a href="globals.html#dbgdecoder" class="tsd-kind-icon">dbgdecoder</a>
+					</li>
+					<li class=" tsd-kind-variable">
+						<a href="globals.html#exec" class="tsd-kind-icon">exec</a>
+					</li>
+					<li class=" tsd-kind-variable">
+						<a href="globals.html#pkg" class="tsd-kind-icon">pkg</a>
+					</li>
 					<li class=" tsd-kind-variable">
 						<a href="globals.html#readfile" class="tsd-kind-icon">read<wbr>File</a>
+					</li>
+					<li class=" tsd-kind-variable">
+						<a href="globals.html#uniqid" class="tsd-kind-icon">uniq<wbr>Id</a>
 					</li>
 					<li class=" tsd-kind-variable">
 						<a href="globals.html#writefile" class="tsd-kind-icon">write<wbr>File</a>
@@ -320,10 +392,19 @@
 						<a href="globals.html#copy" class="tsd-kind-icon">copy</a>
 					</li>
 					<li class=" tsd-kind-function">
+						<a href="globals.html#decode" class="tsd-kind-icon">decode</a>
+					</li>
+					<li class=" tsd-kind-function">
 						<a href="globals.html#dumpwave" class="tsd-kind-icon">dump<wbr>Wave</a>
 					</li>
 					<li class=" tsd-kind-function">
 						<a href="globals.html#expectquantums" class="tsd-kind-icon">expect<wbr>Quantums</a>
+					</li>
+					<li class=" tsd-kind-function">
+						<a href="globals.html#gettargetvalueattime" class="tsd-kind-icon">get<wbr>Target<wbr>Value<wbr>AtTime</a>
+					</li>
+					<li class=" tsd-kind-function">
+						<a href="globals.html#go" class="tsd-kind-icon">go</a>
 					</li>
 					<li class=" tsd-kind-function">
 						<a href="globals.html#loadwave" class="tsd-kind-icon">load<wbr>Wave</a>
@@ -333,6 +414,21 @@
 					</li>
 					<li class=" tsd-kind-function">
 						<a href="globals.html#mixdowntoaudiobuffer" class="tsd-kind-icon">mixdown<wbr>ToAudio<wbr>Buffer</a>
+					</li>
+					<li class=" tsd-kind-function tsd-has-type-parameter">
+						<a href="globals.html#parsebarearg" class="tsd-kind-icon">parse<wbr>Bare<wbr>Arg</a>
+					</li>
+					<li class=" tsd-kind-function tsd-has-type-parameter">
+						<a href="globals.html#parseflagarg" class="tsd-kind-icon">parse<wbr>Flag<wbr>Arg</a>
+					</li>
+					<li class=" tsd-kind-function">
+						<a href="globals.html#parserawflags" class="tsd-kind-icon">parse<wbr>Raw<wbr>Flags</a>
+					</li>
+					<li class=" tsd-kind-function">
+						<a href="globals.html#savetofile" class="tsd-kind-icon">save<wbr>ToFile</a>
+					</li>
+					<li class=" tsd-kind-function">
+						<a href="globals.html#showhelpandexit" class="tsd-kind-icon">show<wbr>Help<wbr>And<wbr>Exit</a>
 					</li>
 					<li class=" tsd-kind-function">
 						<a href="globals.html#zeroout" class="tsd-kind-icon">zero<wbr>Out</a>
@@ -350,36 +446,10 @@
 		<h2>Legend</h2>
 		<div class="tsd-legend-group">
 			<ul class="tsd-legend">
-				<li class="tsd-kind-module"><span class="tsd-kind-icon">Module</span></li>
-				<li class="tsd-kind-object-literal"><span class="tsd-kind-icon">Object literal</span></li>
-				<li class="tsd-kind-variable"><span class="tsd-kind-icon">Variable</span></li>
-				<li class="tsd-kind-function"><span class="tsd-kind-icon">Function</span></li>
-				<li class="tsd-kind-function tsd-has-type-parameter"><span class="tsd-kind-icon">Function with type parameter</span></li>
-				<li class="tsd-kind-index-signature"><span class="tsd-kind-icon">Index signature</span></li>
-				<li class="tsd-kind-type-alias"><span class="tsd-kind-icon">Type alias</span></li>
-			</ul>
-			<ul class="tsd-legend">
-				<li class="tsd-kind-enum"><span class="tsd-kind-icon">Enumeration</span></li>
-				<li class="tsd-kind-enum-member"><span class="tsd-kind-icon">Enumeration member</span></li>
-				<li class="tsd-kind-property tsd-parent-kind-enum"><span class="tsd-kind-icon">Property</span></li>
-				<li class="tsd-kind-method tsd-parent-kind-enum"><span class="tsd-kind-icon">Method</span></li>
-			</ul>
-			<ul class="tsd-legend">
-				<li class="tsd-kind-interface"><span class="tsd-kind-icon">Interface</span></li>
-				<li class="tsd-kind-interface tsd-has-type-parameter"><span class="tsd-kind-icon">Interface with type parameter</span></li>
-				<li class="tsd-kind-constructor tsd-parent-kind-interface"><span class="tsd-kind-icon">Constructor</span></li>
-				<li class="tsd-kind-property tsd-parent-kind-interface"><span class="tsd-kind-icon">Property</span></li>
-				<li class="tsd-kind-method tsd-parent-kind-interface"><span class="tsd-kind-icon">Method</span></li>
-				<li class="tsd-kind-index-signature tsd-parent-kind-interface"><span class="tsd-kind-icon">Index signature</span></li>
-			</ul>
-			<ul class="tsd-legend">
-				<li class="tsd-kind-class"><span class="tsd-kind-icon">Class</span></li>
-				<li class="tsd-kind-class tsd-has-type-parameter"><span class="tsd-kind-icon">Class with type parameter</span></li>
 				<li class="tsd-kind-constructor tsd-parent-kind-class"><span class="tsd-kind-icon">Constructor</span></li>
 				<li class="tsd-kind-property tsd-parent-kind-class"><span class="tsd-kind-icon">Property</span></li>
 				<li class="tsd-kind-method tsd-parent-kind-class"><span class="tsd-kind-icon">Method</span></li>
 				<li class="tsd-kind-accessor tsd-parent-kind-class"><span class="tsd-kind-icon">Accessor</span></li>
-				<li class="tsd-kind-index-signature tsd-parent-kind-class"><span class="tsd-kind-icon">Index signature</span></li>
 			</ul>
 			<ul class="tsd-legend">
 				<li class="tsd-kind-constructor tsd-parent-kind-class tsd-is-inherited"><span class="tsd-kind-icon">Inherited constructor</span></li>
@@ -388,24 +458,26 @@
 				<li class="tsd-kind-accessor tsd-parent-kind-class tsd-is-inherited"><span class="tsd-kind-icon">Inherited accessor</span></li>
 			</ul>
 			<ul class="tsd-legend">
+				<li class="tsd-kind-property tsd-parent-kind-interface"><span class="tsd-kind-icon">Property</span></li>
+				<li class="tsd-kind-method tsd-parent-kind-interface"><span class="tsd-kind-icon">Method</span></li>
+			</ul>
+			<ul class="tsd-legend">
 				<li class="tsd-kind-property tsd-parent-kind-class tsd-is-protected"><span class="tsd-kind-icon">Protected property</span></li>
 				<li class="tsd-kind-method tsd-parent-kind-class tsd-is-protected"><span class="tsd-kind-icon">Protected method</span></li>
-				<li class="tsd-kind-accessor tsd-parent-kind-class tsd-is-protected"><span class="tsd-kind-icon">Protected accessor</span></li>
 			</ul>
 			<ul class="tsd-legend">
 				<li class="tsd-kind-property tsd-parent-kind-class tsd-is-private"><span class="tsd-kind-icon">Private property</span></li>
 				<li class="tsd-kind-method tsd-parent-kind-class tsd-is-private"><span class="tsd-kind-icon">Private method</span></li>
-				<li class="tsd-kind-accessor tsd-parent-kind-class tsd-is-private"><span class="tsd-kind-icon">Private accessor</span></li>
 			</ul>
 			<ul class="tsd-legend">
 				<li class="tsd-kind-property tsd-parent-kind-class tsd-is-static"><span class="tsd-kind-icon">Static property</span></li>
-				<li class="tsd-kind-call-signature tsd-parent-kind-class tsd-is-static"><span class="tsd-kind-icon">Static method</span></li>
+				<li class="tsd-kind-method tsd-parent-kind-class tsd-is-static"><span class="tsd-kind-icon">Static method</span></li>
 			</ul>
 		</div>
 	</div>
 </footer>
 <div class="container tsd-generator">
-	<p>Generated using <a href="http://typedoc.org/" target="_blank">TypeDoc</a></p>
+	<p>Generated using <a href="https://typedoc.org/" target="_blank">TypeDoc</a></p>
 </div>
 <div class="overlay"></div>
 <script src="assets/js/main.js"></script>
