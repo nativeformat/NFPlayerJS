@@ -64,6 +64,8 @@ const AsyncFunction = GetAsyncFunctionCtor();
 export class CODEEditor extends React.Component<Props, State> {
   readonly state = initialState;
 
+  private playerControlBarRef = React.createRef<PlayerControlBar>();
+
   private getEditorValue: () => string = () => '';
 
   componentDidMount() {
@@ -164,6 +166,10 @@ export class CODEEditor extends React.Component<Props, State> {
     this.setState({ loading: false });
   };
 
+  componentDidMount() {
+    this.forceUpdate();
+  }
+
   render() {
     const { player } = this.props;
     const { example, loading } = this.state;
@@ -187,6 +193,7 @@ export class CODEEditor extends React.Component<Props, State> {
           <PlayerWatcher player={player}>
             {(currentTime, playing) => (
               <PlayerControlBar
+                ref={this.playerControlBarRef}
                 onEval={this.onEvalCode}
                 currentTime={currentTime}
                 isPlaying={playing}
@@ -208,6 +215,11 @@ export class CODEEditor extends React.Component<Props, State> {
             language={'typescript'}
             value={example ? example.script.toString() : ''}
             valueDelegate={getValue => (this.getEditorValue = getValue)}
+            onChange={
+              this.playerControlBarRef.current
+                ? this.playerControlBarRef.current.onChange
+                : () => {}
+            }
           />
         </VerticalExpandableSection>
       </VerticalFitArea>

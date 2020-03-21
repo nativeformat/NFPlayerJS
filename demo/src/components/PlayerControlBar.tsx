@@ -55,13 +55,27 @@ type Props = {
   onEval?: () => void;
 };
 
-export class PlayerControlBar extends React.PureComponent<Props> {
+type State = {
+  changing: boolean;
+};
+
+const initialState: State = {
+  changing: false
+};
+
+export class PlayerControlBar extends React.PureComponent<Props, State> {
+  private state = initialState;
+
   onSeekBack = (seconds?: number) => {
     this.props.onSeek(TimeInstant.fromSeconds(seconds || -30));
   };
 
   onSeekForward = (seconds?: number) => {
     this.props.onSeek(TimeInstant.fromSeconds(seconds || 30));
+  };
+
+  onChange = (changing: boolean) => {
+    this.setState({ changing });
   };
 
   render() {
@@ -77,7 +91,10 @@ export class PlayerControlBar extends React.PureComponent<Props> {
           <StyledControlBarChild>
             <StyledButton
               disabled={isLoading}
-              onClick={() => this.props.onEval && this.props.onEval()}
+              onClick={() => {
+                this.onChange(false);
+                this.props.onEval && this.props.onEval();
+              }}
             >
               Eval/Load Code from Editor
             </StyledButton>
@@ -86,25 +103,31 @@ export class PlayerControlBar extends React.PureComponent<Props> {
 
         <StyledControlBarChild style={{ flexGrow: 2 }}>
           <StyledButton
-            disabled={isLoading}
+            disabled={isLoading || this.state.changing}
             onClick={() => this.onSeekBack(-30)}
           >
             &lt;&lt; 30s
           </StyledButton>
           <StyledButton
-            disabled={isLoading}
+            disabled={isLoading || this.state.changing}
             onClick={() => this.onSeekBack(-5)}
           >
             &lt;&lt; 5s
           </StyledButton>
-          <StyledButton disabled={isLoading} onClick={this.props.onPlayPause}>
+          <StyledButton
+            disabled={isLoading || this.state.changing}
+            onClick={this.props.onPlayPause}
+          >
             {icon}
           </StyledButton>
-          <StyledButton disabled={isLoading} onClick={() => this.onSeekBack(5)}>
+          <StyledButton
+            disabled={isLoading || this.state.changing}
+            onClick={() => this.onSeekBack(5)}
+          >
             5s &gt;&gt;
           </StyledButton>
           <StyledButton
-            disabled={isLoading}
+            disabled={isLoading || this.state.changing}
             onClick={() => this.onSeekForward(30)}
           >
             30s &gt;&gt;

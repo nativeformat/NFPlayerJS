@@ -168,11 +168,22 @@ type Props = {
   value: string;
   language: 'typescript' | 'json';
   valueDelegate: (getValue: () => string) => void;
+  onChange: (changing: boolean) => void;
 };
 
 export class MonacoEditor extends React.Component<Props> {
   private divRef = React.createRef<HTMLDivElement>();
   private editor: monaco.editor.IStandaloneCodeEditor | null = null;
+
+  constructor(props) {
+    super(props);
+
+    this.onChange = this.onChange.bind(this);
+  }
+
+  onChange() {
+    this.props.onChange(true);
+  }
 
   componentDidMount() {
     if (!this.divRef.current) return;
@@ -182,6 +193,8 @@ export class MonacoEditor extends React.Component<Props> {
       value: this.props.value,
       language: this.props.language
     });
+
+    this.editor.onDidChangeModelContent(this.onChange);
 
     this.props.valueDelegate(() => (this.editor ? this.editor.getValue() : ''));
   }
