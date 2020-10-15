@@ -1,0 +1,61 @@
+{
+  "graph": {
+    "id": "Smash_ID!!!_0",
+    "loadingPolicy": "allContentPlaythrough",
+    "nodes": [
+      {
+        "id": "d1cea6ae-0f01-4eba-b158-5b9783ef5a43",
+        "kind": "com.nativeformat.plugin.file.file",
+        "config": {
+          "file": "https://p.scdn.co/mp3-preview/aa9904ed0fd1f8e134f423148795b7e224c910ea?cid=774b29d4f13844c495f206cafdad9c86",
+          "when": 0,
+          "duration": 16622750000,
+          "offset": 0
+        },
+        "params": {}
+      },
+      {
+        "id": "9d8adbf0-1247-4c60-8921-a54a0c19a118",
+        "kind": "com.nativeformat.plugin.time.loop",
+        "config": {
+          "when": 0,
+          "duration": 16622750000,
+          "loopCount": -1
+        },
+        "params": {}
+      },
+      {
+        "id": "f8d728f3-ba60-4584-b8b6-d9aef32c2d31",
+        "kind": "com.nativeformat.plugin.time.stretch",
+        "config": {},
+        "params": {
+          "pitchRatio": [],
+          "stretch": [
+            {
+              "name": "setValueAtTime",
+              "args": {
+                "value": 0.5,
+                "startTime": 16622750000
+              }
+            }
+          ],
+          "formantRatio": []
+        }
+      }
+    ],
+    "edges": [
+      {
+        "id": "45ff2bda-e178-4a5e-b3de-92a7bff419f3",
+        "source": "d1cea6ae-0f01-4eba-b158-5b9783ef5a43",
+        "target": "9d8adbf0-1247-4c60-8921-a54a0c19a118"
+      },
+      {
+        "id": "f190478e-a2c7-4c5b-9f10-1e99b6fc1eb0",
+        "source": "9d8adbf0-1247-4c60-8921-a54a0c19a118",
+        "target": "f8d728f3-ba60-4584-b8b6-d9aef32c2d31"
+      }
+    ],
+    "scripts": []
+  },
+  "version": "1.2.24"
+}
