@@ -9,7 +9,7 @@
 
 A JavaScript/TypeScript audio engine for the Web and Server capable of multitrack time stretching, pitch shifting, declarative effects, faster than realtime processing, and more!
 
-Developed at Spotify 2019-2022, Discontinued and handed over to new maintainers January 2023 
+Developed at Spotify 2017-2018, Discontinued and handed over to new maintainers January 2023 
 
 # Getting Started (Browser) 🚀
 
