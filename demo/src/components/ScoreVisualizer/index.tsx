@@ -25,10 +25,10 @@ import {
   LoopNode,
   StretchNode,
   GainNode as GGainNode,
-  TypedNode
+  type TypedNode
 } from 'nf-grapher';
 import styled from 'styled-components';
-import { NodePlaybackDescription } from '../../../../src';
+import { type NodePlaybackDescription } from '../../../../src';
 import { VisualGridColumn } from './VisualGridColumn';
 
 const KIND_COLUMN_ORDER = [

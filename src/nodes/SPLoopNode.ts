@@ -21,10 +21,10 @@
 
 import { LoopNode } from 'nf-grapher';
 import { TimeInstant } from '../time';
-import { SPNode, NodePlaybackDescription } from './SPNode';
+import { SPNode, type NodePlaybackDescription } from './SPNode';
 import { mixdown, copy } from '../AudioBufferUtils';
 import { SPNodeFactory } from './SPNodeFactory';
-import { XAudioBuffer } from '../XAudioBuffer';
+import { type XAudioBuffer } from '../XAudioBuffer';
 import { XAudioBufferFromInfo } from '../renderers/RendererInfo';
 
 export class SPLoopNode extends SPNode {

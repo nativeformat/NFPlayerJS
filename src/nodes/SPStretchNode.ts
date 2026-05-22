@@ -20,14 +20,14 @@
  */
 
 import { TimeInstant } from '../time';
-import { Command } from 'nf-grapher';
+import { type Command } from 'nf-grapher';
 import { ScoreAudioParam } from '../params/ScoreAudioParam';
-import { SPNode, NodePlaybackDescription } from './SPNode';
+import { SPNode, type NodePlaybackDescription } from './SPNode';
 import { SPNodeFactory } from './SPNodeFactory';
 import { mixdown, asInterleaved, asPlanar } from '../AudioBufferUtils';
-import { ContentCache } from '../ContentCache';
+import { type ContentCache } from '../ContentCache';
 import { SoundTouch } from 'soundtouch-ts';
-import { CommandsMutation, applyMutationToParam } from '../Mutations';
+import { type CommandsMutation, applyMutationToParam } from '../Mutations';
 import { debug as Debug } from 'debug';
 import { XAudioBuffer } from '../XAudioBuffer';
 

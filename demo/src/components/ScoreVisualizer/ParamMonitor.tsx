@@ -22,7 +22,7 @@
 import * as React from 'react';
 import { TimeInstant, ScoreAudioParam } from '../../../../src/';
 import styled from 'styled-components';
-import { TypedNode, Command } from 'nf-grapher';
+import { type TypedNode, type Command } from 'nf-grapher';
 import { CanvasPowered } from './CanvasPowered';
 import { DemoTheme } from '../Theme';
 

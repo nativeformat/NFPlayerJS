@@ -19,7 +19,7 @@
  * under the License.
  */
 
-import { XAudioBuffer } from '../XAudioBuffer';
+import { type XAudioBuffer } from '../XAudioBuffer';
 
 /**
  * Compare two XAudioBuffers, quantum by quantum.

@@ -27,19 +27,19 @@ import {
   Graph,
   LoopNode
 } from 'nf-grapher';
-import { SetValueAtTimeCmd } from './params/ScoreAudioParam';
+import { type SetValueAtTimeCmd } from './params/ScoreAudioParam';
 import { TimeInstant } from './time';
 import {
-  Mutation,
-  PushCommandsMutation,
-  ClearCommandsMutation,
+  type Mutation,
+  type PushCommandsMutation,
+  type ClearCommandsMutation,
   MutationNames
   // RemoveNodesEffectPayload
 } from './Mutations';
 
 // Shim the API for testing, globally.
 import 'web-audio-test-api';
-import { TestAudioContext } from './test-utils/TestAudioContext';
+import { type TestAudioContext } from './test-utils/TestAudioContext';
 import { ScriptProcessorRenderer } from './renderers/ScriptProcessorRenderer';
 
 test('Apply PushCommandsEffectPayload Effect', async () => {

@@ -20,7 +20,7 @@
  */
 
 import { debug as Debug } from 'debug';
-import { XAudioBuffer } from './XAudioBuffer';
+import { type XAudioBuffer } from './XAudioBuffer';
 
 const DBG_STR = 'nf:content-cache';
 const dbg = Debug(DBG_STR);

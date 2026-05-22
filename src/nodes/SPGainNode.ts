@@ -19,15 +19,15 @@
  * under the License.
  */
 
-import { TimeInstant } from '../time';
+import { type TimeInstant } from '../time';
 import { GainNode as GGainNode } from 'nf-grapher';
 import { ScoreAudioParam } from '../params/ScoreAudioParam';
 import { SPNode } from './SPNode';
 import { SPNodeFactory } from './SPNodeFactory';
-import { CommandsMutation, applyMutationToParam } from '../Mutations';
+import { type CommandsMutation, applyMutationToParam } from '../Mutations';
 
 import { debug as Debug } from 'debug';
-import { XAudioBuffer } from '../XAudioBuffer';
+import { type XAudioBuffer } from '../XAudioBuffer';
 
 const DBG_STR = 'nf:gainnode';
 const dbg = Debug(DBG_STR);

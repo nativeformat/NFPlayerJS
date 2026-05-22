@@ -20,8 +20,8 @@
  */
 
 import * as React from 'react';
-import { NodePlaybackDescription } from '../../../../src/';
-import { TypedNode, FileNode, LoopNode } from 'nf-grapher';
+import { type NodePlaybackDescription } from '../../../../src/';
+import { type TypedNode, FileNode, LoopNode } from 'nf-grapher';
 import { FileNodeMonitor } from './FileNodeMonitor';
 import { LoopNodeMonitor } from './LoopNodeMonitor';
 

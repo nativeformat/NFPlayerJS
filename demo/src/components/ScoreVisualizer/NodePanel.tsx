@@ -20,10 +20,10 @@
  */
 
 import * as React from 'react';
-import { TypedNode } from 'nf-grapher';
+import { type TypedNode } from 'nf-grapher';
 import styled from 'styled-components';
 import { SourceMonitor } from './SourceMonitor';
-import { NodePlaybackDescription } from '../../../../src/';
+import { type NodePlaybackDescription } from '../../../../src/';
 import { DemoTheme } from '../Theme';
 import { ParamMonitor } from './ParamMonitor';
 

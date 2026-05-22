@@ -9,3 +9,4 @@ dist-debug
 .cache-demo
 demo/.cache
 coverage
+*.tgz

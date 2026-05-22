@@ -21,16 +21,16 @@
 
 import {
   SPDestinationNode,
-  SPNode,
-  NodePlaybackDescription
+  type SPNode,
+  type NodePlaybackDescription
 } from '../nodes/SPNodeFactory';
 import { TimeInstant } from '../time';
-import { Mutation, MutationNames, CommandsMutation } from '../Mutations';
+import { type Mutation, MutationNames, type CommandsMutation } from '../Mutations';
 import { ContentCache } from '../ContentCache';
-import { Score } from 'nf-grapher';
+import { type Score } from 'nf-grapher';
 import { DirectedScore } from '../DirectedScore';
-import { RendererInfo, XAudioBufferFromInfo } from './RendererInfo';
-import { XAudioBuffer } from '../XAudioBuffer';
+import { type RendererInfo, XAudioBufferFromInfo } from './RendererInfo';
+import { type XAudioBuffer } from '../XAudioBuffer';
 import { applyFadeIn, applyFadeOut, mixdown } from '../AudioBufferUtils';
 
 import { debug as Debug } from 'debug';

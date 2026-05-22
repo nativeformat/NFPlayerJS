@@ -20,7 +20,7 @@
  */
 
 import * as React from 'react';
-import { SmartPlayer, TimeInstant } from '../../../src/';
+import { type SmartPlayer, TimeInstant } from '../../../src/';
 
 type Props = {
   player: SmartPlayer;

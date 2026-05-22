@@ -21,8 +21,8 @@
 
 import { LoopNode, FileNode, Score } from 'nf-grapher';
 import { TimeInstant } from '../time';
-import { XAudioBuffer } from '../XAudioBuffer';
-import { XAudioBufferFromInfo, RendererInfo } from '../renderers/RendererInfo';
+import { type XAudioBuffer } from '../XAudioBuffer';
+import { XAudioBufferFromInfo, type RendererInfo } from '../renderers/RendererInfo';
 import { SmartPlayer } from '../SmartPlayer';
 import { MemoryRenderer } from '../renderers/MemoryRenderer';
 import { ContentCache } from '../ContentCache';

@@ -20,8 +20,8 @@
  */
 
 import * as React from 'react';
-import { NodePlaybackDescription } from '../../../../src/';
-import { TypedNode } from 'nf-grapher';
+import { type NodePlaybackDescription } from '../../../../src/';
+import { type TypedNode } from 'nf-grapher';
 import { NodePanel } from './NodePanel';
 
 type Props = {

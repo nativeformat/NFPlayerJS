@@ -20,13 +20,13 @@
  */
 
 import { TimeInstant } from './time';
-import { Score } from 'nf-grapher';
-import { Mutation } from './Mutations';
-import { NodePlaybackDescription } from './nodes/SPNodeFactory';
-import { BaseRenderer } from './renderers/BaseRenderer';
+import { type Score } from 'nf-grapher';
+import { type Mutation } from './Mutations';
+import { type NodePlaybackDescription } from './nodes/SPNodeFactory';
+import { type BaseRenderer } from './renderers/BaseRenderer';
 import { ScriptProcessorRenderer } from './renderers/ScriptProcessorRenderer';
 
-export { NodePlaybackDescription };
+export type { NodePlaybackDescription };
 
 export class SmartPlayer {
   constructor(private renderer: BaseRenderer = new ScriptProcessorRenderer()) {}

@@ -20,23 +20,23 @@
  */
 
 import {
-  Node,
+  type Node,
   GainNode as GGainNode,
   LoopNode,
   FileNode,
   StretchNode
 } from 'nf-grapher';
-import { DirectedScore } from '../DirectedScore';
-import { SPNode, NodePlaybackDescription } from './SPNode';
+import { type DirectedScore } from '../DirectedScore';
+import { SPNode, type NodePlaybackDescription } from './SPNode';
 import { SPGainNode } from './SPGainNode';
 import { SPFileNode } from './SPFileNode';
 import { SPLoopNode } from './SPLoopNode';
-import { TimeInstant } from '../time';
+import { type TimeInstant } from '../time';
 import { SPDestinationNode } from './SPDestinationNode';
 import { SPPassthroughNode } from './SPPassthroughNode';
 import { SPStretchNode } from './SPStretchNode';
-import { XAudioBuffer } from '../XAudioBuffer';
-import { RendererInfo } from '../renderers/RendererInfo';
+import { type XAudioBuffer } from '../XAudioBuffer';
+import { type RendererInfo } from '../renderers/RendererInfo';
 
 // NOTE: IT IS EXTREMELY IMPORTANT that any files outside this folder that
 // import anything from this folder, DO SO FROM THIS FILE! Otherwise, an
@@ -136,6 +136,6 @@ export {
   SPGainNode,
   SPLoopNode,
   SPStretchNode,
-  SPDestinationNode,
-  NodePlaybackDescription
+  SPDestinationNode
 };
+export type { NodePlaybackDescription };

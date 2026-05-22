@@ -20,7 +20,7 @@
  */
 
 import * as React from 'react';
-import { SmartPlayer, TimeInstant } from '../../../../src/';
+import { type SmartPlayer, TimeInstant } from '../../../../src/';
 import {
   VerticalFitArea,
   VerticalFixedSection,
@@ -28,8 +28,8 @@ import {
 } from '../VerticalLayout';
 import {
   examples,
-  ExampleScript,
-  CompiledPlaygroundScript
+  type ExampleScript,
+  type CompiledPlaygroundScript
 } from '../../ExampleScripts';
 import { PlayerControlBar } from '../PlayerControlBar';
 import { PlayerWatcher } from '../PlayerWatcher';

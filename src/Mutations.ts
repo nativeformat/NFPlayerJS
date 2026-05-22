@@ -19,8 +19,8 @@
  * under the License.
  */
 
-import { Command } from 'nf-grapher';
-import { ScoreAudioParam } from './params/ScoreAudioParam';
+import { type Command } from 'nf-grapher';
+import { type ScoreAudioParam } from './params/ScoreAudioParam';
 
 export type Mutation = PushCommandsMutation | ClearCommandsMutation;
 

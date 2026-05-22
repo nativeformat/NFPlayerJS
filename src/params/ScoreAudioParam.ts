@@ -19,7 +19,7 @@
  * under the License.
  */
 
-import { Command } from 'nf-grapher';
+import { type Command } from 'nf-grapher';
 import { TimeInstant } from '../time';
 import PseudoAudioParam = require('pseudo-audio-param');
 

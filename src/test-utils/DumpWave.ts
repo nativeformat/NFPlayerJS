@@ -22,7 +22,7 @@
 import * as WavDecoder from 'wav-decoder';
 import * as WavEncoder from 'wav-encoder';
 import { copy } from '../AudioBufferUtils';
-import { XAudioBuffer } from '../XAudioBuffer';
+import { type XAudioBuffer } from '../XAudioBuffer';
 import { writeFile } from '../pio';
 import { join } from 'path';
 

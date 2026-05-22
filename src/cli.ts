@@ -20,35 +20,27 @@
  * under the License.
  */
 
-import 'cross-fetch/polyfill';
 import Debug from 'debug';
-import * as path from 'path';
-import { SmartPlayer } from './SmartPlayer';
-import { MemoryRenderer } from './renderers/MemoryRenderer';
-import { RendererInfo } from './renderers/RendererInfo';
-import { writeFile as FSWriteFile, readFile as FSReadFile } from 'fs';
-import { exec as CPExec } from 'child_process';
-import { promisify } from 'util';
-import * as tempy from 'tempy';
+import * as path from 'node:path';
+import { writeFile, readFile } from 'node:fs/promises';
+import { exec as CPExec } from 'node:child_process';
+import { promisify } from 'node:util';
+import { tmpdir } from 'node:os';
+import { randomUUID } from 'node:crypto';
 import * as WavDecoder from 'wav-decoder';
 import * as WavEncoder from 'wav-encoder';
+import { SmartPlayer } from './SmartPlayer';
+import { MemoryRenderer } from './renderers/MemoryRenderer';
+import { type RendererInfo } from './renderers/RendererInfo';
 import { XAudioBuffer } from './XAudioBuffer';
 import { TimeInstant } from './time';
 import { Score } from 'nf-grapher';
+import pkg from '../package.json' with { type: 'json' };
 
 const exec = promisify(CPExec);
-const writeFile = promisify(FSWriteFile);
-const readFile = promisify(FSReadFile);
 
 const dbg = Debug('nf:cli');
 const dbgdecoder = Debug('nf:cli-decoder');
-
-// Purposefully using `require` here because an `import` would cause TS to
-// change the output folder to be `dist/src/cli.js` to allow `package.json`
-// to exist in `dist/package.json`. We don't want TS to copy over package.json,
-// and nor do we want anything from the root to be included in the `dist`
-// folder.
-const pkg = require('../package.json');
 
 const showHelpAndExit = () => {
   console.log(`
@@ -223,8 +215,8 @@ function decode(uri: string, buffer: ArrayBuffer): Promise<XAudioBuffer> {
     // But soooo much easier than trying to stitch together the very
     // fragile and relatively out of date JS audio encoder/decoder
     // ecosystem.
-    const inputName = tempy.file();
-    const outputName = tempy.file();
+    const inputName = path.join(tmpdir(), `nf-player-${randomUUID()}`);
+    const outputName = path.join(tmpdir(), `nf-player-${randomUUID()}`);
     dbgdecoder('%s decode requested', uri);
 
     await writeFile(inputName, new DataView(buffer));

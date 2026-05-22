@@ -20,13 +20,13 @@
  */
 
 import * as React from 'react';
-import { SmartPlayer, TimeInstant } from '../../../../src';
-import { examples, ExampleJSON } from '../../ExampleJSONScores';
+import { type SmartPlayer, TimeInstant } from '../../../../src';
+import { examples, type ExampleJSON } from '../../ExampleJSONScores';
 
 import { MonacoEditor } from '../Monaco';
 import { PlayerControlBar } from '../PlayerControlBar';
 import { PlayerWatcher } from '../PlayerWatcher';
-import { Score } from 'nf-grapher';
+import { type Score } from 'nf-grapher';
 import { FrequencyMonitor } from './FrequencyMonitor';
 import {
   VerticalFitArea,

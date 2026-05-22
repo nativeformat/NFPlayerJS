@@ -19,9 +19,9 @@
  * under the License.
  */
 
-import * as NFPlayer from '../../src/';
-import * as NFGrapher from 'nf-grapher';
-import { SmartPlayer } from '../../src/';
+import type * as NFPlayer from '../../src/';
+import type * as NFGrapher from 'nf-grapher';
+import { type SmartPlayer } from '../../src/';
 import * as TNGEngines from '../../fixtures/TNG-Crysknife007-16-899-s.wav';
 
 // Returns a promise since a type cannot use the `async` keyword.

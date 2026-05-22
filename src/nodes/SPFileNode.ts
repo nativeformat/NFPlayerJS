@@ -19,10 +19,10 @@
  * under the License.
  */
 
-import { ContentCache } from '../ContentCache';
+import { type ContentCache } from '../ContentCache';
 import { TimeInstant } from '../time';
 import { FileNode } from 'nf-grapher';
-import { SPNode, NodePlaybackDescription } from './SPNode';
+import { SPNode, type NodePlaybackDescription } from './SPNode';
 
 import { debug as Debug } from 'debug';
 import { XAudioBuffer } from '../XAudioBuffer';

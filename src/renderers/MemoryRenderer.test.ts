@@ -20,7 +20,7 @@
  */
 
 import { MemoryRenderer } from './MemoryRenderer';
-import { RendererInfo, XAudioBufferFromInfo } from './RendererInfo';
+import { type RendererInfo, XAudioBufferFromInfo } from './RendererInfo';
 import { TestRendererInfo } from '../test-utils/TestRendererInfo';
 import { Score, FileNode } from 'nf-grapher';
 import { TimeInstant } from '../time';

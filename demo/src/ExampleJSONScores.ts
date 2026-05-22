@@ -23,7 +23,7 @@ import * as TNGJSON from '../../fixtures/TNG-Infinite-Idle-Engine.json';
 import * as TNGEngines from '../../fixtures/TNG-Crysknife007-16-899-s.wav';
 import * as RoxanneShiftedInfinite from '../../fixtures/roxanne-30s-preview-shifted-infinite.json';
 import * as RatatatLoop from '../../fixtures/ratatat-loop.json';
-import { Score, FileNode } from 'nf-grapher';
+import { type Score, FileNode } from 'nf-grapher';
 
 type ExampleJSON = { name: string; score: Score };
 

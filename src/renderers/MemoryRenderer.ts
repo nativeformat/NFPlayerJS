@@ -21,8 +21,8 @@
 
 import { debug as Debug } from 'debug';
 import { BaseRenderer } from './BaseRenderer';
-import { RendererInfo } from './RendererInfo';
-import { TimeInstant } from '../time';
+import { type RendererInfo } from './RendererInfo';
+import { type TimeInstant } from '../time';
 import { XAudioBuffer } from '../XAudioBuffer';
 import { mixdown, copy } from '../AudioBufferUtils';
 

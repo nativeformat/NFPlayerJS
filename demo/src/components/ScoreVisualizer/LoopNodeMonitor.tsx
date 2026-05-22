@@ -19,8 +19,8 @@
  * under the License.
  */
 
-import { LoopNode } from 'nf-grapher';
-import { NodePlaybackDescription, TimeInstant } from '../../../../src/';
+import { type LoopNode } from 'nf-grapher';
+import { type NodePlaybackDescription, TimeInstant } from '../../../../src/';
 import * as React from 'react';
 import { CanvasPowered } from './CanvasPowered';
 

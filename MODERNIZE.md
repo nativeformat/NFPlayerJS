@@ -36,20 +36,13 @@ Last meaningful work: 2019–2020. Toolchain is ~6 years stale.
 
 ### Phase 2 — Package build (dual ESM/CJS)
 
-- [ ] Adopt **tsdown** (Rolldown-based; emits ESM + CJS + per-condition `.d.ts`, externalizes deps). Fallback: `tsup`. Replaces `tsc -b` for builds; `tsc --noEmit` stays as the typecheck step.
-- [ ] `package.json`: add `"type": "module"`, `"sideEffects": false`, `engines.node >= 20`, and an `exports` map:
-  ```jsonc
-  "exports": { ".": { "types": "./dist/index.d.ts",
-                        "import": "./dist/index.mjs",
-                        "require": "./dist/index.cjs" } }
-  ```
-  `main` → `.cjs`, `module` → `.mjs`, `bin.nf-player` → `./dist/cli.mjs`.
-- [ ] `files`: ship `dist` only (+ sourcemaps). Stop publishing raw `src`.
-- [ ] **Validate before publish** (the tooling you asked for):
-  - `@arethetypeswrong/cli` (`attw --pack`) — confirms types resolve under node/bundler/ESM/CJS.
-  - `publint` — confirms `exports`/`main`/`files` correctness.
-  Wire both into CI and a `prepublishOnly` guard.
-- [ ] CLI cleanup: drop `cross-fetch` (Node 20+ has global `fetch`) — delete `import 'cross-fetch/polyfill'`. Replace `tempy` with `node:fs` `mkdtemp(os.tmpdir())`. Replace `require('../package.json')` with a JSON import / `createRequire`.
+- [x] **tsdown** (Rolldown) emits ESM (`.js`) + CJS (`.cjs`) + per-condition `.d.ts` / `.d.cts`. Points at `package.tsconfig.json` (root is a solution file with `references`). `tsc -b` stays as the typecheck step.
+- [x] `package.json`: `"type": "module"`, `"sideEffects": false`, `engines.node >= 20`, and a per-condition `exports` map (`{ import: { types, default }, require: { types, default } }`); `main` → `.cjs`, `module` → `.js`, `bin.nf-player` → `./dist/cli.js`. `prepack` runs the build.
+- [x] `files: ["dist"]` only (sourcemaps included).
+- [x] **publint**: clean (`All good!`); repository URL normalized to `git+https://...`.
+- [ ] **attw**: blocked by attw 0.18.2 shipping TS 5.6.1-rc, which can't parse `Float32Array<ArrayBuffer>` generics (TS 5.7+). Script kept (`pnpm attw`) for when attw bumps. `validate` runs publint only for now.
+- [x] CLI cleanup: dropped `cross-fetch` polyfill (Node ≥20 has global `fetch`); dropped `tempy` for `node:fs/promises` + `node:os.tmpdir()` + `node:crypto.randomUUID()`; replaced `require('../package.json')` with `import pkg from '../package.json' with { type: 'json' }`.
+- [x] **Bonus**: enabled `verbatimModuleSyntax` + `isolatedModules` in `package.tsconfig.json`; bulk-fixed the codebase via `@typescript-eslint/consistent-type-imports` autofix (inline `type` modifier) and split index.ts re-exports into value vs `export type` blocks.
 
 ### Phase 3 — Dependency upgrades (pinned, exact)
 
@@ -138,3 +131,10 @@ Phase 1 → 3 (deps) → 2 (package build) → 4 (demo) → 5 (CI) → 6 (extras
   root `prepare` lifecycle script, not a dependency build script. Remove on next install.
 - [ ] **One-time `pnpm format` pass** (prettier 3 on the whole repo) should be its own
   commit later — there's drift from prettier 1.x defaults.
+- [ ] **attw blocked on its bundled TypeScript** (0.18.2 ships TS 5.6.1-rc; our `.d.ts`
+  uses TS 5.7+ `Float32Array<ArrayBuffer>` generics). Re-enable in `validate` once attw
+  ships a newer TS. Removing the generic isn't an option — it's what makes `XAudioBuffer`
+  structurally assignable to DOM `AudioBuffer`.
+- [ ] **tsdown chunked output** produces hash-named shared files
+  (`MemoryRenderer-XXX.{js,cjs}`) because index + cli share most code. Functional, but
+  consider `unbundle: true` if cleaner 1:1 module output is preferred.

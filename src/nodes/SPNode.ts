@@ -19,14 +19,14 @@
  * under the License.
  */
 
-import { TimeInstant } from '../time';
-import { Node } from 'nf-grapher';
-import { DirectedScore } from '../DirectedScore';
+import { type TimeInstant } from '../time';
+import { type Node } from 'nf-grapher';
+import { type DirectedScore } from '../DirectedScore';
 import { SPNodeFactory } from './SPNodeFactory';
-import { ContentCache } from '../ContentCache';
-import { CommandsMutation } from '../Mutations';
-import { XAudioBuffer } from '../XAudioBuffer';
-import { RendererInfo } from '../renderers/RendererInfo';
+import { type ContentCache } from '../ContentCache';
+import { type CommandsMutation } from '../Mutations';
+import { type XAudioBuffer } from '../XAudioBuffer';
+import { type RendererInfo } from '../renderers/RendererInfo';
 
 export type NodePlaybackDescription = {
   id: string;
