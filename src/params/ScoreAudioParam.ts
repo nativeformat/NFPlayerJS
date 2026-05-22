@@ -52,7 +52,7 @@ export class ScoreAudioParam {
   }
 
   applyScoreCommands(source: Command[]) {
-    for (let cmd of source) {
+    for (const cmd of source) {
       this.applyScoreCommand(cmd);
     }
   }

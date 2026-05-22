@@ -47,7 +47,7 @@ type Props = {
 
 export class ParamMonitor extends React.Component<Props> {
   static fromNode(node: TypedNode, currentTime: TimeInstant) {
-    let meters: JSX.Element[] = [];
+    const meters: JSX.Element[] = [];
 
     const n = node.toNode();
     const params = n.params!;

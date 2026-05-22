@@ -54,7 +54,7 @@ export class DirectedScore {
 
   leaves(): Node[] {
     const leaves = [];
-    for (let node of this.score.graph.nodes) {
+    for (const node of this.score.graph.nodes) {
       const edges = this.outgoingEdges(node);
       if (edges.length === 0) {
         leaves.push(node);

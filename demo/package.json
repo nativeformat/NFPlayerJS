@@ -6,19 +6,17 @@
   "license": "Apache-2.0",
   "private": true,
   "dependencies": {
-    "monaco-editor": "^0.20.0",
-    "nf-grapher": "^1.2.24",
+    "monaco-editor": "0.55.1",
+    "nf-grapher": "1.2.24",
     "nf-player": "workspace:*",
-    "react": "^16.13.1",
-    "react-dom": "^16.13.1",
-    "styled-components": "^5.0.1"
+    "react": "19.2.6",
+    "react-dom": "19.2.6",
+    "styled-components": "6.4.2"
   },
   "devDependencies": {
-    "@types/react": "^16.9.23",
-    "@types/react-dom": "^16.9.5"
-  },
-  "//browserslist": "this is to prevent parcel from causing babel to transpile anything and injecting regenerator runtime",
-  "browserslist": [
-    "chrome 69"
-  ]
+    "@types/react": "19.2.15",
+    "@types/react-dom": "19.2.3",
+    "@vitejs/plugin-react": "6.0.2",
+    "vite": "8.0.14"
+  }
 }

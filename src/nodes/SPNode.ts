@@ -71,7 +71,7 @@ export abstract class SPNode {
   // For example: A -> B, A -> C. Both B and C will have an instance of A
   // in their ancestor list, and each instance will have the same node id.
   ancestorsWithId(nodeId: string): SPNode[] {
-    let result: SPNode[] = [];
+    const result: SPNode[] = [];
     this.ancestors.forEach(ancestor => {
       if (ancestor.node.id === nodeId) {
         result.push(ancestor);

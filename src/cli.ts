@@ -21,7 +21,7 @@
  */
 
 import 'cross-fetch/polyfill';
-import * as Debug from 'debug';
+import Debug from 'debug';
 import * as path from 'path';
 import { SmartPlayer } from './SmartPlayer';
 import { MemoryRenderer } from './renderers/MemoryRenderer';
@@ -203,7 +203,7 @@ async function saveToFile(flags: ParsedCLIFlags) {
   const output = renderer.renderDuration(TimeInstant.fromSeconds(duration));
 
   dbg('Encoding wav file');
-  let channelData = [];
+  const channelData = [];
   for (let i = 0; i < output.numberOfChannels; i++) {
     channelData.push(output.getChannelData(i));
   }

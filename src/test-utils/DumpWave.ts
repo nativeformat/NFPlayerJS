@@ -30,7 +30,7 @@ export async function dumpWave(
   output: XAudioBuffer,
   filename: string = 'test.wav'
 ) {
-  let channelData = [];
+  const channelData = [];
   for (let i = 0; i < output.numberOfChannels; i++) {
     channelData.push(output.getChannelData(i));
   }

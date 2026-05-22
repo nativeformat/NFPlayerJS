@@ -186,8 +186,8 @@ export class BaseRenderer {
   protected processEnqueuedScores(): XAudioBuffer[] | undefined {
     if (!this.enqueuedScores.length) return;
 
-    let buffers: XAudioBuffer[] = [];
-    let renderTime = TimeInstant.fromSamples(
+    const buffers: XAudioBuffer[] = [];
+    const renderTime = TimeInstant.fromSamples(
       this.samplesElapsed,
       this.info.sampleRate
     );
@@ -215,8 +215,8 @@ export class BaseRenderer {
   protected processDequeuedScores(): XAudioBuffer[] | undefined {
     if (!this.dequeuedScores.length) return;
 
-    let buffers: XAudioBuffer[] = [];
-    let renderTime = TimeInstant.fromSamples(
+    const buffers: XAudioBuffer[] = [];
+    const renderTime = TimeInstant.fromSamples(
       this.samplesElapsed,
       this.info.sampleRate
     );
@@ -401,7 +401,7 @@ export class BaseRenderer {
         }
       }
     } catch (err) {
-      ee.reject(err);
+      ee.reject(err as Error);
     }
   }
 

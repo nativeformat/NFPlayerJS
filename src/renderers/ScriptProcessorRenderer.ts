@@ -68,7 +68,7 @@ export class ScriptProcessorRenderer extends BaseRenderer {
 
     this.processor = this.ctx.createScriptProcessor(this.info.quantumSize);
     this.processor.onaudioprocess = evt => {
-      const start = window.performance.now();
+      const start = performance.now();
 
       // WHY IS THIS NECESSARY!?!?! Without this, the output buffer
       // comes in with non-zero samples!!! WHYYYY
@@ -88,7 +88,7 @@ export class ScriptProcessorRenderer extends BaseRenderer {
       if (!this.playing) return;
 
       if (dbg.enabled) {
-        const end = window.performance.now();
+        const end = performance.now();
         const lastDuration = end - start;
 
         // Note: Firefox appears to not adjust playbackTime using the processor

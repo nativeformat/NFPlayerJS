@@ -115,7 +115,7 @@ export class ContentCache {
       return ab;
     } catch (e) {
       // A single failed request fails the graph? I guess so for now.
-      lscore.signalFailed(e);
+      lscore.signalFailed(e as Error);
       // Delete the lscore in case another attempt is made.
       this.scores.delete(graphId);
       throw e;

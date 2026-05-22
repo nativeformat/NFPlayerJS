@@ -179,7 +179,7 @@ export class SPLoopNode extends SPNode {
     const outputs: XAudioBuffer[] = [];
 
     while (receivedSampleCount < sampleCount) {
-      let startIndex = sampleIndex;
+      const startIndex = sampleIndex;
       let count = this.nextSampleCount(sampleIndex, sampleCount);
 
       // arguably this should be a case in this.nextSampleCount.

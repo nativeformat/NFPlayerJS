@@ -98,7 +98,7 @@ export class SPNodeFactory {
       incoming.forEach(edge => {
         const ancestor = dscore.source(edge);
         if (!ancestor) return;
-        let mixer = SPNodeFactory.fromNode(ancestor, info, dscore);
+        const mixer = SPNodeFactory.fromNode(ancestor, info, dscore);
         if (mixer !== undefined) {
           ancestors.push(mixer);
         }

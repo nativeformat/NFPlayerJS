@@ -58,7 +58,7 @@ export class SPGainNode extends SPNode {
       sampleCount
     );
 
-    for (let buffer of ancestorBuffers) {
+    for (const buffer of ancestorBuffers) {
       const incr = 1 / buffer.sampleRate;
       for (let c = 0; c < buffer.numberOfChannels; c++) {
         const chan = buffer.getChannelData(c);
@@ -70,7 +70,7 @@ export class SPGainNode extends SPNode {
       }
     }
 
-    for (let buffer of ancestorBuffers) {
+    for (const buffer of ancestorBuffers) {
       buffers.push(buffer);
     }
   }

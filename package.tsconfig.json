@@ -8,6 +8,7 @@
     "strict": true,
     "target": "ES2022",
     "lib": ["ES2022", "DOM"],
+    "types": ["vitest/globals", "node"],
     "module": "preserve",
     "esModuleInterop": true,
     "resolveJsonModule": true,
