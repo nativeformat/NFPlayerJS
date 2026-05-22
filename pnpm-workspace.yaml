@@ -1,7 +1,10 @@
+packages:
+  - '.'
+  - 'demo'
+
+# Pin exact versions on `pnpm add` (no ^ / ~).
 savePrefix: ''
 
+# Dependency install/build scripts: only these are allowed to run.
 allowBuilds:
-  deasync: set this to true or false
-  fsevents: set this to true or false
   husky: true
-  parcel-bundler: false

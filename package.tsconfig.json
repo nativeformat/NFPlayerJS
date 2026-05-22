@@ -1,0 +1,20 @@
+{
+  "//": "nf-player library. Typecheck only — tsdown emits the build.",
+  "compilerOptions": {
+    "composite": true,
+    "noEmit": true,
+    "tsBuildInfoFile": "./node_modules/.cache/tsbuildinfo/package.tsbuildinfo",
+
+    "strict": true,
+    "target": "ES2022",
+    "lib": ["ES2022", "DOM"],
+    "module": "preserve",
+    "esModuleInterop": true,
+    "resolveJsonModule": true,
+    "declaration": true,
+    "skipLibCheck": true,
+    "forceConsistentCasingInFileNames": true,
+    "rootDir": "src"
+  },
+  "include": ["src/**/*"]
+}

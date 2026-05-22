@@ -1,17 +1,8 @@
 {
-  "compilerOptions": {
-    "strict": true,
-    "module": "commonjs",
-    "target": "ES6",
-    "jsx": "react",
-    "rootDir": ".",
-    "outDir": "./dist",
-    "emitDecoratorMetadata": true,
-    "experimentalDecorators": true,
-    "declaration": true,
-    "lib": ["es2015", "es2016.array.include", "dom"],
-    "resolveJsonModule": true
-  },
-  "include": ["src/**/*"],
-  "exclude": ["./package.json"]
+  "//": "Solution file. Holds no source itself; `tsc -b` typechecks both projects.",
+  "files": [],
+  "references": [
+    { "path": "./package.tsconfig.json" },
+    { "path": "./demo.tsconfig.json" }
+  ]
 }

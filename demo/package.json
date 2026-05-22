@@ -4,8 +4,11 @@
   "description": "Demo UI for the JS Edition of the Native Format Smart Player",
   "author": "Drew Petersen <kirbysayshi@gmail.com>",
   "license": "Apache-2.0",
+  "private": true,
   "dependencies": {
     "monaco-editor": "^0.20.0",
+    "nf-grapher": "^1.2.24",
+    "nf-player": "workspace:*",
     "react": "^16.13.1",
     "react-dom": "^16.13.1",
     "styled-components": "^5.0.1"
