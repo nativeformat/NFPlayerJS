@@ -20,7 +20,7 @@
  */
 
 import * as React from 'react';
-import { type NodePlaybackDescription } from '../../../../src/';
+import { type NodePlaybackDescription } from 'nf-player';
 import { type TypedNode, FileNode, LoopNode } from 'nf-grapher';
 import { FileNodeMonitor } from './FileNodeMonitor';
 import { LoopNodeMonitor } from './LoopNodeMonitor';

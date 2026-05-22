@@ -38,7 +38,7 @@
     "build": "tsdown",
     "test": "vitest run",
     "test:watch": "vitest",
-    "typecheck": "tsc -b package.tsconfig.json",
+    "typecheck": "tsc -b",
     "lint": "eslint .",
     "format": "prettier --write .",
     "format:check": "prettier --check .",

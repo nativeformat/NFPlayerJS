@@ -5,6 +5,13 @@
   "author": "Drew Petersen <kirbysayshi@gmail.com>",
   "license": "Apache-2.0",
   "private": true,
+  "type": "module",
+  "scripts": {
+    "dev": "vite",
+    "build": "vite build",
+    "preview": "vite preview",
+    "typecheck": "tsc -b ../demo.tsconfig.json"
+  },
   "dependencies": {
     "monaco-editor": "0.55.1",
     "nf-grapher": "1.2.24",

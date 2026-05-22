@@ -20,7 +20,7 @@
  */
 
 import * as React from 'react';
-import { type SmartPlayer, TimeInstant } from '../../../../src/';
+import { type SmartPlayer, TimeInstant } from 'nf-player';
 import {
   VerticalFitArea,
   VerticalFixedSection,
@@ -36,7 +36,7 @@ import { PlayerWatcher } from '../PlayerWatcher';
 import { MonacoEditor } from '../Monaco';
 
 import * as NFGrapher from 'nf-grapher';
-import * as NFPlayer from '../../../../src/';
+import * as NFPlayer from 'nf-player';
 
 import * as ts from 'typescript';
 
@@ -165,10 +165,6 @@ export class CODEEditor extends React.Component<Props, State> {
 
     this.setState({ loading: false });
   };
-
-  componentDidMount() {
-    this.forceUpdate();
-  }
 
   render() {
     const { player } = this.props;

@@ -20,7 +20,7 @@
  */
 
 import * as React from 'react';
-import { type SmartPlayer, TimeInstant } from '../../../../src';
+import { type SmartPlayer, TimeInstant } from 'nf-player';
 import { examples, type ExampleJSON } from '../../ExampleJSONScores';
 
 import { MonacoEditor } from '../Monaco';
@@ -163,6 +163,7 @@ export class WaveVisualizer extends React.Component<Props, State> {
                     example ? JSON.stringify(example.score, null, '  ') : ''
                   }
                   valueDelegate={getValue => (this.getEditorValue = getValue)}
+                  onChange={() => {}}
                 />
               );
             }}

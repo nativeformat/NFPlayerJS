@@ -23,7 +23,7 @@ import * as React from 'react';
 import { type TypedNode } from 'nf-grapher';
 import styled from 'styled-components';
 import { SourceMonitor } from './SourceMonitor';
-import { type NodePlaybackDescription } from '../../../../src/';
+import { type NodePlaybackDescription } from 'nf-player';
 import { DemoTheme } from '../Theme';
 import { ParamMonitor } from './ParamMonitor';
 
@@ -101,7 +101,7 @@ const configTableForNode = (node: TypedNode) => {
   );
 };
 
-export const NodePanel: React.SFC<{
+export const NodePanel: React.FC<{
   node: TypedNode;
   description: NodePlaybackDescription;
 }> = ({ node, description }) => {

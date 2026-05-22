@@ -24,8 +24,8 @@ import {
   SmartPlayer,
   TimeInstant,
   ScriptProcessorRenderer
-} from '../../../src';
-import { XAudioContext } from '../../../src/WebAudioContext';
+} from 'nf-player';
+import { XAudioContext } from 'nf-player';
 
 import { JSONEditor } from './JSONEditor/JSONEditor';
 import { CODEEditor } from './CODEEditor/CODEEditor';
@@ -88,8 +88,9 @@ export class App extends React.Component<AppProps, AppState> {
       analyser.connect(context.destination);
       nextRenderer = new ScriptProcessorRenderer(context, undefined);
 
-      // FFT analyzer - note that processor is a private property
-      nextRenderer.processor.connect(analyser);
+      // FFT analyzer - reaches into the renderer's private processor.
+      // eslint-disable-next-line @typescript-eslint/no-explicit-any
+      (nextRenderer as any).processor.connect(analyser);
     } else {
       // SmashEditor needs a much smaller quantum in order to
       // feel responsive when triggering one-shots!

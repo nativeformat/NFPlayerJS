@@ -19,10 +19,10 @@
  * under the License.
  */
 
-import { SmartPlayer, TimeInstant } from '../src/index';
+import { SmartPlayer, TimeInstant } from 'nf-player';
 import { StretchNode, FileNode, Score } from 'nf-grapher';
 
-import { default as Sine } from '../fixtures/chirp_linear_5.50.wav';
+import { default as Sine } from '../../fixtures/chirp_linear_5.50.wav';
 
 const s1 = StretchNode.create('s1');
 const s2 = StretchNode.create('s2');

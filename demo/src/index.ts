@@ -20,9 +20,9 @@
  */
 
 import * as React from 'react';
-import { render } from 'react-dom';
+import { createRoot } from 'react-dom/client';
 import { App } from './components/App';
 
-const root = document.getElementById('react-root');
-root!.style.height = '100%';
-render(React.createElement(App), root);
+const container = document.getElementById('react-root');
+container!.style.height = '100%';
+createRoot(container!).render(React.createElement(App));

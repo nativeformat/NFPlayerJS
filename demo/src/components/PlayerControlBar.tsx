@@ -21,7 +21,7 @@
 
 import styled from 'styled-components';
 import * as React from 'react';
-import { TimeInstant } from '../../../src/';
+import { TimeInstant } from 'nf-player';
 import { DemoTheme } from './Theme';
 
 const StyledControlBar = styled.div`
@@ -64,7 +64,7 @@ const initialState: State = {
 };
 
 export class PlayerControlBar extends React.PureComponent<Props, State> {
-  private state = initialState;
+  state = initialState;
 
   onSeekBack = (seconds?: number) => {
     this.props.onSeek(TimeInstant.fromSeconds(seconds || -30));

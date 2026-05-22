@@ -28,7 +28,7 @@ import {
   type TypedNode
 } from 'nf-grapher';
 import styled from 'styled-components';
-import { type NodePlaybackDescription } from '../../../../src';
+import { type NodePlaybackDescription } from 'nf-player';
 import { VisualGridColumn } from './VisualGridColumn';
 
 const KIND_COLUMN_ORDER = [

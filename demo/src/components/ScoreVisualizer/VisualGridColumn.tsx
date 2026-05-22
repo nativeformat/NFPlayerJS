@@ -20,7 +20,7 @@
  */
 
 import * as React from 'react';
-import { type NodePlaybackDescription } from '../../../../src/';
+import { type NodePlaybackDescription } from 'nf-player';
 import { type TypedNode } from 'nf-grapher';
 import { NodePanel } from './NodePanel';
 
@@ -30,7 +30,7 @@ type Props = {
   kind: string;
 };
 
-export const VisualGridColumn: React.SFC<Props> = ({
+export const VisualGridColumn: React.FC<Props> = ({
   descriptions,
   nodes,
   kind

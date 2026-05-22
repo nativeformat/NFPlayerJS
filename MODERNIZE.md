@@ -59,10 +59,23 @@ Last meaningful work: 2019–2020. Toolchain is ~6 years stale.
 
 ### Phase 4 — Demo on Vite
 
-- [ ] `demo/vite.config.ts` with `@vitejs/plugin-react`; entry `demo/src/index.html`, `base: './'` for GH Pages.
-- [ ] `demo/src/index.html`: point script at `index.ts` as a module (Vite handles it).
-- [ ] **Simplify `Monaco.tsx`**: delete the ~90-line manual import list; `import * as monaco from 'monaco-editor'` and load workers via Vite `?worker` imports (or `vite-plugin-monaco-editor`). This is the single biggest complexity win.
-- [ ] Demo `tsx` typechecks against `demo.tsconfig.json`.
+- [x] `demo/vite.config.ts` with `@vitejs/plugin-react`; multi-entry (`./index.html` + `./debug.html`), `base: './'` for GH Pages, `server.fs.allow: ['..']` so the shared `<repo>/fixtures/*.wav` is importable.
+- [x] HTML moved up: `demo/src/index.html` → `demo/index.html`; script tags now `type="module"`; CSS path adjusted.
+- [x] **`Monaco.tsx` collapsed** from ~220 lines to ~85: the 90-line side-effect import wall is gone (`import * as monaco from 'monaco-editor'`), workers wired via Vite `?worker` imports. (`addExtraLib` in-editor type-help was dropped — `fs.readFileSync` of deleted hand-maintained `.d.ts` was broken anyway; see follow-ups.)
+- [x] Demo typechecks against `demo.tsconfig.json`; `pnpm typecheck` at root flipped back to `tsc -b` (whole solution).
+- [x] Demo `package.json` scripts: `dev`, `build`, `preview`, `typecheck`.
+
+**React 16 → 19 fallout in the demo (fixed):**
+- [x] `react-dom`'s `render` → `react-dom/client`'s `createRoot`.
+- [x] `React.SFC` → `React.FC`; `React.ReactChildren | React.ReactChild` → `React.ReactNode`; `JSX.Element` → `React.JSX.Element`.
+- [x] `private state` on a `PureComponent` subclass — drop the `private` modifier (React 19 typings make the inherited field public).
+- [x] `CODEEditor.tsx` had two `componentDidMount` methods (legacy bug); deleted the stray `forceUpdate` one.
+- [x] `MonacoEditor` `onChange` prop was required; callers passing JSON now stub `onChange={() => {}}`.
+- [x] Demo's `<ScriptProcessorRenderer>.processor` poke (`private` field) — accepted as a documented `(as any)` cast in `App.tsx`. Alternative: surface it in the lib API (future).
+
+**Package surface change (small):** `XAudioContext` is now re-exported from `nf-player` (was only available via the deep relative path `../../../src/WebAudioContext` from demo).
+
+**Workspace import cleanup:** every `from '../../../src'` in demo became `from 'nf-player'` (workspace dep resolves to the built package).
 
 ### Phase 5 — CI/CD on GitHub Actions
 
@@ -88,7 +101,7 @@ Three workflows under `.github/workflows/`:
 - [ ] **Vitest over jest** (already decided) — drop ts-jest entirely; one config shared with Vite.
 - [ ] **`web-audio-test-api` (0.5.2, ~2017, unmaintained)**: evaluate replacing with `node-web-audio-api` (real Web Audio impl for Node). Stretch goal — flag if it forces test rewrites; otherwise just keep pinned.
 - [ ] **eslint license headers**: keep enforcing the Apache/Spotify header — port `eslint-plugin-notice` to flat config, or swap to `eslint-plugin-license-header`.
-- [ ] **`debug-harness/`**: a Parcel-served dev scratchpad importing `../src`. Move it into the demo as `demo/debug.html` (a second HTML entry). Vite dev serves any root-relative `.html` automatically (`/debug.html`); the only build config needed is adding it to `build.rollupOptions.input` alongside `index.html`. Drop the standalone `debug-harness/` dir and its `declarations.d.ts`.
+- [x] **`debug-harness/`**: moved into the demo as `demo/debug.html` + `demo/src/debug.ts`, listed in `build.rollupOptions.input`. Standalone dir + its `declarations.d.ts` deleted. `*.wav` declaration already lived in `demo/src/declarations.d.ts`.
 - [ ] **README**: update setup/build/deploy instructions (pnpm, new scripts, no Travis).
 - [ ] **`dependabot.yml`**: re-enable for *security* updates only — pinned deps still want CVE bumps. There are ~20 stale open dependabot branches; close them after the upgrade lands.
 - [ ] **`scripts` cleanup**: `setup`/`setup:ci` (manual `cd demo`) become unnecessary once `demo` is a workspace member — a single `pnpm install` covers both.
@@ -138,3 +151,16 @@ Phase 1 → 3 (deps) → 2 (package build) → 4 (demo) → 5 (CI) → 6 (extras
 - [ ] **tsdown chunked output** produces hash-named shared files
   (`MemoryRenderer-XXX.{js,cjs}`) because index + cli share most code. Functional, but
   consider `unbundle: true` if cleaner 1:1 module output is preferred.
+- [ ] **Demo main bundle is ~7 MB** (2 MB gzip) because `import * as monaco from
+  'monaco-editor'` is a greedy barrel. Subpath imports (`monaco-editor/esm/vs/editor/editor.api`)
+  shrink it but lose TS types — monaco-editor's `exports` map doesn't expose the subpaths.
+  Languages are already code-split into separate chunks. Options: `vite-plugin-monaco-editor`
+  with a language allow-list, or wait for monaco-editor to publish proper subpath types.
+- [ ] **Monaco `addExtraLib` (in-editor type-help for NFPlayer/NFGrapher)** was removed —
+  the old version read deleted hand-maintained `.d.ts` files via `fs.readFileSync` (a
+  Parcel-v1 hack). Restore via Vite `?raw` imports of `nf-player/dist/index.d.ts` and
+  `nf-grapher/.../*.d.ts` if the demo editor's autocomplete is wanted again.
+- [ ] **`(nextRenderer as any).processor`** in `App.tsx` — the demo reaches into
+  `ScriptProcessorRenderer`'s private field for FFT analyzer wiring. Either surface
+  `processor` as part of the public API, or build a small wrapper that exposes the right
+  node for analyzer connection.

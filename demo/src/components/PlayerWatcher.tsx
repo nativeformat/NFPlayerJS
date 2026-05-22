@@ -20,7 +20,7 @@
  */
 
 import * as React from 'react';
-import { type SmartPlayer, TimeInstant } from '../../../src/';
+import { type SmartPlayer, TimeInstant } from 'nf-player';
 
 type Props = {
   player: SmartPlayer;
@@ -28,7 +28,7 @@ type Props = {
   children: (
     renderTime: TimeInstant,
     playing: boolean
-  ) => React.ReactChildren | React.ReactChild;
+  ) => React.ReactNode;
 };
 
 const initialState = {

@@ -44,3 +44,4 @@ export type {
   ClearCommandsMutation
 } from './Mutations';
 export { XAudioBuffer } from './XAudioBuffer';
+export { XAudioContext } from './WebAudioContext';

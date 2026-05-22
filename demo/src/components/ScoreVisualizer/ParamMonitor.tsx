@@ -20,7 +20,7 @@
  */
 
 import * as React from 'react';
-import { TimeInstant, ScoreAudioParam } from '../../../../src/';
+import { TimeInstant, ScoreAudioParam } from 'nf-player';
 import styled from 'styled-components';
 import { type TypedNode, type Command } from 'nf-grapher';
 import { CanvasPowered } from './CanvasPowered';
@@ -47,7 +47,7 @@ type Props = {
 
 export class ParamMonitor extends React.Component<Props> {
   static fromNode(node: TypedNode, currentTime: TimeInstant) {
-    const meters: JSX.Element[] = [];
+    const meters: React.JSX.Element[] = [];
 
     const n = node.toNode();
     const params = n.params!;
