@@ -1,0 +1,7 @@
+savePrefix: ''
+
+allowBuilds:
+  deasync: set this to true or false
+  fsevents: set this to true or false
+  husky: true
+  parcel-bundler: false
