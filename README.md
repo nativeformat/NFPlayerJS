@@ -1,6 +1,6 @@
 <p style="text-align: center;" align="center">
   <!-- Using an absolute URL here for the generated documentation -->
-  <img alt="NFPlayerJS" src="https://github.com/spotify/NFPlayerJS/raw/master/NFPlayerJS.png" width="400" />
+  <img alt="NFPlayerJS" src="https://github.com/spotify/NFPlayerJS/raw/main/NFPlayerJS.png" width="400" />
 </p>
 
 [![License](https://img.shields.io/github/license/spotify/NFPlayerJS.svg)](LICENSE)
@@ -135,7 +135,7 @@ To build and publish the demo to [gh-pages](playground) manually, run:
 $ npm run deploy:demo:manual
 ```
 
-Otherwise the demo is actually built and deployed on each push to master.
+Otherwise the demo is actually built and deployed on each push to main.
 
 There is also a more cut-down [debug environment](./debug-harness/index.ts) useful for debugging / developing single Scores or scripts:
 
@@ -152,7 +152,7 @@ $ npm run debug-harness
 
 ### Demo Deployment:
 
-- The demo is deployed automatically on master builds using the TravisCI gh-pages provider.
+- The demo is deployed automatically on main builds using the TravisCI gh-pages provider.
 
 # Contributing 💖⌨️
 
