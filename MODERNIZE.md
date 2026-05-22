@@ -79,22 +79,23 @@ Last meaningful work: 2019–2020. Toolchain is ~6 years stale.
 
 ### Phase 5 — CI/CD on GitHub Actions
 
-Delete `.travis.yml` (kills the stale encrypted npm token and the `spotify/` vs `nativeformat/` repo mismatch).
+- [x] Deleted `.travis.yml` (kills the stale encrypted npm token and the `spotify/`-vs-`nativeformat/` repo mismatch).
 
 Three workflows under `.github/workflows/`:
 
-- `ci.yml` — on `push` + `pull_request`: install, typecheck, lint, `vitest run`, build package, build demo.
-- `release.yml` — on tag / GitHub Release: build, `attw` + `publint`, `pnpm publish --provenance` via npm OIDC (no long-lived token if trusted publishing is set up; else `NPM_TOKEN` secret).
-- `pages.yml` — on push to `main`: build demo + typedoc, deploy via official `actions/upload-pages-artifact` + `actions/deploy-pages`. **Removes the `gh-pages` npm dep** and the branch-pushing flow.
+- [x] `ci.yml` — `push` + `pull_request`: install (`--frozen-lockfile`), typecheck, lint, vitest, build package, `pnpm validate` (publint), build demo.
+- [x] `release.yml` — on `release: { types: [published] }`: install, typecheck, test, build, validate, then `pnpm publish --provenance --access public --no-git-checks` with `NPM_TOKEN`. Gated by a protected `npm` environment.
+- [x] `pages.yml` — push to `main`/`master`: build package + demo, deploy via `actions/configure-pages` + `upload-pages-artifact` + `deploy-pages`. **Kills the `gh-pages` npm dep.** typedoc deferred (see follow-ups).
 
 **Injection hardening (explicit requirement):**
 
-- [ ] Never interpolate `${{ github.event.* }}`, branch names, PR titles, or commit messages directly into `run:` blocks. Pass them through `env:` and reference as quoted shell vars.
-- [ ] Use `pull_request` (not `pull_request_target`) for PR CI; do not expose secrets to fork PRs.
-- [ ] Pin every third-party action to a full commit SHA, not a tag.
-- [ ] Set least-privilege `permissions:` per workflow: default `contents: read`; add `id-token: write` + `pages: write` only in `pages.yml`/`release.yml`.
-- [ ] `actions/checkout` with `persist-credentials: false` where the job doesn't push.
-- [ ] Pin `pnpm` + Node versions; cache via `actions/setup-node` built-in pnpm cache.
+- [x] No `${{ github.event.* }}` / branch names / PR titles in `run:` blocks anywhere.
+- [x] `pull_request` (not `pull_request_target`); no secrets exposed to fork PRs.
+- [ ] Pin every third-party action to a full commit SHA. **Currently tags** (`@v4`) with `# TODO: SHA-pin` markers — one Dependabot pass will convert them. See CI follow-ups.
+- [x] Top-level `permissions: contents: read`; `id-token: write` / `pages: write` added only on the publish + deploy jobs.
+- [x] `actions/checkout` with `persist-credentials: false` on every job.
+- [x] Node 22 pinned; pnpm version comes from `packageManager` field via `pnpm/action-setup`; `actions/setup-node` provides the pnpm cache.
+- [x] `concurrency` groups cancel stale CI/pages runs.
 
 ### Phase 6 — Proposed extras (not in your list)
 
@@ -164,3 +165,15 @@ Phase 1 → 3 (deps) → 2 (package build) → 4 (demo) → 5 (CI) → 6 (extras
   `ScriptProcessorRenderer`'s private field for FFT analyzer wiring. Either surface
   `processor` as part of the public API, or build a small wrapper that exposes the right
   node for analyzer connection.
+- [ ] **CI follow-ups**:
+  - SHA-pin third-party actions (`pnpm/action-setup`, and arguably `actions/*` too) — one
+    Dependabot pass converts the `@v4` tags. Tagged with `# TODO: SHA-pin` markers in the
+    workflows.
+  - Configure repository for npm publish: create a protected `npm` environment with the
+    `NPM_TOKEN` secret (or set up npm trusted publishing via OIDC and drop the token).
+  - Enable GitHub Pages with the "GitHub Actions" source so `pages.yml` can deploy.
+  - typedoc on Pages was dropped from `pages.yml` for now — modern typedoc removed the
+    `--mode file` / `--excludeNotExported` flags the old script used. Add a `docs` script
+    + a typedoc step once the new invocation is settled.
+  - `release.yml` triggers on `release: published` (manual). If preferred, switch to
+    `push: { tags: ['v*'] }` or wire `changesets`/`release-please`.

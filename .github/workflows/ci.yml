@@ -1,0 +1,43 @@
+# Injection hardening:
+#  * No untrusted ${{ github.event.* }} strings interpolated into run: blocks.
+#  * pull_request (not pull_request_target) — never expose secrets to fork PRs.
+#  * Least-privilege permissions: read-only by default.
+#  * actions/checkout with persist-credentials: false (no jobs push here).
+#  * Third-party actions should be SHA-pinned before merge — see MODERNIZE.md
+#    "CI follow-ups". (Tags used here, ready for a Dependabot SHA-pin pass.)
+
+name: ci
+
+on:
+  push:
+    branches: [main, master]
+  pull_request:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: ci-${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          persist-credentials: false
+      - uses: pnpm/action-setup@v4 # TODO: SHA-pin
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: pnpm
+      - run: pnpm install --frozen-lockfile
+      - run: pnpm typecheck
+      - run: pnpm lint
+      - run: pnpm test
+      - run: pnpm build
+      - run: pnpm validate
+      - name: Build demo
+        working-directory: demo
+        run: pnpm build
