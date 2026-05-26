@@ -1,9 +1,3 @@
-# Triggered by publishing a GitHub Release. Publishes nf-player to npm with
-# provenance via OIDC (id-token: write).
-#
-# Hardening: read-only default permissions; checkout without git creds;
-# environment gate so the org can require manual approval before publish.
-
 name: release
 
 on:
