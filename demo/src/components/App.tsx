@@ -67,7 +67,7 @@ const initialAppState = {
 };
 
 type AppState = Readonly<typeof initialAppState>;
-type AppProps = {};
+type AppProps = unknown;
 
 export class App extends React.Component<AppProps, AppState> {
   readonly state: AppState = initialAppState;
