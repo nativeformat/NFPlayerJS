@@ -26,7 +26,7 @@ export type Mutation = PushCommandsMutation | ClearCommandsMutation;
 
 export enum MutationNames {
   PushCommands = 'PUSH_COMMANDS',
-  ClearCommands = 'CLEAR_COMMANDS'
+  ClearCommands = 'CLEAR_COMMANDS',
 }
 
 export type MutationBase = {
@@ -52,7 +52,7 @@ export type CommandsMutation = PushCommandsMutation | ClearCommandsMutation;
 export function applyMutationToParam(
   effect: Mutation,
   param: ScoreAudioParam,
-  commands: Command[]
+  commands: Command[],
 ) {
   switch (effect.name) {
     case MutationNames.ClearCommands: {
@@ -73,7 +73,7 @@ export function applyMutationToParam(
     }
 
     default: {
-      const exhaustive: never = effect.name;
+      const _exhaustive: never = effect.name;
       return Promise.reject();
     }
   }

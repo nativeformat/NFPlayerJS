@@ -58,7 +58,7 @@ export abstract class SPNode {
   constructor(
     protected info: RendererInfo,
     public readonly node: Node,
-    protected dscore: DirectedScore
+    protected dscore: DirectedScore,
   ) {}
 
   feed(renderTime: TimeInstant, buffers: XAudioBuffer[], quantumSize: number) {
@@ -72,7 +72,7 @@ export abstract class SPNode {
   // in their ancestor list, and each instance will have the same node id.
   ancestorsWithId(nodeId: string): SPNode[] {
     const result: SPNode[] = [];
-    this.ancestors.forEach(ancestor => {
+    this.ancestors.forEach((ancestor) => {
       if (ancestor.node.id === nodeId) {
         result.push(ancestor);
         return;
@@ -88,13 +88,13 @@ export abstract class SPNode {
   }
 
   async unmountAncestors() {
-    return Promise.all(this.ancestors.map(node => node.nodeWillUnmount()));
+    return Promise.all(this.ancestors.map((node) => node.nodeWillUnmount()));
   }
 
   async timeChange(
     renderTime: TimeInstant,
     cache: ContentCache,
-    quantumSize: number
+    quantumSize: number,
   ): Promise<void> {
     // Tell everyone they're about to be destroyed
     await this.unmountAncestors();
@@ -102,14 +102,14 @@ export abstract class SPNode {
     this.ancestors = SPNodeFactory.createAncestors(
       this.node,
       this.info,
-      this.dscore
+      this.dscore,
     );
 
     // Tell everyone to load themselves given the renderTime
     await Promise.all(
-      this.ancestors.map(node =>
-        node.timeChange(renderTime, cache, quantumSize)
-      )
+      this.ancestors.map((node) =>
+        node.timeChange(renderTime, cache, quantumSize),
+      ),
     );
 
     // Tell this node it has been mounted and its ancestors are in place.
@@ -118,25 +118,25 @@ export abstract class SPNode {
 
   getPlaybackDescription(
     renderTime: TimeInstant,
-    descriptions: NodePlaybackDescription[]
+    descriptions: NodePlaybackDescription[],
   ) {
     descriptions.push({
       id: this.node.id,
       kind: this.node.kind,
-      time: renderTime
+      time: renderTime,
     });
 
     SPNodeFactory.getPlaybackDescription(
       this.ancestors,
       renderTime,
-      descriptions
+      descriptions,
     );
   }
 
   async nodeDidMount(): Promise<void | undefined> {}
   async nodeWillUnmount(): Promise<void | undefined> {}
 
-  acceptCommandsEffect(effect: CommandsMutation) {
+  acceptCommandsEffect(_effect: CommandsMutation) {
     throw new Error(`${this.node.kind} has no params to accept commands.`);
   }
   // abstract async acceptNodesEffect(

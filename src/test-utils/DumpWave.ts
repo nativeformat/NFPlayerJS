@@ -19,16 +19,14 @@
  * under the License.
  */
 
-import * as WavDecoder from 'wav-decoder';
 import * as WavEncoder from 'wav-encoder';
-import { copy } from '../AudioBufferUtils';
 import { type XAudioBuffer } from '../XAudioBuffer';
 import { writeFile } from '../pio';
 import { join } from 'path';
 
 export async function dumpWave(
   output: XAudioBuffer,
-  filename: string = 'test.wav'
+  filename: string = 'test.wav',
 ) {
   const channelData = [];
   for (let i = 0; i < output.numberOfChannels; i++) {
@@ -37,7 +35,7 @@ export async function dumpWave(
 
   const encoded = await WavEncoder.encode({
     sampleRate: output.sampleRate,
-    channelData
+    channelData,
   });
 
   const dest = join(process.cwd(), filename);

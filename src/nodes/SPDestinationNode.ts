@@ -19,7 +19,6 @@
  * under the License.
  */
 
-import { TimeInstant } from '../time';
 import { type Node } from 'nf-grapher';
 import { SPNode } from './SPNode';
 import { type DirectedScore } from '../DirectedScore';
@@ -41,7 +40,7 @@ export class SPDestinationNode extends SPNode {
   constructor(info: RendererInfo, dscore: DirectedScore) {
     const destination = {
       id: 'destination',
-      kind: SPDestinationNode.KIND
+      kind: SPDestinationNode.KIND,
     };
     super(info, destination, dscore);
     this.node = destination;

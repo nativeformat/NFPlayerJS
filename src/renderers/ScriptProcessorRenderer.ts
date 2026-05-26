@@ -20,7 +20,7 @@
  */
 
 import { debug as Debug } from 'debug';
-import { BaseRenderer, PlayingState } from './BaseRenderer';
+import { BaseRenderer } from './BaseRenderer';
 import { XAudioBuffer } from '../XAudioBuffer';
 import { TimeInstant } from '../time';
 import { mixdownToAudioBuffer } from '../AudioBufferUtils';
@@ -35,7 +35,7 @@ export class ScriptProcessorRenderer extends BaseRenderer {
   constructor(
     private ctx: AudioContext = XAudioContext(),
     quantumSize: number = BaseRenderer.DEFAULT_QUANTUM_SIZE,
-    autoRolloff: boolean = true
+    autoRolloff: boolean = true,
   ) {
     super(
       {
@@ -51,23 +51,23 @@ export class ScriptProcessorRenderer extends BaseRenderer {
             // promises well, either.
             ctx.decodeAudioData(
               ab,
-              buffer => {
+              (buffer) => {
                 dbg('decoded file %s with length %d', uri, buffer.length);
                 resolve(XAudioBuffer.fromAudioBuffer(buffer));
               },
-              err => {
+              (err) => {
                 // err is often `null` in safari.
                 dbg('failed to decode file %s, %s', uri, err && err.message);
                 reject(err);
-              }
+              },
             );
-          })
+          }),
       },
-      autoRolloff
+      autoRolloff,
     );
 
     this.processor = this.ctx.createScriptProcessor(this.info.quantumSize);
-    this.processor.onaudioprocess = evt => {
+    this.processor.onaudioprocess = (evt) => {
       const start = performance.now();
 
       // WHY IS THIS NECESSARY!?!?! Without this, the output buffer
@@ -102,7 +102,7 @@ export class ScriptProcessorRenderer extends BaseRenderer {
           'budget remaining',
           TimeInstant.fromSeconds(evt.playbackTime)
             .sub(TimeInstant.fromSeconds(this.ctx.currentTime))
-            .asMillis() + 'ms'
+            .asMillis() + 'ms',
         );
       }
     };

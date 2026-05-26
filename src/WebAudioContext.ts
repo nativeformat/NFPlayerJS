@@ -20,10 +20,14 @@
  */
 
 // This is basically just for Safari at this point.
+interface WebkitWindow {
+  webkitAudioContext: typeof AudioContext;
+}
+
 export const XAudioContext = () => {
   if (typeof AudioContext !== 'undefined') {
     return new AudioContext();
   } else {
-    return new (window as any).webkitAudioContext() as AudioContext;
+    return new (window as unknown as WebkitWindow).webkitAudioContext();
   }
 };

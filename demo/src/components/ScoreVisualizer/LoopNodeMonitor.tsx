@@ -44,16 +44,11 @@ export class LoopNodeMonitor extends React.Component<LoopNodeMonitorProps> {
 
     const { time } = this.props.description;
 
-    const {
-      loopElapsedTime,
-      loopsSinceStart,
-      currentLoopStartTime,
-      currentLoopEndTime,
-      infinite
-    } = this.props.description.loop!;
+    if (!this.props.description.loop) return null;
 
-    // This is the endTime for only the first loop!
-    const endTime = when.add(duration);
+    const { loopElapsedTime, loopsSinceStart, infinite } =
+      this.props.description.loop;
+
     let loopProgress: number;
 
     if (loopElapsedTime.lte(TimeInstant.ZERO)) {
@@ -113,7 +108,7 @@ export class LoopNodeMonitor extends React.Component<LoopNodeMonitorProps> {
                 0,
                 loopY + completedHeight,
                 cvs.width,
-                singleLoopHeight
+                singleLoopHeight,
               );
 
               // Draw the playhead
@@ -122,10 +117,10 @@ export class LoopNodeMonitor extends React.Component<LoopNodeMonitorProps> {
                 Math.min(cvs.width * loopProgress, cvs.width - playheadWidth),
                 Math.min(
                   loopY + completedHeight,
-                  cvs.height - singleLoopHeight
+                  cvs.height - singleLoopHeight,
                 ),
                 playheadWidth,
-                singleLoopHeight
+                singleLoopHeight,
               );
             } else {
               // Draw the current/upcoming loop
@@ -138,7 +133,7 @@ export class LoopNodeMonitor extends React.Component<LoopNodeMonitorProps> {
                 cvs.width * loopProgress,
                 loopY,
                 playheadWidth,
-                singleLoopHeight
+                singleLoopHeight,
               );
             }
           }}

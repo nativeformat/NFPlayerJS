@@ -90,7 +90,7 @@ export class ScoreAudioParam {
         duration.asSeconds(),
       );
     } else {
-      const exhausitve: never = apCommand;
+      const _exhaustive: never = apCommand;
     }
   }
 }

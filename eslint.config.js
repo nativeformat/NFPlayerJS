@@ -50,23 +50,14 @@ export default [
   },
   {
     rules: {
-      // Force type-only imports/exports for verbatimModuleSyntax + bundler safety.
       '@typescript-eslint/consistent-type-imports': [
         'error',
         { fixStyle: 'inline-type-imports' },
       ],
-      // Mid-modernization relaxations on a 6-year-old codebase. Tighten in Phase 6.
-      '@typescript-eslint/no-explicit-any': 'warn',
       '@typescript-eslint/no-unused-vars': [
-        'warn',
-        { argsIgnorePattern: '^_' },
+        'error',
+        { argsIgnorePattern: '^_', varsIgnorePattern: '^_' },
       ],
-      '@typescript-eslint/no-unused-expressions': 'warn',
-      '@typescript-eslint/no-require-imports': 'warn',
-      '@typescript-eslint/no-empty-object-type': 'warn',
-      'prefer-spread': 'warn',
-      'no-empty': 'warn',
-      'no-async-promise-executor': 'warn',
     },
   },
 ];

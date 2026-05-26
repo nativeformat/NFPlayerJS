@@ -37,10 +37,10 @@ test('Seeking produces equivalent audio at 1x stretch', async () => {
       i < chan.length * 0.25
         ? -1
         : i < chan.length * 0.5
-        ? -0.5
-        : i < chan.length * 0.75
-        ? 0.5
-        : 1;
+          ? -0.5
+          : i < chan.length * 0.75
+            ? 0.5
+            : 1;
   }
 
   const renderer = new MemoryRenderer(info, false);
@@ -51,7 +51,7 @@ test('Seeking produces equivalent audio at 1x stretch', async () => {
   const f = FileNode.create({
     when: 0,
     duration: TimeInstant.fromSamples(input.length, info.sampleRate).asNanos(),
-    file: 'test:audio'
+    file: 'test:audio',
   });
   const s = StretchNode.create();
 
@@ -108,10 +108,10 @@ test('Seeking produces equivalent audio at 2x stretch', async () => {
       i < chan.length * 0.25
         ? -1
         : i < chan.length * 0.5
-        ? -0.5
-        : i < chan.length * 0.75
-        ? 0.5
-        : 1;
+          ? -0.5
+          : i < chan.length * 0.75
+            ? 0.5
+            : 1;
   }
 
   const renderer = new MemoryRenderer(info, false);
@@ -122,7 +122,7 @@ test('Seeking produces equivalent audio at 2x stretch', async () => {
   const f = FileNode.create({
     when: 0,
     duration: TimeInstant.fromSamples(input.length, info.sampleRate).asNanos(),
-    file: 'test:audio'
+    file: 'test:audio',
   });
   const s = StretchNode.create();
   s.stretch.setValueAtTime(2, TimeInstant.ZERO.asNanos());
@@ -135,7 +135,6 @@ test('Seeking produces equivalent audio at 2x stretch', async () => {
   player.playing = true;
 
   const maxDuration = input.length * 2;
-  const boundaries = maxDuration / 4;
 
   const output1 = renderer.renderDuration(maxDuration);
 

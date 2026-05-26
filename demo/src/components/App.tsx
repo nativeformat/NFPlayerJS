@@ -20,11 +20,7 @@
  */
 
 import * as React from 'react';
-import {
-  SmartPlayer,
-  TimeInstant,
-  ScriptProcessorRenderer
-} from 'nf-player';
+import { SmartPlayer, TimeInstant, ScriptProcessorRenderer } from 'nf-player';
 import { XAudioContext } from 'nf-player';
 
 import { JSONEditor } from './JSONEditor/JSONEditor';
@@ -36,7 +32,7 @@ import { Score } from 'nf-grapher';
 import {
   VerticalFitArea,
   VerticalFixedSection,
-  VerticalExpandableSection
+  VerticalExpandableSection,
 } from './VerticalLayout';
 
 const StyledApplication = styled.div`
@@ -49,7 +45,7 @@ const StyledApplication = styled.div`
 enum Panels {
   CODE,
   JSON,
-  VISUALIZER
+  VISUALIZER,
 }
 
 // https://webaudio.github.io/web-audio-api/#AnalyserNode-attributes
@@ -57,13 +53,13 @@ const defaultAnalyserOptions = {
   smoothingTimeConstant: 0.8,
   fftSize: 2048,
   minDecibels: -100,
-  maxDecibels: -30
+  maxDecibels: -30,
 };
 
 const initialAppState = {
   panel: Panels.CODE,
   player: new SmartPlayer(),
-  analyser: XAudioContext().createAnalyser()
+  analyser: XAudioContext().createAnalyser(),
 };
 
 type AppState = Readonly<typeof initialAppState>;
@@ -100,14 +96,14 @@ export class App extends React.Component<AppProps, AppState> {
     const nextPlayer = new SmartPlayer(nextRenderer);
     const nextState = {
       panel: to,
-      player: nextPlayer
+      player: nextPlayer,
     };
 
     // typescript type guard
     if (analyser !== undefined) {
       this.setState({
         ...nextState,
-        analyser
+        analyser,
       });
     } else {
       this.setState(nextState);
@@ -115,6 +111,8 @@ export class App extends React.Component<AppProps, AppState> {
   }
 
   componentDidUpdate() {
+    // Exposed on `window` so the playground scripts can drive the player.
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
     (window as any).p = this.state.player;
   }
 

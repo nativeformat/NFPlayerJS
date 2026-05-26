@@ -40,14 +40,14 @@ const f1 = FileNode.create(
   {
     file: Sine,
     when: 0,
-    duration: TimeInstant.fromSeconds(5.5).asNanos()
+    duration: TimeInstant.fromSeconds(5.5).asNanos(),
   },
-  'f1'
+  'f1',
 );
 
 const edges = [
   f1.connectToTarget(s2),
-  s2.connectToTarget(s1)
+  s2.connectToTarget(s1),
   // f1.connectToTarget(s1),
 
   // f1.connectToTarget(g2),
@@ -59,7 +59,7 @@ const nodes = [
   s2,
   // g1,
   // g2,
-  f1
+  f1,
 ];
 
 let s = new Score();
@@ -72,10 +72,13 @@ console.log(JSON.stringify(s, null, '  '));
 
 const p = new SmartPlayer();
 
-(async function() {
-  const ready = await p.enqueueScore(s);
+(async function () {
+  await p.enqueueScore(s);
   console.log('ready');
 })();
 
+// Exposed on `window` so the dev console can drive the player while debugging.
+/* eslint-disable @typescript-eslint/no-explicit-any */
 (window as any).p = p;
 (window as any).TimeInstant = TimeInstant;
+/* eslint-enable @typescript-eslint/no-explicit-any */

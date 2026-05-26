@@ -1,5 +1,4 @@
 {
-  "//": "nf-player library. Typecheck only — tsdown emits the build.",
   "compilerOptions": {
     "composite": true,
     "noEmit": true,
@@ -17,7 +16,7 @@
     "declaration": true,
     "skipLibCheck": true,
     "forceConsistentCasingInFileNames": true,
-    "rootDir": "src"
+    "rootDir": "."
   },
-  "include": ["src/**/*", "**/*.config.ts"]
+  "include": ["src/**/*", "./*.config.ts"]
 }

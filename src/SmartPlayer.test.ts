@@ -25,15 +25,14 @@ import {
   StretchNode,
   GainNode as GGainNode,
   Graph,
-  LoopNode
+  LoopNode,
 } from 'nf-grapher';
 import { type SetValueAtTimeCmd } from './params/ScoreAudioParam';
 import { TimeInstant } from './time';
 import {
-  type Mutation,
   type PushCommandsMutation,
   type ClearCommandsMutation,
-  MutationNames
+  MutationNames,
   // RemoveNodesEffectPayload
 } from './Mutations';
 
@@ -57,8 +56,8 @@ test('Apply PushCommandsEffectPayload Effect', async () => {
     name: 'setValueAtTime',
     args: {
       value: 1,
-      startTime: TimeInstant.fromSeconds(1).asNanos()
-    }
+      startTime: TimeInstant.fromSeconds(1).asNanos(),
+    },
   };
 
   const e: PushCommandsMutation = {
@@ -67,7 +66,7 @@ test('Apply PushCommandsEffectPayload Effect', async () => {
     // TODO: make StretchNode.STRETCH_PARAM a public static property so these names
     // can be used!
     paramName: 'stretch',
-    commands: [c]
+    commands: [c],
   };
 
   // Must await! Otherwise nodes will not be loaded.
@@ -95,7 +94,7 @@ test('Apply ClearCommandsEffectPayload Effect', async () => {
   const e: ClearCommandsMutation = {
     name: MutationNames.ClearCommands,
     nodeId: n.id,
-    paramName: 'stretch'
+    paramName: 'stretch',
   };
 
   // Must await! Otherwise nodes will not be loaded.
@@ -108,7 +107,7 @@ test('Apply ClearCommandsEffectPayload Effect', async () => {
   const uScore: Score = Score.from(JSON.parse(p.getJson()).pop());
   expect(n.stretch.getCommands()).toHaveLength(1);
   expect(
-    (uScore.graph.nodes[0] as StretchNode).stretch.getCommands()
+    (uScore.graph.nodes[0] as StretchNode).stretch.getCommands(),
   ).toHaveLength(0);
 });
 
@@ -129,7 +128,7 @@ test('Enqueue/Dequeue a running Score', async () => {
   const n2 = LoopNode.create({
     loopCount: -1,
     when: 0,
-    duration: TimeInstant.fromSeconds(1).asNanos()
+    duration: TimeInstant.fromSeconds(1).asNanos(),
   });
   const e1 = n0.connectToTarget(n2);
   s.graph.edges.push(e1);
@@ -159,8 +158,8 @@ test('Grapher adjusts malformed Scores', async () => {
 
   const malformed = JSON.stringify({
     graph: {
-      nodes: [GGainNode.create()]
-    }
+      nodes: [GGainNode.create()],
+    },
   });
 
   const s = Score.from(JSON.parse(malformed));

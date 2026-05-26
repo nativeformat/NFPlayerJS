@@ -60,7 +60,7 @@ type State = {
 };
 
 const initialState: State = {
-  changing: false
+  changing: false,
 };
 
 export class PlayerControlBar extends React.PureComponent<Props, State> {
@@ -93,7 +93,7 @@ export class PlayerControlBar extends React.PureComponent<Props, State> {
               disabled={isLoading}
               onClick={() => {
                 this.onChange(false);
-                this.props.onEval && this.props.onEval();
+                this.props.onEval?.();
               }}
             >
               Eval/Load Code from Editor
