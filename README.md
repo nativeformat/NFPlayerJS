@@ -4,17 +4,15 @@
 </p>
 
 [![License](https://img.shields.io/github/license/spotify/NFPlayerJS.svg)](LICENSE)
-[![Spotify FOSS Slack](https://slackin.spotify.com/badge.svg)](https://slackin.spotify.com)
-[![Readme Score](http://readme-score-api.herokuapp.com/score.svg?url=https://github.com/spotify/NFPlayerJS)](http://clayallsopp.github.io/readme-score?url=https://github.com/spotify/NFPlayerJS)
 
 A JavaScript/TypeScript audio engine for the Web and Server capable of multitrack time stretching, pitch shifting, declarative effects, faster than realtime processing, and more!
 
-Developed at Spotify 2017-2018, Discontinued and handed over to new maintainers January 2023 
+Developed at Spotify 2017-2018, Discontinued and handed over to new maintainers January 2023
 
 # Getting Started (Browser) 🚀
 
-1. Install the player: `npm install --save nf-player`
-2. Describe your audio experience using [NFGrapher][nfgrapher] `npm install --save nf-grapher`, or use a prebuilt [JSON Score](./fixtures).
+1. Install the player: `pnpm add nf-player`
+2. Describe your audio experience using [NFGrapher][nfgrapher] (`pnpm add nf-grapher`), or use a prebuilt [JSON Score](./fixtures).
 3. Listen to it!
 
 ```js
@@ -22,7 +20,7 @@ Developed at Spotify 2017-2018, Discontinued and handed over to new maintainers 
 import { SmartPlayer, TimeInstant } from 'nf-player';
 import * as ScoreJSON from './your-score.json';
 
-(async function() {
+(async function () {
   // Create player. By default it uses Web Audio to insert audio data into
   // the current audio device.
   const p = new SmartPlayer();
@@ -47,7 +45,7 @@ There are also in-progress [API Docs][api docs].
 A [CLI](./src/cli.ts) also ships with this package!
 
 ```sh
-$ npx nf-player save --duration 120 --input-file ./fixtures/roxanne-30s-preview-shifted-infinite.json --output-file ./roxanne.wav
+$ pnpm dlx nf-player save --duration 120 --input-file ./fixtures/roxanne-30s-preview-shifted-infinite.json --output-file ./roxanne.wav
 ```
 
 The above command will load the Score JSON, download the audio files, and render 120 seconds of audio to a file called `tng.wav`. This should happen in about 5 seconds of realtime, depending on your computer and internet connection.
@@ -117,42 +115,34 @@ See the [Playground][playground]!
 
 # Development 🏗
 
-Clone this repo, then:
+Requires Node ≥20 and [pnpm](https://pnpm.io/).
 
 ```sh
-$ npm install
+$ pnpm install      # installs the package + the demo workspace
+$ pnpm build        # build the library (tsdown → dist/, ESM + CJS + .d.ts)
+$ pnpm test         # vitest
+$ pnpm typecheck    # tsc -b (whole solution)
+$ pnpm lint
 ```
 
-To build the library and start the development environment:
+To run the demo / playground locally:
 
 ```sh
-$ npm start
+$ pnpm --filter ./demo dev
 ```
 
-To build and publish the demo to [gh-pages](playground) manually, run:
-
-```sh
-$ npm run deploy:demo:manual
-```
-
-Otherwise the demo is actually built and deployed on each push to main.
-
-There is also a more cut-down [debug environment](./debug-harness/index.ts) useful for debugging / developing single Scores or scripts:
-
-```sh
-$ npm run debug-harness
-```
+The demo also exposes a cut-down debug entry at `demo/debug.html` (source: `demo/src/debug.ts`) for poking at single Scores or scripts.
 
 # Deployment / Publishing / Release 🚢
 
 ### Publishing:
 
-- `npm version [major|minor|patch]`, then PR.
-- TravisCI will attempt to publish any tagged commit.
+1. Bump the version: `pnpm version <major|minor|patch|premajor|preminor|prepatch|prerelease>`
+2. push, then cut a GitHub Release. Publishing occurs via [`release.yml`](./.github/workflows/release.yml).
 
 ### Demo Deployment:
 
-- The demo is deployed automatically on main builds using the TravisCI gh-pages provider.
+- The demo is deployed to GitHub Pages automatically by `pages.yml` on each push to `main`.
 
 # Contributing 💖⌨️
 
