@@ -33,8 +33,8 @@ type ExampleJSON = { name: string; score: Score };
 
 const examples: ExampleJSON[] = [
   {
-    name: "Ratatat forever",
-    score: JSON.parse(JSON.stringify(RatatatLoop))
+    name: 'Ratatat forever',
+    score: JSON.parse(JSON.stringify(RatatatLoop)).default,
   },
   {
     name: 'Star Trek TNG Infinite Ambient Engine Noise',
@@ -43,19 +43,19 @@ const examples: ExampleJSON[] = [
         ...TNGJSON,
         graph: {
           ...TNGJSON.graph,
-          nodes: TNGJSON.graph.nodes.map(node => {
+          nodes: TNGJSON.graph.nodes.map((node) => {
             if (node.kind === FileNode.PLUGIN_KIND) {
               node.config.file = TNGEngines.default;
             }
             return node;
-          })
-        }
-      })
-    )
+          }),
+        },
+      }),
+    ).default,
   },
   {
     name: 'Roxanne, but pitched on every "Roxanne" (infinite JSON version)',
-    score: JSON.parse(JSON.stringify(RoxanneShiftedInfinite))
+    score: JSON.parse(JSON.stringify(RoxanneShiftedInfinite)).default,
   },
 ];
 

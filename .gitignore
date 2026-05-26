@@ -10,3 +10,5 @@ dist-debug
 demo/.cache
 coverage
 *.tgz
+demo/monaco-declarations/*.d.ts
+test-results

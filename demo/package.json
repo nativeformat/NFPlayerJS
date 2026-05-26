@@ -7,6 +7,9 @@
   "private": true,
   "type": "module",
   "scripts": {
+    "gen:types": "./scripts/gen-monaco-declarations.sh",
+    "predev": "pnpm gen:types",
+    "prebuild": "pnpm gen:types",
     "dev": "vite",
     "build": "vite build",
     "preview": "vite preview",
@@ -24,6 +27,7 @@
     "@types/react": "19.2.15",
     "@types/react-dom": "19.2.3",
     "@vitejs/plugin-react": "6.0.2",
+    "dts-bundle-generator": "9.5.1",
     "vite": "8.0.14"
   }
 }

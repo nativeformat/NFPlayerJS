@@ -39,6 +39,7 @@
     "test": "vitest run",
     "test:watch": "vitest",
     "typecheck": "tsc -b",
+    "typecheck:force": "tsc -b --force --listFiles --extendedDiagnostics",
     "lint": "eslint .",
     "format": "prettier --write .",
     "format:check": "prettier --check .",

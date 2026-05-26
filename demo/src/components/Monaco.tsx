@@ -19,23 +19,42 @@
  * under the License.
  */
 
-import * as monaco from 'monaco-editor';
 import EditorWorker from 'monaco-editor/esm/vs/editor/editor.worker?worker';
 import JsonWorker from 'monaco-editor/esm/vs/language/json/json.worker?worker';
 import TsWorker from 'monaco-editor/esm/vs/language/typescript/ts.worker?worker';
+
+import * as monaco from 'monaco-editor';
+
 import * as React from 'react';
 
-// In-editor type-help for NFPlayer/NFGrapher (addExtraLib) is deferred — see MODERNIZE.md.
-// monaco-editor pulls all language modes via its barrel; tighter subpath imports
-// would shrink the bundle but lose TS types (no `exports` map). Tracked in MODERNIZE.md.
+import nfPlayerDts from '../../monaco-declarations/nf-player.d.ts?raw';
+import nfGrapherDts from '../../monaco-declarations/nf-grapher.d.ts?raw';
 
-(self as Window & { MonacoEnvironment?: monaco.Environment }).MonacoEnvironment = {
+(
+  self as Window & { MonacoEnvironment?: monaco.Environment }
+).MonacoEnvironment = {
   getWorker(_workerId: string, label: string) {
     if (label === 'json') return new JsonWorker();
     if (label === 'typescript' || label === 'javascript') return new TsWorker();
     return new EditorWorker();
-  }
+  },
 };
+
+let extraLibsRegistered = false;
+function registerExtraLibs() {
+  if (extraLibsRegistered) return;
+  extraLibsRegistered = true;
+  monaco.typescript.typescriptDefaults.addExtraLib(
+    [
+      `declare module 'nf-grapher' {\n${nfGrapherDts}\n}`,
+      `declare module 'nf-player' {\n${nfPlayerDts}\n}`,
+      `declare const NFPlayer: typeof import('nf-player');`,
+      `declare const NFGrapher: typeof import('nf-grapher');`,
+      `declare const p: import('nf-player').SmartPlayer;`,
+    ].join('\n'),
+    'file:///nf-globals.d.ts',
+  );
+}
 
 type Props = {
   value: string;
@@ -61,9 +80,11 @@ export class MonacoEditor extends React.Component<Props> {
     if (!this.divRef.current) return;
     if (this.editor) return;
 
+    registerExtraLibs();
+
     this.editor = monaco.editor.create(this.divRef.current, {
       value: this.props.value,
-      language: this.props.language
+      language: this.props.language,
     });
 
     this.editor.onDidChangeModelContent(this.onChange);
