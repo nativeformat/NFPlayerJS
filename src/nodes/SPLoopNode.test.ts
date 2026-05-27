@@ -19,17 +19,21 @@
  * under the License.
  */
 
-import { LoopNode, FileNode, Score } from 'nf-grapher';
-import { TimeInstant } from '../time';
-import { XAudioBuffer } from '../XAudioBuffer';
-import { XAudioBufferFromInfo, RendererInfo } from '../renderers/RendererInfo';
-import { SmartPlayer } from '../SmartPlayer';
-import { MemoryRenderer } from '../renderers/MemoryRenderer';
+import { FileNode, LoopNode, Score } from 'nf-grapher';
+
+import { copy } from '../AudioBufferUtils';
 import { ContentCache } from '../ContentCache';
-import { TestRendererInfo } from '../test-utils/TestRendererInfo';
+import { MemoryRenderer } from '../renderers/MemoryRenderer';
+import {
+  type RendererInfo,
+  XAudioBufferFromInfo,
+} from '../renderers/RendererInfo';
+import { SmartPlayer } from '../SmartPlayer';
 import { expectQuantums } from '../test-utils/ExpectQuantums';
 import { loadWave } from '../test-utils/LoadWave';
-import { copy } from '../AudioBufferUtils';
+import { TestRendererInfo } from '../test-utils/TestRendererInfo';
+import { TimeInstant } from '../time';
+import { type XAudioBuffer } from '../XAudioBuffer';
 
 function fillBuffer(ab: XAudioBuffer, value: number) {
   for (let i = 0; i < ab.numberOfChannels; i++) {
@@ -52,7 +56,7 @@ function manualLoop(
   leadingSamples: number,
   data: XAudioBuffer,
   loops: number,
-  info: RendererInfo
+  info: RendererInfo,
 ): XAudioBuffer {
   const rawCount = leadingSamples + data.length;
   const requiredQuantums = Math.floor(rawCount / info.quantumSize);
@@ -81,14 +85,14 @@ test('Quantum falls on loop boundary', async () => {
       'test:audio',
       TimeInstant.fromSamples(100, info.sampleRate).asNanos(),
       TimeInstant.fromSamples(100, info.sampleRate).asNanos(),
-      TimeInstant.ZERO.asNanos()
+      TimeInstant.ZERO.asNanos(),
     ),
     new LoopNode(
       '1',
       TimeInstant.ZERO.asNanos(),
       TimeInstant.fromSamples(200, info.sampleRate).asNanos(),
-      2
-    )
+      2,
+    ),
   );
 
   await player.enqueueScore(s);
@@ -118,14 +122,14 @@ test('Quantum exceeds loop boundary', async () => {
       'test:audio',
       TimeInstant.fromSamples(100, info.sampleRate).asNanos(),
       TimeInstant.fromSamples(100, info.sampleRate).asNanos(),
-      TimeInstant.ZERO.asNanos()
+      TimeInstant.ZERO.asNanos(),
     ),
     new LoopNode(
       '1',
       TimeInstant.ZERO.asNanos(),
       TimeInstant.fromSamples(200, info.sampleRate).asNanos(),
-      2
-    )
+      2,
+    ),
   );
 
   await player.enqueueScore(s);
@@ -169,7 +173,7 @@ test('glitchless engagement of the loop node', async () => {
       'test:audio',
       TimeInstant.fromSamples(0, info.sampleRate).asNanos(),
       TimeInstant.fromSamples(225, info.sampleRate).asNanos(),
-      TimeInstant.ZERO.asNanos()
+      TimeInstant.ZERO.asNanos(),
     ),
     new LoopNode(
       '1',
@@ -177,8 +181,8 @@ test('glitchless engagement of the loop node', async () => {
       TimeInstant.fromSamples(50, info.sampleRate).asNanos(),
       // c++ player is... "off by one" when it comes to loops, so this actually
       // means, 1 + an implicit first loop, I guess.
-      1
-    )
+      1,
+    ),
   );
 
   await player.enqueueScore(s);
@@ -202,7 +206,7 @@ test('no samples are missed when starting from non-zero', async () => {
   // Inject test audio to the Player's cache.
   const cache = new ContentCache(
     undefined,
-    new Map([['test:sine440hz1s', sineData]])
+    new Map([['test:sine440hz1s', sineData]]),
   );
   renderer.unsafelyReplaceContentCache(cache);
 
@@ -212,14 +216,14 @@ test('no samples are missed when starting from non-zero', async () => {
       'test:sine440hz1s',
       TimeInstant.fromSeconds(4.5).asNanos(),
       TimeInstant.fromSeconds(1).asNanos(),
-      TimeInstant.ZERO.asNanos()
+      TimeInstant.ZERO.asNanos(),
     ),
     new LoopNode(
       '1',
       TimeInstant.fromSeconds(4.5).asNanos(),
       TimeInstant.fromSeconds(1).asNanos(),
-      -1
-    )
+      -1,
+    ),
   );
 
   await player.enqueueScore(s);
@@ -229,7 +233,7 @@ test('no samples are missed when starting from non-zero', async () => {
     TimeInstant.fromSeconds(4.5).asSamples(info.sampleRate),
     sineData,
     4,
-    info
+    info,
   );
 
   const received = renderer.renderDuration(expected.length);
@@ -248,7 +252,7 @@ test('no samples are missed when looping a precise loop', async () => {
   // Inject test audio to the Player's cache.
   const cache = new ContentCache(
     undefined,
-    new Map([['test:sine440hz1s', sineData]])
+    new Map([['test:sine440hz1s', sineData]]),
   );
   renderer.unsafelyReplaceContentCache(cache);
 
@@ -258,14 +262,14 @@ test('no samples are missed when looping a precise loop', async () => {
       'test:sine440hz1s',
       TimeInstant.fromSeconds(2.5).asNanos(),
       TimeInstant.fromSamples(44079, info.sampleRate).asNanos(),
-      TimeInstant.ZERO.asNanos()
+      TimeInstant.ZERO.asNanos(),
     ),
     new LoopNode(
       '1',
       TimeInstant.fromSeconds(2.5).asNanos(),
       TimeInstant.fromSamples(44079, info.sampleRate).asNanos(),
-      -1
-    )
+      -1,
+    ),
   );
 
   await player.enqueueScore(s);
@@ -275,7 +279,7 @@ test('no samples are missed when looping a precise loop', async () => {
     TimeInstant.fromSeconds(2.5).asSamples(info.sampleRate),
     sineData,
     4,
-    info
+    info,
   );
 
   const received = renderer.renderDuration(expected.length);

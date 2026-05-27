@@ -19,7 +19,7 @@
  * under the License.
  */
 
-import { writeFile as FSWriteFile, readFile as FSReadFile } from 'fs';
+import { readFile as FSReadFile, writeFile as FSWriteFile } from 'fs';
 import { promisify } from 'util';
 
 // These should only be used from either the CLI (node) or jest (testing + node)!

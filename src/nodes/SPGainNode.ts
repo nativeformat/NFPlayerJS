@@ -19,15 +19,15 @@
  * under the License.
  */
 
-import { TimeInstant } from '../time';
+import { debug as Debug } from 'debug';
 import { GainNode as GGainNode } from 'nf-grapher';
+
+import { applyMutationToParam, type CommandsMutation } from '../Mutations';
 import { ScoreAudioParam } from '../params/ScoreAudioParam';
+import { type TimeInstant } from '../time';
+import { type XAudioBuffer } from '../XAudioBuffer';
 import { SPNode } from './SPNode';
 import { SPNodeFactory } from './SPNodeFactory';
-import { CommandsMutation, applyMutationToParam } from '../Mutations';
-
-import { debug as Debug } from 'debug';
-import { XAudioBuffer } from '../XAudioBuffer';
 
 const DBG_STR = 'nf:gainnode';
 const dbg = Debug(DBG_STR);
@@ -55,10 +55,10 @@ export class SPGainNode extends SPNode {
       this.ancestors,
       renderTime,
       ancestorBuffers,
-      sampleCount
+      sampleCount,
     );
 
-    for (let buffer of ancestorBuffers) {
+    for (const buffer of ancestorBuffers) {
       const incr = 1 / buffer.sampleRate;
       for (let c = 0; c < buffer.numberOfChannels; c++) {
         const chan = buffer.getChannelData(c);
@@ -70,7 +70,7 @@ export class SPGainNode extends SPNode {
       }
     }
 
-    for (let buffer of ancestorBuffers) {
+    for (const buffer of ancestorBuffers) {
       buffers.push(buffer);
     }
   }
@@ -81,7 +81,7 @@ export class SPGainNode extends SPNode {
 
     if (!Object.keys(node.getParams()).includes(paramName)) {
       throw new Error(
-        `GainNode does not contain param with name: ${paramName}`
+        `GainNode does not contain param with name: ${paramName}`,
       );
     }
 

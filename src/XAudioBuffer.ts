@@ -43,8 +43,8 @@ export class XAudioBuffer {
   duration: number; // double
   numberOfChannels: number; //unsigned long
 
-  protected _data: Float32Array; // planar
-  protected _channelData: Float32Array[]; // "cached" channels as subarrays
+  protected _data: Float32Array<ArrayBuffer>; // planar
+  protected _channelData: Float32Array<ArrayBuffer>[]; // "cached" channels as subarrays
 
   constructor(options: XAudioBufferOptions) {
     this.sampleRate = options.sampleRate;
@@ -86,7 +86,7 @@ export class XAudioBuffer {
   /**
    * Return data associated with the channel.
    */
-  getChannelData(channel: number): Float32Array {
+  getChannelData(channel: number): Float32Array<ArrayBuffer> {
     if (channel >= this.numberOfChannels || channel < 0 || channel == null) {
       throw Error(
         'Cannot getChannelData: channel number (' +

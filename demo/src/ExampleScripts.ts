@@ -19,9 +19,10 @@
  * under the License.
  */
 
-import * as NFPlayer from '../../src/';
-import * as NFGrapher from 'nf-grapher';
-import { SmartPlayer } from '../../src/';
+import type * as NFGrapher from 'nf-grapher';
+import type * as NFPlayer from 'nf-player';
+import { type SmartPlayer } from 'nf-player';
+
 import * as TNGEngines from '../../fixtures/TNG-Crysknife007-16-899-s.wav';
 
 // Returns a promise since a type cannot use the `async` keyword.
@@ -36,15 +37,13 @@ export type PlaygroundScript = string;
 export type CompiledPlaygroundScript = (
   player: SmartPlayer,
   GrapherExports: typeof NFGrapher,
-  PlayerExports: typeof NFPlayer
+  PlayerExports: typeof NFPlayer,
 ) => Promise<void>;
 
 export type ExampleScript = {
   name: string;
   script: PlaygroundScript;
 };
-
-const examplePreamble = ``;
 
 export const examples: ExampleScript[] = [
   {
@@ -159,11 +158,10 @@ export const examples: ExampleScript[] = [
 
       await p.enqueueScore(s);
       p.playing = true;
-    `
+    `,
   },
   {
-    name:
-      'Roxanne, but pitched on every "Roxanne"  (infinite scripted version)',
+    name: 'Roxanne, but pitched on every "Roxanne"  (infinite scripted version)',
     script: `
       // These Globals are provided by this playground, and act as imported namespaces
       // A player instance is also provided as "p"
@@ -215,7 +213,7 @@ export const examples: ExampleScript[] = [
 
       // Start rendering, aka allow p.renderTime to progress.
       p.playing = true;
-    `
+    `,
   },
   {
     name: 'Load and play seconds 10 through 20 of a single file',
@@ -243,11 +241,10 @@ export const examples: ExampleScript[] = [
 
       // Start rendering, aka allow p.renderTime to progress.
       p.playing = true;
-    `
+    `,
   },
   {
-    name:
-      'Play the first 10 seconds of a file, then loop a single 4 beat bar forever.',
+    name: 'Play the first 10 seconds of a file, then loop a single 4 beat bar forever.',
     script: `
       // These Globals are provided by this playground, and act as imported namespaces
       // A player instance is also provided as "p"
@@ -278,7 +275,7 @@ export const examples: ExampleScript[] = [
 
       await p.enqueueScore(s);
       p.playing = true;
-    `
+    `,
   },
   {
     name: 'Play a track, then quickly fade out on user interaction',
@@ -337,11 +334,10 @@ export const examples: ExampleScript[] = [
           ]
         } as NFPlayer.PushCommandsMutation);
       }, 5000);
-    `
+    `,
   },
   {
-    name:
-      'Loop and Pitch Shift a track, then swap it with a modified score on User Interaction',
+    name: 'Loop and Pitch Shift a track, then swap it with a modified score on User Interaction',
     script: `
       // These Globals are provided by this playground, and act as imported namespaces
       // A player instance is also provided as "p"
@@ -421,11 +417,10 @@ export const examples: ExampleScript[] = [
         p.dequeueScore(runningId);
 
       }, 15000);
-    `
+    `,
   },
   {
-    name:
-      'Pitchshift a piano down, with a voice over the top. 30 seconds in slow both down (derail!).',
+    name: 'Pitchshift a piano down, with a voice over the top. 30 seconds in slow both down (derail!).',
     script: `
       // These Globals are provided by this playground, and act as imported namespaces
       // A player instance is also provided as "p"
@@ -481,6 +476,6 @@ export const examples: ExampleScript[] = [
 
       await p.enqueueScore(s);
       p.playing = true;
-    `
-  }
+    `,
+  },
 ];

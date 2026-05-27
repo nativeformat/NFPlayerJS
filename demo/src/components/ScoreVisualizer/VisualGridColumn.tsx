@@ -19,9 +19,10 @@
  * under the License.
  */
 
+import { type TypedNode } from 'nf-grapher';
+import { type NodePlaybackDescription } from 'nf-player';
 import * as React from 'react';
-import { NodePlaybackDescription } from '../../../../src/';
-import { TypedNode } from 'nf-grapher';
+
 import { NodePanel } from './NodePanel';
 
 type Props = {
@@ -30,16 +31,16 @@ type Props = {
   kind: string;
 };
 
-export const VisualGridColumn: React.SFC<Props> = ({
+export const VisualGridColumn: React.FC<Props> = ({
   descriptions,
   nodes,
-  kind
+  kind,
 }) => {
-  const descs = descriptions.filter(desc => desc.kind === kind);
+  const descs = descriptions.filter((desc) => desc.kind === kind);
   return (
     <div>
-      {descs.map(desc => {
-        const node = nodes.find(node => node.id === desc.id);
+      {descs.map((desc) => {
+        const node = nodes.find((node) => node.id === desc.id);
         if (!node) return;
         return (
           <NodePanel key={desc.id + node.id} node={node} description={desc} />

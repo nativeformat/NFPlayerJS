@@ -1,0 +1,8 @@
+packages:
+  - '.'
+  - 'demo'
+
+savePrefix: ''
+
+allowBuilds:
+  husky: true

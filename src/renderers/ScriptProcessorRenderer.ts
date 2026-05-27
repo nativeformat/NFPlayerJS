@@ -20,11 +20,12 @@
  */
 
 import { debug as Debug } from 'debug';
-import { BaseRenderer, PlayingState } from './BaseRenderer';
-import { XAudioBuffer } from '../XAudioBuffer';
-import { TimeInstant } from '../time';
+
 import { mixdownToAudioBuffer } from '../AudioBufferUtils';
+import { TimeInstant } from '../time';
 import { XAudioContext } from '../WebAudioContext';
+import { XAudioBuffer } from '../XAudioBuffer';
+import { BaseRenderer } from './BaseRenderer';
 
 const DBG_STR = 'nf:script-processor-renderer';
 const dbg = Debug(DBG_STR);
@@ -35,7 +36,7 @@ export class ScriptProcessorRenderer extends BaseRenderer {
   constructor(
     private ctx: AudioContext = XAudioContext(),
     quantumSize: number = BaseRenderer.DEFAULT_QUANTUM_SIZE,
-    autoRolloff: boolean = true
+    autoRolloff: boolean = true,
   ) {
     super(
       {
@@ -51,24 +52,24 @@ export class ScriptProcessorRenderer extends BaseRenderer {
             // promises well, either.
             ctx.decodeAudioData(
               ab,
-              buffer => {
+              (buffer) => {
                 dbg('decoded file %s with length %d', uri, buffer.length);
                 resolve(XAudioBuffer.fromAudioBuffer(buffer));
               },
-              err => {
+              (err) => {
                 // err is often `null` in safari.
                 dbg('failed to decode file %s, %s', uri, err && err.message);
                 reject(err);
-              }
+              },
             );
-          })
+          }),
       },
-      autoRolloff
+      autoRolloff,
     );
 
     this.processor = this.ctx.createScriptProcessor(this.info.quantumSize);
-    this.processor.onaudioprocess = evt => {
-      const start = window.performance.now();
+    this.processor.onaudioprocess = (evt) => {
+      const start = performance.now();
 
       // WHY IS THIS NECESSARY!?!?! Without this, the output buffer
       // comes in with non-zero samples!!! WHYYYY
@@ -88,7 +89,7 @@ export class ScriptProcessorRenderer extends BaseRenderer {
       if (!this.playing) return;
 
       if (dbg.enabled) {
-        const end = window.performance.now();
+        const end = performance.now();
         const lastDuration = end - start;
 
         // Note: Firefox appears to not adjust playbackTime using the processor
@@ -102,7 +103,7 @@ export class ScriptProcessorRenderer extends BaseRenderer {
           'budget remaining',
           TimeInstant.fromSeconds(evt.playbackTime)
             .sub(TimeInstant.fromSeconds(this.ctx.currentTime))
-            .asMillis() + 'ms'
+            .asMillis() + 'ms',
         );
       }
     };

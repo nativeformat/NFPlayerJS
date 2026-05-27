@@ -19,17 +19,18 @@
  * under the License.
  */
 
-import { TimeInstant } from '../time';
-import { Command } from 'nf-grapher';
-import { ScoreAudioParam } from '../params/ScoreAudioParam';
-import { SPNode, NodePlaybackDescription } from './SPNode';
-import { SPNodeFactory } from './SPNodeFactory';
-import { mixdown, asInterleaved, asPlanar } from '../AudioBufferUtils';
-import { ContentCache } from '../ContentCache';
-import { SoundTouch } from 'soundtouch-ts';
-import { CommandsMutation, applyMutationToParam } from '../Mutations';
 import { debug as Debug } from 'debug';
+import { type Command } from 'nf-grapher';
+import { SoundTouch } from 'soundtouch-ts';
+
+import { asInterleaved, asPlanar, mixdown } from '../AudioBufferUtils';
+import { type ContentCache } from '../ContentCache';
+import { applyMutationToParam, type CommandsMutation } from '../Mutations';
+import { ScoreAudioParam } from '../params/ScoreAudioParam';
+import { TimeInstant } from '../time';
 import { XAudioBuffer } from '../XAudioBuffer';
+import { type NodePlaybackDescription, SPNode } from './SPNode';
+import { SPNodeFactory } from './SPNodeFactory';
 
 const DBG_STR = 'nf:stretchnode';
 const dbg = Debug(DBG_STR);
@@ -40,11 +41,12 @@ const dbg = Debug(DBG_STR);
 // present on their system. This avoids forcing NFPlayerJS and derivative
 // software from needing to be licensed under the LGPL2.1.
 let SHARED_SOUNDTOUCH_CTOR: typeof SoundTouch;
+/* eslint-disable @typescript-eslint/no-explicit-any */
 if (
-  typeof global !== 'undefined' &&
-  typeof (global as any).SoundTouch !== 'undefined'
+  typeof globalThis !== 'undefined' &&
+  typeof (globalThis as any).SoundTouch !== 'undefined'
 ) {
-  SHARED_SOUNDTOUCH_CTOR = (global as any).SoundTouch;
+  SHARED_SOUNDTOUCH_CTOR = (globalThis as any).SoundTouch;
 } else if (
   typeof window !== 'undefined' &&
   typeof (window as any).SoundTouch !== 'undefined'
@@ -53,9 +55,10 @@ if (
 } else {
   SHARED_SOUNDTOUCH_CTOR = SoundTouch;
 }
+/* eslint-enable @typescript-eslint/no-explicit-any */
 
 // This is only used to help differentiate debug logs. I don't like it,
-// but not sure of a better way without great complication (global id
+// but not sure of a better way without great complication (globalThis id
 // store???). Node ids are not checked for uniqueness, since the player
 // does not look at ids of either graphs or nodes unless a mutation arrives.
 let uniqId = 0;
@@ -80,50 +83,52 @@ export class SPStretchNode extends SPNode {
   }
 
   async nodeWillUnmount() {
-    dbg.enabled &&
+    if (dbg.enabled) {
       dbg(
         '%s %d unmounting. requestedAncestorSamples %f, previousFeed %f',
         this.node.id,
         this.uniqId,
         this.requestedAncestorSamples,
-        this.previousFeedTime.asSamples(this.info.sampleRate)
+        this.previousFeedTime.asSamples(this.info.sampleRate),
       );
+    }
   }
 
   async timeChange(
     renderTime: TimeInstant,
     cache: ContentCache,
-    quantumSize: number
+    quantumSize: number,
   ) {
     const stretchValue = this.stretchParam.getValueAtTime(
-      renderTime.asSeconds()
+      renderTime.asSeconds(),
     );
     const dilated = renderTime.scale(stretchValue);
 
-    // Short circuiting since these values are not just simple reads.
-    dbg.enabled &&
+    // The args are not just simple reads, skip if dbg disabled
+    if (dbg.enabled) {
       dbg(
         '%s %d timeChange to %d, dilated %d. prev requested samples %d.',
         this.node.id,
         this.uniqId,
         renderTime.asSamples(this.info.sampleRate),
         dilated.asSamples(this.info.sampleRate),
-        this.requestedAncestorSamples
+        this.requestedAncestorSamples,
       );
+    }
 
     await super.timeChange(dilated, cache, quantumSize);
 
     this.previousFeedTime = TimeInstant.from(renderTime);
     this.requestedAncestorSamples = this.estimateRequestedAncestorSamples(
       renderTime,
-      quantumSize
+      quantumSize,
     );
 
     dbg(
       '%s %d new requested samples estimate: %d',
       this.node.id,
       this.uniqId,
-      this.requestedAncestorSamples
+      this.requestedAncestorSamples,
     );
 
     // TODO: does this do what I hope it does?
@@ -135,7 +140,7 @@ export class SPStretchNode extends SPNode {
   // but more likely just need more accurate estimation (verlet integration?).
   estimateRequestedAncestorSamples(
     renderTime: TimeInstant,
-    quantumSize: number
+    quantumSize: number,
   ) {
     const hz = this.info.sampleRate;
     const renderTimeSamples = renderTime.asSamples(hz);
@@ -155,9 +160,8 @@ export class SPStretchNode extends SPNode {
       const averageStretchValue = (endStretchValue + startStretchValue) / 2;
 
       const startPitchValue = this.pitchRatioParam.getValueAtTime(seconds);
-      const endPitchValue = this.pitchRatioParam.getValueAtTime(
-        frameEndSeconds
-      );
+      const endPitchValue =
+        this.pitchRatioParam.getValueAtTime(frameEndSeconds);
       const avgPitchValue = (endPitchValue + startPitchValue) / 2;
 
       // https://github.com/kirbysayshi/soundtouch-ts/blob/d0c8ddd8ee78e25c0c278870188c5cec72cb2063/src/index.ts#L842-L854
@@ -181,18 +185,18 @@ export class SPStretchNode extends SPNode {
   }
 
   getPlaybackDescription(
-    renderTime: TimeInstant,
-    descriptions: NodePlaybackDescription[]
+    _renderTime: TimeInstant,
+    descriptions: NodePlaybackDescription[],
   ) {
     const ancestorRenderTime = TimeInstant.fromSamples(
       this.requestedAncestorSamples,
-      this.info.sampleRate
+      this.info.sampleRate,
     );
 
     const desc: NodePlaybackDescription = {
       id: this.node.id,
       kind: this.node.kind,
-      time: ancestorRenderTime
+      time: ancestorRenderTime,
     };
 
     descriptions.push(desc);
@@ -200,7 +204,7 @@ export class SPStretchNode extends SPNode {
     SPNodeFactory.getPlaybackDescription(
       this.ancestors,
       ancestorRenderTime,
-      descriptions
+      descriptions,
     );
   }
 
@@ -234,11 +238,11 @@ export class SPStretchNode extends SPNode {
       // right time from our ancestors.
       this.requestedAncestorSamples = this.estimateRequestedAncestorSamples(
         renderTime,
-        sampleCount
+        sampleCount,
       );
 
-      // Short circuiting since these values are not just simple reads.
-      dbg.enabled &&
+      // The args are not just simple reads, skip if dbg disabled
+      if (dbg.enabled) {
         dbg(
           '%s %d prev feed time (%f) was _after_ current feed time (%f). ' +
             'Estimating prev feed as %f and requested samples as %f',
@@ -247,8 +251,9 @@ export class SPStretchNode extends SPNode {
           prevFeed.asSamples(hz),
           renderTime.asSamples(hz),
           this.previousFeedTime.asSamples(hz),
-          this.requestedAncestorSamples
+          this.requestedAncestorSamples,
         );
+      }
 
       // Also need to reset the time stretcher to avoid drifting over multiple
       // loops (especially infinite).
@@ -257,7 +262,7 @@ export class SPStretchNode extends SPNode {
         '%s %d reset ancestor samples to %f',
         this.node.id,
         this.uniqId,
-        this.requestedAncestorSamples
+        this.requestedAncestorSamples,
       );
     }
 
@@ -301,7 +306,7 @@ export class SPStretchNode extends SPNode {
       // to expand the numbers. Need to halve what we request because of it.
       const requestedFrameCount = Math.min(
         Math.floor(iFrameCount),
-        Math.floor(receiver.length / CHANNEL_COUNT)
+        Math.floor(receiver.length / CHANNEL_COUNT),
       );
       this.st.outputBuffer.receiveSamples(receiver, requestedFrameCount);
       const remainingIFrames = this.st.outputBuffer.frameCount;
@@ -318,7 +323,7 @@ export class SPStretchNode extends SPNode {
       const ancestorScratch = new XAudioBuffer({
         numberOfChannels: CHANNEL_COUNT,
         length: sampleCount,
-        sampleRate: hz
+        sampleRate: hz,
       });
       const frameStartSamples = this.requestedAncestorSamples;
       const ancestorBuffers: XAudioBuffer[] = [];
@@ -326,7 +331,7 @@ export class SPStretchNode extends SPNode {
         this.ancestors,
         TimeInstant.fromSamples(frameStartSamples, hz),
         ancestorBuffers,
-        sampleCount
+        sampleCount,
       );
 
       mixdown(ancestorScratch, ancestorBuffers);

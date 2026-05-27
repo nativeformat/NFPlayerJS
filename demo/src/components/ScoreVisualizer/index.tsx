@@ -19,23 +19,24 @@
  * under the License.
  */
 
-import * as React from 'react';
 import {
   FileNode,
+  GainNode as GGainNode,
   LoopNode,
   StretchNode,
-  GainNode as GGainNode,
-  TypedNode
+  type TypedNode,
 } from 'nf-grapher';
+import { type NodePlaybackDescription } from 'nf-player';
+import * as React from 'react';
 import styled from 'styled-components';
-import { NodePlaybackDescription } from '../../../../src';
+
 import { VisualGridColumn } from './VisualGridColumn';
 
 const KIND_COLUMN_ORDER = [
   FileNode.PLUGIN_KIND,
   LoopNode.PLUGIN_KIND,
   StretchNode.PLUGIN_KIND,
-  GGainNode.PLUGIN_KIND
+  GGainNode.PLUGIN_KIND,
 ];
 
 const AppMainArea = styled.div`
@@ -58,7 +59,7 @@ export class ScoreVisualizer extends React.Component<Props> {
     const { descriptions, nodes } = this.props;
     return (
       <AppMainArea>
-        {KIND_COLUMN_ORDER.map(kind => (
+        {KIND_COLUMN_ORDER.map((kind) => (
           <AppColumn key={kind}>
             <VisualGridColumn
               descriptions={descriptions}

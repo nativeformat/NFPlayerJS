@@ -19,9 +19,10 @@
  * under the License.
  */
 
-import { Command } from 'nf-grapher';
+import { type Command } from 'nf-grapher';
+import PseudoAudioParam from 'pseudo-audio-param';
+
 import { TimeInstant } from '../time';
-import PseudoAudioParam = require('pseudo-audio-param');
 
 interface ScoreAudioParamEvent {
   type: string;
@@ -31,7 +32,7 @@ interface ScoreAudioParamEvent {
 export class ScoreAudioParam {
   constructor(
     initialValue: number,
-    private param = new PseudoAudioParam(initialValue)
+    private param = new PseudoAudioParam(initialValue),
   ) {}
 
   // Proxy the few necessary calls to PseudoAudioParam for external
@@ -52,7 +53,7 @@ export class ScoreAudioParam {
   }
 
   applyScoreCommands(source: Command[]) {
-    for (let cmd of source) {
+    for (const cmd of source) {
       this.applyScoreCommand(cmd);
     }
   }
@@ -74,7 +75,7 @@ export class ScoreAudioParam {
       param.setTargetAtTime(
         tcmd.args.target,
         startTime.asSeconds(),
-        tcmd.args.timeConstant
+        tcmd.args.timeConstant,
       );
     } else if (apCommand.name === 'linearRampToValueAtTime') {
       const tcmd = apCommand as LinearRampToValueAtTimeCmd;
@@ -87,10 +88,10 @@ export class ScoreAudioParam {
       param.setValueCurveAtTime(
         tcmd.args.values,
         startTime.asSeconds(),
-        duration.asSeconds()
+        duration.asSeconds(),
       );
     } else {
-      const exhausitve: never = apCommand;
+      const _exhaustive: never = apCommand;
     }
   }
 }

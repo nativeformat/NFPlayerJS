@@ -19,7 +19,7 @@
  * under the License.
  */
 
-import { Edge, Score, Node, TypedNode, Graph } from 'nf-grapher';
+import { type Edge, type Node, Score } from 'nf-grapher';
 
 // Serious Bug in Grapher: Score.Graph.Nodes is of type Node[], but _could_ be TypedNode[]!
 // Note: I recall that this is by design, but this should be changed. It makes using a Score
@@ -40,7 +40,7 @@ export class DirectedScore {
   incomingEdges(node: Node): Edge[];
   incomingEdges(nodeOrId: string | Node) {
     const id = typeof nodeOrId === 'string' ? nodeOrId : nodeOrId.id;
-    const edges = this.score.graph.edges.filter(edge => edge.target === id);
+    const edges = this.score.graph.edges.filter((edge) => edge.target === id);
     return edges;
   }
 
@@ -48,13 +48,13 @@ export class DirectedScore {
   outgoingEdges(node: Node): Edge[];
   outgoingEdges(nodeOrId: string | Node): Edge[] {
     const id = typeof nodeOrId === 'string' ? nodeOrId : nodeOrId.id;
-    const edges = this.score.graph.edges.filter(edge => edge.source === id);
+    const edges = this.score.graph.edges.filter((edge) => edge.source === id);
     return edges;
   }
 
   leaves(): Node[] {
     const leaves = [];
-    for (let node of this.score.graph.nodes) {
+    for (const node of this.score.graph.nodes) {
       const edges = this.outgoingEdges(node);
       if (edges.length === 0) {
         leaves.push(node);
@@ -64,17 +64,17 @@ export class DirectedScore {
   }
 
   source(edge: Edge): Node | undefined {
-    const node = this.score.graph.nodes.find(n => edge.source === n.id);
+    const node = this.score.graph.nodes.find((n) => edge.source === n.id);
     return node;
   }
 
   target(edge: Edge): Node | undefined {
-    const node = this.score.graph.nodes.find(n => edge.target === n.id);
+    const node = this.score.graph.nodes.find((n) => edge.target === n.id);
     return node;
   }
 
   byId(id: string): Node | undefined {
-    const node = this.score.graph.nodes.find(n => n.id === id);
+    const node = this.score.graph.nodes.find((n) => n.id === id);
     return node;
   }
 }

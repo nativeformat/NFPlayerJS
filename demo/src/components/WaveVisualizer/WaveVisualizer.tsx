@@ -19,20 +19,20 @@
  * under the License.
  */
 
+import { type Score } from 'nf-grapher';
+import { type SmartPlayer, TimeInstant } from 'nf-player';
 import * as React from 'react';
-import { SmartPlayer, TimeInstant } from '../../../../src';
-import { examples, ExampleJSON } from '../../ExampleJSONScores';
 
+import { type ExampleJSON, examples } from '../../ExampleJSONScores';
 import { MonacoEditor } from '../Monaco';
 import { PlayerControlBar } from '../PlayerControlBar';
 import { PlayerWatcher } from '../PlayerWatcher';
-import { Score } from 'nf-grapher';
-import { FrequencyMonitor } from './FrequencyMonitor';
 import {
+  VerticalExpandableSection,
   VerticalFitArea,
   VerticalFixedSection,
-  VerticalExpandableSection
 } from '../VerticalLayout';
+import { FrequencyMonitor } from './FrequencyMonitor';
 
 type Props = {
   player: SmartPlayer;
@@ -41,7 +41,7 @@ type Props = {
 
 const initialState = {
   example: examples[0],
-  loading: false
+  loading: false,
 };
 
 type State = Readonly<{
@@ -57,11 +57,11 @@ export class WaveVisualizer extends React.Component<Props, State> {
 
   onExampleSelect = async (event: React.ChangeEvent<HTMLSelectElement>) => {
     const example = examples.find(
-      example => example.name === event.target.value
+      (example) => example.name === event.target.value,
     );
 
     this.setState({
-      example: example
+      example: example,
     });
 
     const { player } = this.props;
@@ -99,14 +99,16 @@ export class WaveVisualizer extends React.Component<Props, State> {
           this.setState({
             example: {
               name: 'User edited',
-              score: editorValue
-            }
+              score: editorValue,
+            },
           });
         }
 
         this.setState({ loading: false });
       }
-    } catch (e) {}
+    } catch {
+      // JSON.parse errors are expected while user is editing — ignore.
+    }
 
     player.playing = !player.playing;
   };
@@ -126,7 +128,7 @@ export class WaveVisualizer extends React.Component<Props, State> {
               onChange={this.onExampleSelect}
               value={example ? example.name : undefined}
             >
-              {examples.map(example => (
+              {examples.map((example) => (
                 <option key={example.name} value={example.name}>
                   {example.name}
                 </option>
@@ -140,7 +142,7 @@ export class WaveVisualizer extends React.Component<Props, State> {
                 isPlaying={playing}
                 isLoading={loading}
                 onPlayPause={this.handlePlayPause}
-                onSeek={amount => {
+                onSeek={(amount) => {
                   const total = player.renderTime.add(amount);
                   player.renderTime = total.lt(TimeInstant.ZERO)
                     ? TimeInstant.ZERO
@@ -162,7 +164,8 @@ export class WaveVisualizer extends React.Component<Props, State> {
                   value={
                     example ? JSON.stringify(example.score, null, '  ') : ''
                   }
-                  valueDelegate={getValue => (this.getEditorValue = getValue)}
+                  valueDelegate={(getValue) => (this.getEditorValue = getValue)}
+                  onChange={() => {}}
                 />
               );
             }}

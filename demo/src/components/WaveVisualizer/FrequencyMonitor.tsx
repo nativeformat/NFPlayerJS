@@ -20,6 +20,7 @@
  */
 
 import * as React from 'react';
+
 import { CanvasPowered } from '../ScoreVisualizer/CanvasPowered';
 
 type Props = {

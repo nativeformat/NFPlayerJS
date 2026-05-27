@@ -19,9 +19,10 @@
  * under the License.
  */
 
-import styled from 'styled-components';
+import { TimeInstant } from 'nf-player';
 import * as React from 'react';
-import { TimeInstant } from '../../../src/';
+import styled from 'styled-components';
+
 import { DemoTheme } from './Theme';
 
 const StyledControlBar = styled.div`
@@ -60,11 +61,11 @@ type State = {
 };
 
 const initialState: State = {
-  changing: false
+  changing: false,
 };
 
 export class PlayerControlBar extends React.PureComponent<Props, State> {
-  private state = initialState;
+  state = initialState;
 
   onSeekBack = (seconds?: number) => {
     this.props.onSeek(TimeInstant.fromSeconds(seconds || -30));
@@ -93,7 +94,7 @@ export class PlayerControlBar extends React.PureComponent<Props, State> {
               disabled={isLoading}
               onClick={() => {
                 this.onChange(false);
-                this.props.onEval && this.props.onEval();
+                this.props.onEval?.();
               }}
             >
               Eval/Load Code from Editor

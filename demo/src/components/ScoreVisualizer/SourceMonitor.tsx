@@ -19,9 +19,10 @@
  * under the License.
  */
 
+import { FileNode, LoopNode, type TypedNode } from 'nf-grapher';
+import { type NodePlaybackDescription } from 'nf-player';
 import * as React from 'react';
-import { NodePlaybackDescription } from '../../../../src/';
-import { TypedNode, FileNode, LoopNode } from 'nf-grapher';
+
 import { FileNodeMonitor } from './FileNodeMonitor';
 import { LoopNodeMonitor } from './LoopNodeMonitor';
 
@@ -29,14 +30,12 @@ export class SourceMonitor {
   static fromNode(node: TypedNode, description: NodePlaybackDescription) {
     switch (node.kind) {
       case FileNode.PLUGIN_KIND: {
-        const n = node as FileNode;
         return (
           <FileNodeMonitor node={node as FileNode} description={description} />
         );
       }
 
       case LoopNode.PLUGIN_KIND: {
-        const n = node as LoopNode;
         return (
           <LoopNodeMonitor node={node as LoopNode} description={description} />
         );

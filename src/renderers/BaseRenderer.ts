@@ -19,21 +19,25 @@
  * under the License.
  */
 
+import { debug as Debug } from 'debug';
+import { type Score } from 'nf-grapher';
+
+import { applyFadeIn, applyFadeOut, mixdown } from '../AudioBufferUtils';
+import { ContentCache } from '../ContentCache';
+import { DirectedScore } from '../DirectedScore';
 import {
+  type CommandsMutation,
+  type Mutation,
+  MutationNames,
+} from '../Mutations';
+import {
+  type NodePlaybackDescription,
   SPDestinationNode,
-  SPNode,
-  NodePlaybackDescription
+  type SPNode,
 } from '../nodes/SPNodeFactory';
 import { TimeInstant } from '../time';
-import { Mutation, MutationNames, CommandsMutation } from '../Mutations';
-import { ContentCache } from '../ContentCache';
-import { Score } from 'nf-grapher';
-import { DirectedScore } from '../DirectedScore';
-import { RendererInfo, XAudioBufferFromInfo } from './RendererInfo';
-import { XAudioBuffer } from '../XAudioBuffer';
-import { applyFadeIn, applyFadeOut, mixdown } from '../AudioBufferUtils';
-
-import { debug as Debug } from 'debug';
+import { type XAudioBuffer } from '../XAudioBuffer';
+import { type RendererInfo, XAudioBufferFromInfo } from './RendererInfo';
 const DBG_STR = 'nf:base-renderer';
 const dbg = Debug(DBG_STR);
 
@@ -41,7 +45,7 @@ const dbg = Debug(DBG_STR);
 
 type QueuedEffect<T> = {
   reject: (err: Error) => void;
-  resolve: (value?: any) => void;
+  resolve: (value?: unknown) => void;
   effect: T;
 };
 
@@ -49,7 +53,7 @@ export const enum PlayingState {
   STOPPED,
   STARTING,
   PLAYING,
-  STOPPING
+  STOPPING,
 }
 
 export class BaseRenderer {
@@ -73,7 +77,7 @@ export class BaseRenderer {
 
   constructor(
     public readonly info: RendererInfo,
-    protected readonly autoRolloff: boolean = true
+    protected readonly autoRolloff: boolean = true,
   ) {}
 
   // TODO: does this need a destroy method?
@@ -106,7 +110,7 @@ export class BaseRenderer {
 
     const renderTime = TimeInstant.fromSamples(
       this.samplesElapsed,
-      this.info.sampleRate
+      this.info.sampleRate,
     );
     for (let i = 0; i < this.dnodes.length; i++) {
       const destination = this.dnodes[i];
@@ -150,7 +154,7 @@ export class BaseRenderer {
     await node.timeChange(
       this.renderedTime(),
       this.contentCache,
-      this.info.quantumSize
+      this.info.quantumSize,
     );
 
     await this.contentCache.scoreContentLoaded(dscore.graphId());
@@ -170,7 +174,7 @@ export class BaseRenderer {
 
   async dequeueScore(
     graphId: string,
-    rolloff = this.autoRolloff
+    rolloff = this.autoRolloff,
   ): Promise<void> {
     const ee = { id: graphId, rolloff: this.playing ? rolloff : false };
     this.dequeuedScores.push(ee);
@@ -186,10 +190,10 @@ export class BaseRenderer {
   protected processEnqueuedScores(): XAudioBuffer[] | undefined {
     if (!this.enqueuedScores.length) return;
 
-    let buffers: XAudioBuffer[] = [];
-    let renderTime = TimeInstant.fromSamples(
+    const buffers: XAudioBuffer[] = [];
+    const renderTime = TimeInstant.fromSamples(
       this.samplesElapsed,
-      this.info.sampleRate
+      this.info.sampleRate,
     );
 
     while (this.enqueuedScores.length > 0) {
@@ -215,10 +219,10 @@ export class BaseRenderer {
   protected processDequeuedScores(): XAudioBuffer[] | undefined {
     if (!this.dequeuedScores.length) return;
 
-    let buffers: XAudioBuffer[] = [];
-    let renderTime = TimeInstant.fromSamples(
+    const buffers: XAudioBuffer[] = [];
+    const renderTime = TimeInstant.fromSamples(
       this.samplesElapsed,
-      this.info.sampleRate
+      this.info.sampleRate,
     );
 
     while (this.dequeuedScores.length > 0) {
@@ -226,7 +230,7 @@ export class BaseRenderer {
       if (!ee) continue;
 
       const graphId = ee.id;
-      const idx = this.dnodes.findIndex(node => node.graphId() === graphId);
+      const idx = this.dnodes.findIndex((node) => node.graphId() === graphId);
       if (idx === -1) continue;
       const nodes = this.dnodes.splice(idx, 1);
       if (!nodes.length) continue;
@@ -253,18 +257,18 @@ export class BaseRenderer {
   dequeueScores() {
     dbg('dequeuing all scores');
     return Promise.all(
-      this.dnodes.map(dnode => this.dequeueScore(dnode.graphId()))
+      this.dnodes.map((dnode) => this.dequeueScore(dnode.graphId())),
     );
   }
 
   getScore(graphId: string) {
-    const node = this.dnodes.find(node => node.graphId() === graphId);
+    const node = this.dnodes.find((node) => node.graphId() === graphId);
     if (!node) return;
     return node.dscore;
   }
 
   getScores() {
-    return this.dnodes.map(node => node.dscore);
+    return this.dnodes.map((node) => node.dscore);
   }
 
   renderedTime() {
@@ -272,16 +276,16 @@ export class BaseRenderer {
   }
 
   public getPlaybackDescription(
-    renderTime: TimeInstant
+    renderTime: TimeInstant,
   ): NodePlaybackDescription[] {
     const all: NodePlaybackDescription[] = [];
-    this.dnodes.forEach(node => {
+    this.dnodes.forEach((node) => {
       const descs: NodePlaybackDescription[] = [];
       node.getPlaybackDescription(renderTime, descs);
 
       // Remove the destination node, it shouldn't be exposed.
       descs.shift();
-      all.push.apply(all, descs);
+      all.push(...descs);
     });
 
     return all;
@@ -296,7 +300,7 @@ export class BaseRenderer {
       const tc = node.timeChange(
         renderTime,
         this.contentCache,
-        this.info.quantumSize
+        this.info.quantumSize,
       );
       const cc = this.contentCache.scoreContentLoaded(node.graphId());
       // We want both node processing and content loading to happen as quickly
@@ -312,7 +316,7 @@ export class BaseRenderer {
       const ee = {
         resolve,
         reject,
-        effect
+        effect,
       };
 
       this.effects.push(ee);
@@ -327,7 +331,7 @@ export class BaseRenderer {
 
   protected ancestorsWithId(nodeId: string) {
     const results: SPNode[] = [];
-    this.dnodes.forEach(node => {
+    this.dnodes.forEach((node) => {
       results.push(...node.ancestorsWithId(nodeId));
     });
     return results;
@@ -337,9 +341,9 @@ export class BaseRenderer {
     const { graphId, nodeId } = payload;
     const candidates: SPDestinationNode[] = [];
     const enqueued = this.enqueuedScores.find(
-      es => es.destination.graphId() === graphId
+      (es) => es.destination.graphId() === graphId,
     );
-    const running = this.dnodes.find(node => node.graphId() === graphId);
+    const running = this.dnodes.find((node) => node.graphId() === graphId);
 
     if (enqueued) candidates.push(enqueued.destination);
     if (running) candidates.push(running);
@@ -347,7 +351,7 @@ export class BaseRenderer {
     // If graph id is not specified, attempt to apply the mutation to all.
     if (!graphId) {
       if (this.enqueuedScores.length) {
-        candidates.push(...this.enqueuedScores.map(es => es.destination));
+        candidates.push(...this.enqueuedScores.map((es) => es.destination));
       }
       if (this.dnodes.length) {
         candidates.push(...this.dnodes);
@@ -387,7 +391,7 @@ export class BaseRenderer {
 
           dbg('effect %o found targets %o', commandEffect, targets);
 
-          targets.map(target => target.acceptCommandsEffect(commandEffect));
+          targets.map((target) => target.acceptCommandsEffect(commandEffect));
           ee.resolve();
           break;
         }
@@ -395,13 +399,13 @@ export class BaseRenderer {
         default: {
           // The value of the switch condition must be used here for the
           // exhaustive check to work.
-          const exhaustive: never = effect.name;
+          const _exhaustive: never = effect.name;
           console.warn(`Unknown Effect: ${effect.name}`);
           ee.reject(new Error('Unknown Effect!'));
         }
       }
     } catch (err) {
-      ee.reject(err);
+      ee.reject(err as Error);
     }
   }
 

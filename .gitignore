@@ -9,3 +9,6 @@ dist-debug
 .cache-demo
 demo/.cache
 coverage
+*.tgz
+demo/monaco-declarations/*.d.ts
+test-results

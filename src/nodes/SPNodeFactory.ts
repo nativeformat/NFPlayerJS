@@ -20,23 +20,24 @@
  */
 
 import {
-  Node,
+  FileNode,
   GainNode as GGainNode,
   LoopNode,
-  FileNode,
-  StretchNode
+  type Node,
+  StretchNode,
 } from 'nf-grapher';
-import { DirectedScore } from '../DirectedScore';
-import { SPNode, NodePlaybackDescription } from './SPNode';
-import { SPGainNode } from './SPGainNode';
-import { SPFileNode } from './SPFileNode';
-import { SPLoopNode } from './SPLoopNode';
-import { TimeInstant } from '../time';
+
+import { type DirectedScore } from '../DirectedScore';
+import { type RendererInfo } from '../renderers/RendererInfo';
+import { type TimeInstant } from '../time';
+import { type XAudioBuffer } from '../XAudioBuffer';
 import { SPDestinationNode } from './SPDestinationNode';
+import { SPFileNode } from './SPFileNode';
+import { SPGainNode } from './SPGainNode';
+import { SPLoopNode } from './SPLoopNode';
+import { type NodePlaybackDescription, SPNode } from './SPNode';
 import { SPPassthroughNode } from './SPPassthroughNode';
 import { SPStretchNode } from './SPStretchNode';
-import { XAudioBuffer } from '../XAudioBuffer';
-import { RendererInfo } from '../renderers/RendererInfo';
 
 // NOTE: IT IS EXTREMELY IMPORTANT that any files outside this folder that
 // import anything from this folder, DO SO FROM THIS FILE! Otherwise, an
@@ -49,7 +50,7 @@ export class SPNodeFactory {
   static fromNode(
     node: Node,
     info: RendererInfo,
-    dscore: DirectedScore
+    dscore: DirectedScore,
   ): SPNode {
     switch (node.kind) {
       case GGainNode.PLUGIN_KIND: {
@@ -72,7 +73,7 @@ export class SPNodeFactory {
         console.warn(
           'Unimplemented node: ' +
             node.kind +
-            '. Substituting with Passthrough.'
+            '. Substituting with Passthrough.',
         );
         return new SPPassthroughNode(info, node, dscore);
       }
@@ -82,23 +83,23 @@ export class SPNodeFactory {
   static createAncestors(
     forNode: Node,
     info: RendererInfo,
-    dscore: DirectedScore
+    dscore: DirectedScore,
   ) {
     const ancestors: SPNode[] = [];
 
     if (forNode.kind === SPDestinationNode.KIND) {
       const leaves = dscore.leaves();
-      leaves.forEach(node => {
+      leaves.forEach((node) => {
         const ancestor = SPNodeFactory.fromNode(node, info, dscore);
         if (!ancestor) return;
         ancestors.push(ancestor);
       });
     } else {
       const incoming = dscore.incomingEdges(forNode);
-      incoming.forEach(edge => {
+      incoming.forEach((edge) => {
         const ancestor = dscore.source(edge);
         if (!ancestor) return;
-        let mixer = SPNodeFactory.fromNode(ancestor, info, dscore);
+        const mixer = SPNodeFactory.fromNode(ancestor, info, dscore);
         if (mixer !== undefined) {
           ancestors.push(mixer);
         }
@@ -112,7 +113,7 @@ export class SPNodeFactory {
     ancestors: SPNode[],
     renderTime: TimeInstant,
     buffers: XAudioBuffer[],
-    quantumSize: number
+    quantumSize: number,
   ) {
     for (let i = 0; i < ancestors.length; i++) {
       ancestors[i].feed(renderTime, buffers, quantumSize);
@@ -122,7 +123,7 @@ export class SPNodeFactory {
   static getPlaybackDescription(
     ancestors: SPNode[],
     renderTime: TimeInstant,
-    descriptions: NodePlaybackDescription[]
+    descriptions: NodePlaybackDescription[],
   ) {
     for (let i = 0; i < ancestors.length; i++) {
       ancestors[i].getPlaybackDescription(renderTime, descriptions);
@@ -131,11 +132,11 @@ export class SPNodeFactory {
 }
 
 export {
-  SPNode,
+  SPDestinationNode,
   SPFileNode,
   SPGainNode,
   SPLoopNode,
+  SPNode,
   SPStretchNode,
-  SPDestinationNode,
-  NodePlaybackDescription
 };
+export type { NodePlaybackDescription };

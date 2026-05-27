@@ -1,4 +1,5 @@
 #!/usr/bin/env node
+
 /*
  * Copyright (c) 2018-Present, Spotify AB.
  *
@@ -20,35 +21,29 @@
  * under the License.
  */
 
-import 'cross-fetch/polyfill';
-import * as Debug from 'debug';
-import * as path from 'path';
-import { SmartPlayer } from './SmartPlayer';
-import { MemoryRenderer } from './renderers/MemoryRenderer';
-import { RendererInfo } from './renderers/RendererInfo';
-import { writeFile as FSWriteFile, readFile as FSReadFile } from 'fs';
-import { exec as CPExec } from 'child_process';
-import { promisify } from 'util';
-import * as tempy from 'tempy';
+import { exec as CPExec } from 'node:child_process';
+import { randomUUID } from 'node:crypto';
+import { readFile, writeFile } from 'node:fs/promises';
+import { tmpdir } from 'node:os';
+import * as path from 'node:path';
+import { promisify } from 'node:util';
+
+import Debug from 'debug';
+import { Score } from 'nf-grapher';
 import * as WavDecoder from 'wav-decoder';
 import * as WavEncoder from 'wav-encoder';
-import { XAudioBuffer } from './XAudioBuffer';
+
+import pkg from '../package.json' with { type: 'json' };
+import { MemoryRenderer } from './renderers/MemoryRenderer';
+import { type RendererInfo } from './renderers/RendererInfo';
+import { SmartPlayer } from './SmartPlayer';
 import { TimeInstant } from './time';
-import { Score } from 'nf-grapher';
+import { XAudioBuffer } from './XAudioBuffer';
 
 const exec = promisify(CPExec);
-const writeFile = promisify(FSWriteFile);
-const readFile = promisify(FSReadFile);
 
 const dbg = Debug('nf:cli');
 const dbgdecoder = Debug('nf:cli-decoder');
-
-// Purposefully using `require` here because an `import` would cause TS to
-// change the output folder to be `dist/src/cli.js` to allow `package.json`
-// to exist in `dist/package.json`. We don't want TS to copy over package.json,
-// and nor do we want anything from the root to be included in the `dist`
-// folder.
-const pkg = require('../package.json');
 
 const showHelpAndExit = () => {
   console.log(`
@@ -93,7 +88,7 @@ function parseRawFlags(): ParsedCLIFlags {
       long: '--quantum',
       kind: 'number',
       alias: '-q',
-      default: 256
+      default: 256,
     }),
 
     // cacheDir: parseArg({
@@ -107,29 +102,29 @@ function parseRawFlags(): ParsedCLIFlags {
       long: '--input-file',
       kind: 'string',
       alias: '-i',
-      required: true
+      required: true,
     }),
 
     outputFile: parseFlagArg({
       long: '--output-file',
       kind: 'string',
       alias: '-o',
-      default: path.join(process.cwd(), 'nf-player.wav')
+      default: path.join(process.cwd(), 'nf-player.wav'),
     }),
 
     duration: parseFlagArg({
       long: '--duration',
       kind: 'number',
       alias: '-d',
-      default: 60
+      default: 60,
     }),
 
     seek: parseFlagArg({
       long: '--seek',
       kind: 'number',
       alias: '-s',
-      default: 0
-    })
+      default: 0,
+    }),
   };
 
   return parsed;
@@ -140,7 +135,7 @@ function go() {
     parseFlagArg({
       long: '--help',
       kind: 'boolean',
-      alias: '-h'
+      alias: '-h',
     })
   )
     return showHelpAndExit();
@@ -150,7 +145,7 @@ function go() {
       long: '--version',
       kind: 'boolean',
       alias: '-v',
-      default: false
+      default: false,
     })
   ) {
     console.log(pkg.version);
@@ -183,7 +178,7 @@ async function saveToFile(flags: ParsedCLIFlags) {
     sampleRate: 44100,
     channelCount: 2,
     quantumSize: quantum,
-    decode
+    decode,
   };
   const renderer = new MemoryRenderer(info);
   const player = new SmartPlayer(renderer);
@@ -203,76 +198,73 @@ async function saveToFile(flags: ParsedCLIFlags) {
   const output = renderer.renderDuration(TimeInstant.fromSeconds(duration));
 
   dbg('Encoding wav file');
-  let channelData = [];
+  const channelData = [];
   for (let i = 0; i < output.numberOfChannels; i++) {
     channelData.push(output.getChannelData(i));
   }
 
   const encoded = await WavEncoder.encode({
     sampleRate: info.sampleRate,
-    channelData
+    channelData,
   });
 
   dbg('Writing as %s (%d bytes)', outputFile, encoded.byteLength);
   await writeFile(outputFile, new DataView(encoded));
 }
 
-function decode(uri: string, buffer: ArrayBuffer): Promise<XAudioBuffer> {
-  return new Promise(async (resolve, reject) => {
-    // Using an external ffmpeg is so hacky!
-    // But soooo much easier than trying to stitch together the very
-    // fragile and relatively out of date JS audio encoder/decoder
-    // ecosystem.
-    const inputName = tempy.file();
-    const outputName = tempy.file();
-    dbgdecoder('%s decode requested', uri);
+async function decode(uri: string, buffer: ArrayBuffer): Promise<XAudioBuffer> {
+  // Using an external ffmpeg is so hacky!
+  // But soooo much easier than trying to stitch together the very
+  // fragile and relatively out of date JS audio encoder/decoder
+  // ecosystem.
+  const inputName = path.join(tmpdir(), `nf-player-${randomUUID()}`);
+  const outputName = path.join(tmpdir(), `nf-player-${randomUUID()}`);
+  dbgdecoder('%s decode requested', uri);
 
-    await writeFile(inputName, new DataView(buffer));
-    dbgdecoder('%s wrote %s (%d bytes?)', uri, inputName, buffer.byteLength);
+  await writeFile(inputName, new DataView(buffer));
+  dbgdecoder('%s wrote %s (%d bytes?)', uri, inputName, buffer.byteLength);
 
-    dbgdecoder('%s transcoding wav %s -> %s', uri, inputName, outputName);
-    await exec(`ffmpeg -i ${inputName} -f wav ${outputName}`);
-    dbgdecoder('%s finished transcoding', uri);
+  dbgdecoder('%s transcoding wav %s -> %s', uri, inputName, outputName);
+  await exec(`ffmpeg -i ${inputName} -f wav ${outputName}`);
+  dbgdecoder('%s finished transcoding', uri);
 
-    dbgdecoder('%s loading transcoded file', uri);
-    const wavData = await readFile(outputName);
-    dbgdecoder('%s loaded transcoded wav (%d bytes)', uri, wavData.byteLength);
+  dbgdecoder('%s loading transcoded file', uri);
+  const wavData = await readFile(outputName);
+  dbgdecoder('%s loaded transcoded wav (%d bytes)', uri, wavData.byteLength);
 
-    dbgdecoder('%s decoding wav', uri);
-    const decoded = await WavDecoder.decode(wavData);
-    dbgdecoder(
-      '%s decoded into %d channels @ %dhz',
-      uri,
-      decoded.channelData.length,
-      decoded.sampleRate
-    );
+  dbgdecoder('%s decoding wav', uri);
+  const decoded = await WavDecoder.decode(wavData);
+  dbgdecoder(
+    '%s decoded into %d channels @ %dhz',
+    uri,
+    decoded.channelData.length,
+    decoded.sampleRate,
+  );
 
-    const audio = new XAudioBuffer({
-      sampleRate: decoded.sampleRate,
-      numberOfChannels: decoded.channelData.length,
-      length: decoded.channelData[0].length
-    });
-    for (let i = 0; i < decoded.channelData.length; i++) {
-      const chan = decoded.channelData[i];
-      audio.copyToChannel(chan, i, 0);
-    }
-    resolve(audio);
+  const audio = new XAudioBuffer({
+    sampleRate: decoded.sampleRate,
+    numberOfChannels: decoded.channelData.length,
+    length: decoded.channelData[0].length,
   });
+  for (let i = 0; i < decoded.channelData.length; i++) {
+    const chan = decoded.channelData[i];
+    audio.copyToChannel(chan, i, 0);
+  }
+  return audio;
 }
 
-type StringToType<
-  T extends 'string' | 'number' | 'boolean'
-> = T extends 'string'
-  ? string
-  : T extends 'number'
-  ? number
-  : T extends 'boolean'
-  ? boolean
-  : never;
+type StringToType<T extends 'string' | 'number' | 'boolean'> =
+  T extends 'string'
+    ? string
+    : T extends 'number'
+      ? number
+      : T extends 'boolean'
+        ? boolean
+        : never;
 
 function parseFlagArg<
   KindName extends 'string' | 'number' | 'boolean',
-  Kind extends StringToType<KindName>
+  Kind extends StringToType<KindName>,
 >(config: {
   long: string;
   alias: string;
@@ -283,7 +275,7 @@ function parseFlagArg<
   const longIdx = process.argv.indexOf(config.long);
   const shortIdx = process.argv.indexOf(config.alias);
 
-  let value: any;
+  let value: string | boolean | Kind | undefined;
 
   if (longIdx > -1) {
     value = config.kind === 'boolean' ? true : process.argv[longIdx + 1];
@@ -295,15 +287,15 @@ function parseFlagArg<
 
   if (config.required && value === undefined)
     throw new Error(
-      `Required flag ${config.long} (${config.alias}) had no value.`
+      `Required flag ${config.long} (${config.alias}) had no value.`,
     );
 
   const parsed =
     config.kind === 'boolean'
       ? Boolean(value)
       : config.kind === 'number'
-      ? Number(value)
-      : String(value);
+        ? Number(value)
+        : String(value);
   return parsed as Kind;
 }
 

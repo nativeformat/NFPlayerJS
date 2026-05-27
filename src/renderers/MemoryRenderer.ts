@@ -20,11 +20,12 @@
  */
 
 import { debug as Debug } from 'debug';
-import { BaseRenderer } from './BaseRenderer';
-import { RendererInfo } from './RendererInfo';
-import { TimeInstant } from '../time';
+
+import { copy } from '../AudioBufferUtils';
+import { type TimeInstant } from '../time';
 import { XAudioBuffer } from '../XAudioBuffer';
-import { mixdown, copy } from '../AudioBufferUtils';
+import { BaseRenderer } from './BaseRenderer';
+import { type RendererInfo } from './RendererInfo';
 
 const DBG_STR = 'nf:memory-renderer';
 const dbg = Debug(DBG_STR);
@@ -66,7 +67,7 @@ export class MemoryRenderer extends BaseRenderer {
     const output = new XAudioBuffer({
       sampleRate: this.info.sampleRate,
       numberOfChannels: this.info.channelCount,
-      length
+      length,
     });
 
     const copyStart = Date.now();
@@ -95,7 +96,7 @@ export class MemoryRenderer extends BaseRenderer {
     dbg(
       'sampleIndex %d, stepTime %fms',
       this.samplesElapsed - this.info.quantumSize,
-      lastDuration
+      lastDuration,
     );
     return output;
   }

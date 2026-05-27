@@ -19,25 +19,21 @@
  * under the License.
  */
 
-import * as React from 'react';
-import {
-  SmartPlayer,
-  TimeInstant,
-  ScriptProcessorRenderer
-} from '../../../src';
-import { XAudioContext } from '../../../src/WebAudioContext';
-
-import { JSONEditor } from './JSONEditor/JSONEditor';
-import { CODEEditor } from './CODEEditor/CODEEditor';
-import { WaveVisualizer } from './WaveVisualizer/WaveVisualizer';
-import styled from 'styled-components';
-import { DemoTheme } from './Theme';
 import { Score } from 'nf-grapher';
+import { ScriptProcessorRenderer, SmartPlayer, TimeInstant } from 'nf-player';
+import { XAudioContext } from 'nf-player';
+import * as React from 'react';
+import styled from 'styled-components';
+
+import { CODEEditor } from './CODEEditor/CODEEditor';
+import { JSONEditor } from './JSONEditor/JSONEditor';
+import { DemoTheme } from './Theme';
 import {
+  VerticalExpandableSection,
   VerticalFitArea,
   VerticalFixedSection,
-  VerticalExpandableSection
 } from './VerticalLayout';
+import { WaveVisualizer } from './WaveVisualizer/WaveVisualizer';
 
 const StyledApplication = styled.div`
   font-family: ${DemoTheme.fontFamily};
@@ -49,7 +45,7 @@ const StyledApplication = styled.div`
 enum Panels {
   CODE,
   JSON,
-  VISUALIZER
+  VISUALIZER,
 }
 
 // https://webaudio.github.io/web-audio-api/#AnalyserNode-attributes
@@ -57,17 +53,17 @@ const defaultAnalyserOptions = {
   smoothingTimeConstant: 0.8,
   fftSize: 2048,
   minDecibels: -100,
-  maxDecibels: -30
+  maxDecibels: -30,
 };
 
 const initialAppState = {
   panel: Panels.CODE,
   player: new SmartPlayer(),
-  analyser: XAudioContext().createAnalyser()
+  analyser: XAudioContext().createAnalyser(),
 };
 
 type AppState = Readonly<typeof initialAppState>;
-type AppProps = {};
+type AppProps = unknown;
 
 export class App extends React.Component<AppProps, AppState> {
   readonly state: AppState = initialAppState;
@@ -89,7 +85,8 @@ export class App extends React.Component<AppProps, AppState> {
       nextRenderer = new ScriptProcessorRenderer(context, undefined);
 
       // FFT analyzer - note that processor is a private property
-      nextRenderer.processor.connect(analyser);
+      // eslint-disable-next-line @typescript-eslint/no-explicit-any
+      (nextRenderer as any).processor.connect(analyser);
     } else {
       // SmashEditor needs a much smaller quantum in order to
       // feel responsive when triggering one-shots!
@@ -99,14 +96,14 @@ export class App extends React.Component<AppProps, AppState> {
     const nextPlayer = new SmartPlayer(nextRenderer);
     const nextState = {
       panel: to,
-      player: nextPlayer
+      player: nextPlayer,
     };
 
     // typescript type guard
     if (analyser !== undefined) {
       this.setState({
         ...nextState,
-        analyser
+        analyser,
       });
     } else {
       this.setState(nextState);
@@ -114,6 +111,8 @@ export class App extends React.Component<AppProps, AppState> {
   }
 
   componentDidUpdate() {
+    // Exposed on `window` so the playground scripts can drive the player.
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
     (window as any).p = this.state.player;
   }
 

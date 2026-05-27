@@ -20,17 +20,18 @@
  */
 
 import { LoopNode } from 'nf-grapher';
-import { TimeInstant } from '../time';
-import { SPNode, NodePlaybackDescription } from './SPNode';
-import { mixdown, copy } from '../AudioBufferUtils';
-import { SPNodeFactory } from './SPNodeFactory';
-import { XAudioBuffer } from '../XAudioBuffer';
+
+import { copy, mixdown } from '../AudioBufferUtils';
 import { XAudioBufferFromInfo } from '../renderers/RendererInfo';
+import { TimeInstant } from '../time';
+import { type XAudioBuffer } from '../XAudioBuffer';
+import { type NodePlaybackDescription, SPNode } from './SPNode';
+import { SPNodeFactory } from './SPNodeFactory';
 
 export class SPLoopNode extends SPNode {
   getPlaybackDescription(
     renderTime: TimeInstant,
-    descriptions: NodePlaybackDescription[]
+    descriptions: NodePlaybackDescription[],
   ) {
     const node = LoopNode.from(this.node);
     const loopDuration = TimeInstant.fromNanos(node.duration);
@@ -43,7 +44,7 @@ export class SPLoopNode extends SPNode {
       currentLoopStartTime = loopWhen;
     } else {
       currentLoopStartTime = loopWhen.add(
-        loopDuration.scale(Math.floor(loopsSinceStart))
+        loopDuration.scale(Math.floor(loopsSinceStart)),
       );
     }
 
@@ -81,8 +82,8 @@ export class SPLoopNode extends SPNode {
         loopsSinceStart,
         currentLoopStartTime,
         currentLoopEndTime,
-        infinite
-      }
+        infinite,
+      },
     };
 
     descriptions.push(desc);
@@ -90,7 +91,7 @@ export class SPLoopNode extends SPNode {
     SPNodeFactory.getPlaybackDescription(
       this.ancestors,
       ancestorRenderTime,
-      descriptions
+      descriptions,
     );
   }
 
@@ -179,7 +180,7 @@ export class SPLoopNode extends SPNode {
     const outputs: XAudioBuffer[] = [];
 
     while (receivedSampleCount < sampleCount) {
-      let startIndex = sampleIndex;
+      const startIndex = sampleIndex;
       let count = this.nextSampleCount(sampleIndex, sampleCount);
 
       // arguably this should be a case in this.nextSampleCount.
@@ -190,7 +191,7 @@ export class SPLoopNode extends SPNode {
       const ancestorRenderTimeSamples = this.dilateSampleIndex(startIndex);
       const ancestorRenderTime = TimeInstant.fromSamples(
         ancestorRenderTimeSamples,
-        hz
+        hz,
       );
       const ancestorBuffers: XAudioBuffer[] = [];
       const ancestorFrameSize = count;
@@ -199,7 +200,7 @@ export class SPLoopNode extends SPNode {
         this.ancestors,
         ancestorRenderTime,
         ancestorBuffers,
-        ancestorFrameSize
+        ancestorFrameSize,
       );
 
       sampleIndex += count;

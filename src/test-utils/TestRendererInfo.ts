@@ -19,7 +19,7 @@
  * under the License.
  */
 
-import { RendererInfo } from '../renderers/RendererInfo';
+import { type RendererInfo } from '../renderers/RendererInfo';
 
 export const TestRendererInfo: RendererInfo = {
   sampleRate: 44100,
