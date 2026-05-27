@@ -19,27 +19,28 @@
  * under the License.
  */
 
-import { SmartPlayer } from './SmartPlayer';
+// Shim the API for testing, globally.
+import 'web-audio-test-api';
+
 import {
-  Score,
-  StretchNode,
   GainNode as GGainNode,
   Graph,
   LoopNode,
+  Score,
+  StretchNode,
 } from 'nf-grapher';
-import { type SetValueAtTimeCmd } from './params/ScoreAudioParam';
-import { TimeInstant } from './time';
+
 import {
-  type PushCommandsMutation,
   type ClearCommandsMutation,
   MutationNames,
+  type PushCommandsMutation,
   // RemoveNodesEffectPayload
 } from './Mutations';
-
-// Shim the API for testing, globally.
-import 'web-audio-test-api';
-import { type TestAudioContext } from './test-utils/TestAudioContext';
+import { type SetValueAtTimeCmd } from './params/ScoreAudioParam';
 import { ScriptProcessorRenderer } from './renderers/ScriptProcessorRenderer';
+import { SmartPlayer } from './SmartPlayer';
+import { type TestAudioContext } from './test-utils/TestAudioContext';
+import { TimeInstant } from './time';
 
 test('Apply PushCommandsEffectPayload Effect', async () => {
   const ctx = new AudioContext() as TestAudioContext; // actually the test shim.

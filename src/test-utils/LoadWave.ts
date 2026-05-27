@@ -20,8 +20,9 @@
  */
 
 import * as WavDecoder from 'wav-decoder';
-import { XAudioBuffer } from '../XAudioBuffer';
+
 import { readFile } from '../pio';
+import { XAudioBuffer } from '../XAudioBuffer';
 
 export async function loadWave(filePath: string): Promise<XAudioBuffer> {
   const fileData = await readFile(filePath);
@@ -30,7 +31,7 @@ export async function loadWave(filePath: string): Promise<XAudioBuffer> {
   const audio = new XAudioBuffer({
     sampleRate: decoded.sampleRate,
     numberOfChannels: decoded.channelData.length,
-    length: decoded.channelData[0].length
+    length: decoded.channelData[0].length,
   });
 
   for (let i = 0; i < decoded.channelData.length; i++) {

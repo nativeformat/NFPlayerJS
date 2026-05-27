@@ -19,16 +19,14 @@
  * under the License.
  */
 
+import * as monaco from 'monaco-editor';
 import EditorWorker from 'monaco-editor/esm/vs/editor/editor.worker?worker';
 import JsonWorker from 'monaco-editor/esm/vs/language/json/json.worker?worker';
 import TsWorker from 'monaco-editor/esm/vs/language/typescript/ts.worker?worker';
-
-import * as monaco from 'monaco-editor';
-
 import * as React from 'react';
 
-import nfPlayerDts from '../../monaco-declarations/nf-player.d.ts?raw';
 import nfGrapherDts from '../../monaco-declarations/nf-grapher.d.ts?raw';
+import nfPlayerDts from '../../monaco-declarations/nf-player.d.ts?raw';
 
 (
   self as Window & { MonacoEnvironment?: monaco.Environment }

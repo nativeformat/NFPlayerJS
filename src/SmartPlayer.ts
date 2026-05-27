@@ -19,12 +19,13 @@
  * under the License.
  */
 
-import { TimeInstant } from './time';
 import { type Score } from 'nf-grapher';
+
 import { type Mutation } from './Mutations';
 import { type NodePlaybackDescription } from './nodes/SPNodeFactory';
 import { type BaseRenderer } from './renderers/BaseRenderer';
 import { ScriptProcessorRenderer } from './renderers/ScriptProcessorRenderer';
+import { TimeInstant } from './time';
 
 export type { NodePlaybackDescription };
 
@@ -79,7 +80,7 @@ export class SmartPlayer {
   }
 
   public getPlaybackDescription(
-    renderTime: TimeInstant
+    renderTime: TimeInstant,
   ): NodePlaybackDescription[] {
     return this.renderer.getPlaybackDescription(renderTime);
   }
@@ -92,7 +93,7 @@ export class SmartPlayer {
   public enqueueScore(score: Score, fadeIn?: boolean): Promise<void>;
   public enqueueScore(
     scoreOrJSON: string | Score,
-    fadeIn: boolean = true
+    fadeIn: boolean = true,
   ): Promise<void> {
     // Do not preparse into TypedNodes! They're too restrictive.
     // Score.from() creates TypedNodes.

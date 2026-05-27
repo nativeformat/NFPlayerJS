@@ -22,6 +22,7 @@
 import { type LoopNode } from 'nf-grapher';
 import { type NodePlaybackDescription, TimeInstant } from 'nf-player';
 import * as React from 'react';
+
 import { CanvasPowered } from './CanvasPowered';
 
 type LoopNodeMonitorProps = {

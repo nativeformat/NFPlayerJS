@@ -21,22 +21,24 @@
  * under the License.
  */
 
-import Debug from 'debug';
-import * as path from 'node:path';
-import { writeFile, readFile } from 'node:fs/promises';
 import { exec as CPExec } from 'node:child_process';
-import { promisify } from 'node:util';
-import { tmpdir } from 'node:os';
 import { randomUUID } from 'node:crypto';
+import { readFile, writeFile } from 'node:fs/promises';
+import { tmpdir } from 'node:os';
+import * as path from 'node:path';
+import { promisify } from 'node:util';
+
+import Debug from 'debug';
+import { Score } from 'nf-grapher';
 import * as WavDecoder from 'wav-decoder';
 import * as WavEncoder from 'wav-encoder';
-import { SmartPlayer } from './SmartPlayer';
+
+import pkg from '../package.json' with { type: 'json' };
 import { MemoryRenderer } from './renderers/MemoryRenderer';
 import { type RendererInfo } from './renderers/RendererInfo';
-import { XAudioBuffer } from './XAudioBuffer';
+import { SmartPlayer } from './SmartPlayer';
 import { TimeInstant } from './time';
-import { Score } from 'nf-grapher';
-import pkg from '../package.json' with { type: 'json' };
+import { XAudioBuffer } from './XAudioBuffer';
 
 const exec = promisify(CPExec);
 

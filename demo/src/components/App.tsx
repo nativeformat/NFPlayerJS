@@ -19,21 +19,21 @@
  * under the License.
  */
 
-import * as React from 'react';
-import { SmartPlayer, TimeInstant, ScriptProcessorRenderer } from 'nf-player';
-import { XAudioContext } from 'nf-player';
-
-import { JSONEditor } from './JSONEditor/JSONEditor';
-import { CODEEditor } from './CODEEditor/CODEEditor';
-import { WaveVisualizer } from './WaveVisualizer/WaveVisualizer';
-import styled from 'styled-components';
-import { DemoTheme } from './Theme';
 import { Score } from 'nf-grapher';
+import { ScriptProcessorRenderer, SmartPlayer, TimeInstant } from 'nf-player';
+import { XAudioContext } from 'nf-player';
+import * as React from 'react';
+import styled from 'styled-components';
+
+import { CODEEditor } from './CODEEditor/CODEEditor';
+import { JSONEditor } from './JSONEditor/JSONEditor';
+import { DemoTheme } from './Theme';
 import {
+  VerticalExpandableSection,
   VerticalFitArea,
   VerticalFixedSection,
-  VerticalExpandableSection,
 } from './VerticalLayout';
+import { WaveVisualizer } from './WaveVisualizer/WaveVisualizer';
 
 const StyledApplication = styled.div`
   font-family: ${DemoTheme.fontFamily};

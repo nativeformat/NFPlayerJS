@@ -20,11 +20,12 @@
  */
 
 import { debug as Debug } from 'debug';
-import { BaseRenderer } from './BaseRenderer';
-import { type RendererInfo } from './RendererInfo';
+
+import { copy } from '../AudioBufferUtils';
 import { type TimeInstant } from '../time';
 import { XAudioBuffer } from '../XAudioBuffer';
-import { copy } from '../AudioBufferUtils';
+import { BaseRenderer } from './BaseRenderer';
+import { type RendererInfo } from './RendererInfo';
 
 const DBG_STR = 'nf:memory-renderer';
 const dbg = Debug(DBG_STR);

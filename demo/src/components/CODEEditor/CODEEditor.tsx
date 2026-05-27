@@ -19,26 +19,25 @@
  * under the License.
  */
 
-import * as React from 'react';
-import { type SmartPlayer, TimeInstant } from 'nf-player';
-import {
-  VerticalFitArea,
-  VerticalFixedSection,
-  VerticalExpandableSection
-} from '../VerticalLayout';
-import {
-  examples,
-  type ExampleScript,
-  type CompiledPlaygroundScript
-} from '../../ExampleScripts';
-import { PlayerControlBar } from '../PlayerControlBar';
-import { PlayerWatcher } from '../PlayerWatcher';
-import { MonacoEditor } from '../Monaco';
-
 import * as NFGrapher from 'nf-grapher';
 import * as NFPlayer from 'nf-player';
-
+import { type SmartPlayer, TimeInstant } from 'nf-player';
+import * as React from 'react';
 import * as ts from 'typescript';
+
+import {
+  type CompiledPlaygroundScript,
+  examples,
+  type ExampleScript,
+} from '../../ExampleScripts';
+import { MonacoEditor } from '../Monaco';
+import { PlayerControlBar } from '../PlayerControlBar';
+import { PlayerWatcher } from '../PlayerWatcher';
+import {
+  VerticalExpandableSection,
+  VerticalFitArea,
+  VerticalFixedSection,
+} from '../VerticalLayout';
 
 type Props = {
   player: SmartPlayer;
@@ -51,13 +50,13 @@ type State = {
 
 const initialState: State = {
   example: examples[0],
-  loading: false
+  loading: false,
 };
 
 // This is super esoteric. The TS compiler will transpile `async`, so to get
 // an _actual_ async function, we need to eval it...
 const GetAsyncFunctionCtor = new Function(
-  'return Object.getPrototypeOf(async function(){}).constructor'
+  'return Object.getPrototypeOf(async function(){}).constructor',
 );
 const AsyncFunction = GetAsyncFunctionCtor();
 
@@ -72,8 +71,8 @@ export class CODEEditor extends React.Component<Props, State> {
     this.setState({
       example: {
         name: examples[0].name,
-        script: this.processExample(examples[0])
-      }
+        script: this.processExample(examples[0]),
+      },
     });
   }
 
@@ -91,7 +90,7 @@ export class CODEEditor extends React.Component<Props, State> {
     const nonWhitespaceMatch = lines[0].match(/\S/);
 
     if (nonWhitespaceMatch !== null) {
-      lines = lines.map(line => line.substring(nonWhitespaceMatch.index!));
+      lines = lines.map((line) => line.substring(nonWhitespaceMatch.index!));
     }
 
     // This is to allow monaco to not red squiggle top-level await.
@@ -103,19 +102,19 @@ export class CODEEditor extends React.Component<Props, State> {
 
   onExampleSelect = async (event: React.ChangeEvent<HTMLSelectElement>) => {
     const example = examples.find(
-      example => example.name === event.target.value
+      (example) => example.name === event.target.value,
     );
 
     if (example) {
       this.setState({
         example: {
           name: example.name,
-          script: this.processExample(example)
-        }
+          script: this.processExample(example),
+        },
       });
     } else {
       this.setState({
-        example
+        example,
       });
     }
 
@@ -143,14 +142,14 @@ export class CODEEditor extends React.Component<Props, State> {
     // since it will be difficult to expose it to an iframe.
 
     const transpiled = ts.transpileModule(code, {
-      compilerOptions: { module: ts.ModuleKind.ES2015 }
+      compilerOptions: { module: ts.ModuleKind.ES2015 },
     });
 
     const fn = new AsyncFunction(
       'p',
       'NFGrapher',
       'NFPlayer',
-      transpiled.outputText + ';return main();'
+      transpiled.outputText + ';return main();',
     ) as CompiledPlaygroundScript;
 
     try {
@@ -179,7 +178,7 @@ export class CODEEditor extends React.Component<Props, State> {
               onChange={this.onExampleSelect}
               value={example ? example.name : undefined}
             >
-              {examples.map(example => (
+              {examples.map((example) => (
                 <option key={example.name} value={example.name}>
                   {example.name}
                 </option>
@@ -195,7 +194,7 @@ export class CODEEditor extends React.Component<Props, State> {
                 isPlaying={playing}
                 isLoading={loading}
                 onPlayPause={this.handlePlayPause}
-                onSeek={amount => {
+                onSeek={(amount) => {
                   const total = player.renderTime.add(amount);
                   player.renderTime = total.lt(TimeInstant.ZERO)
                     ? TimeInstant.ZERO
@@ -210,7 +209,7 @@ export class CODEEditor extends React.Component<Props, State> {
           <MonacoEditor
             language={'typescript'}
             value={example ? example.script.toString() : ''}
-            valueDelegate={getValue => (this.getEditorValue = getValue)}
+            valueDelegate={(getValue) => (this.getEditorValue = getValue)}
             onChange={
               this.playerControlBarRef.current
                 ? this.playerControlBarRef.current.onChange

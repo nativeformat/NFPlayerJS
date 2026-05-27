@@ -19,19 +19,19 @@
  * under the License.
  */
 
-import * as React from 'react';
+import { Score, type TypedNode } from 'nf-grapher';
 import { type SmartPlayer, TimeInstant } from 'nf-player';
-import { examples, type ExampleJSON } from '../../ExampleJSONScores';
+import * as React from 'react';
 
+import { type ExampleJSON, examples } from '../../ExampleJSONScores';
 import { MonacoEditor } from '../Monaco';
 import { PlayerControlBar } from '../PlayerControlBar';
 import { PlayerWatcher } from '../PlayerWatcher';
-import { Score, type TypedNode } from 'nf-grapher';
 import { ScoreVisualizer } from '../ScoreVisualizer';
 import {
+  VerticalExpandableSection,
   VerticalFitArea,
   VerticalFixedSection,
-  VerticalExpandableSection,
 } from '../VerticalLayout';
 
 // Nodes within Grapher Scores are of type Node and are a 1:1 with their JSON

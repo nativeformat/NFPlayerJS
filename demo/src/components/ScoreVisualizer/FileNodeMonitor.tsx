@@ -22,6 +22,7 @@
 import { type FileNode } from 'nf-grapher';
 import { type NodePlaybackDescription, TimeInstant } from 'nf-player';
 import * as React from 'react';
+
 import { CanvasPowered } from './CanvasPowered';
 
 type FileNodeMonitorProps = {
@@ -49,8 +50,8 @@ export class FileNodeMonitor extends React.Component<FileNodeMonitorProps> {
     const rangeProgress = time.gte(endTime)
       ? 1
       : time.lte(when)
-      ? 0
-      : time.sub(when).div(duration);
+        ? 0
+        : time.sub(when).div(duration);
     const leadupProgress = time.lte(when) ? when.sub(time).div(when) : 0;
 
     //  leadup (height * 0.25)   ----------------------------
@@ -102,11 +103,11 @@ export class FileNodeMonitor extends React.Component<FileNodeMonitorProps> {
             ctx.fillRect(
               Math.min(
                 rangeStartX + rangeWidth * rangeProgress,
-                cvs.width - playheadWidth
+                cvs.width - playheadWidth,
               ),
               fileY,
               playheadWidth,
-              fileHeight
+              fileHeight,
             );
           }}
         </CanvasPowered>

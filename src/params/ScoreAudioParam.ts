@@ -19,8 +19,9 @@
  * under the License.
  */
 
-import PseudoAudioParam from 'pseudo-audio-param';
 import { type Command } from 'nf-grapher';
+import PseudoAudioParam from 'pseudo-audio-param';
+
 import { TimeInstant } from '../time';
 
 interface ScoreAudioParamEvent {

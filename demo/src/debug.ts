@@ -19,8 +19,8 @@
  * under the License.
  */
 
+import { FileNode, Score, StretchNode } from 'nf-grapher';
 import { SmartPlayer, TimeInstant } from 'nf-player';
-import { StretchNode, FileNode, Score } from 'nf-grapher';
 
 import { default as Sine } from '../../fixtures/chirp_linear_5.50.wav';
 

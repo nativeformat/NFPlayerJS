@@ -19,12 +19,13 @@
  * under the License.
  */
 
+import { type Command, type TypedNode } from 'nf-grapher';
+import { ScoreAudioParam, TimeInstant } from 'nf-player';
 import * as React from 'react';
-import { TimeInstant, ScoreAudioParam } from 'nf-player';
 import styled from 'styled-components';
-import { type TypedNode, type Command } from 'nf-grapher';
-import { CanvasPowered } from './CanvasPowered';
+
 import { DemoTheme } from '../Theme';
+import { CanvasPowered } from './CanvasPowered';
 
 const StyledParamMonitor = styled.div``;
 
@@ -51,7 +52,7 @@ export class ParamMonitor extends React.Component<Props> {
 
     const n = node.toNode();
     const params = n.params!;
-    Object.keys(params).forEach(name => {
+    Object.keys(params).forEach((name) => {
       const commands = params[name];
 
       meters.push(
@@ -60,7 +61,7 @@ export class ParamMonitor extends React.Component<Props> {
           name={name}
           desc={ParamMonitor.ExtractDescription(commands)}
           currentTime={currentTime}
-        />
+        />,
       );
     });
 
@@ -69,7 +70,7 @@ export class ParamMonitor extends React.Component<Props> {
 
   static ExtractDescription(
     paramCommands: Command[],
-    timeStep = TimeInstant.fromSeconds(8192 / 44100)
+    timeStep = TimeInstant.fromSeconds(8192 / 44100),
   ): ParamDescription {
     const p1 = new ScoreAudioParam(1);
     for (let i = 0; i < paramCommands.length; i++) {
@@ -82,7 +83,7 @@ export class ParamMonitor extends React.Component<Props> {
         last: TimeInstant.ZERO,
         firstDefined: TimeInstant.ZERO,
         // TODO: put actual default value here?
-        values: []
+        values: [],
       };
     }
 
@@ -111,7 +112,7 @@ export class ParamMonitor extends React.Component<Props> {
       first,
       last,
       firstDefined,
-      values
+      values,
     };
   }
 
@@ -178,7 +179,7 @@ export class ParamMonitor extends React.Component<Props> {
         progress * (cvs.width - playheadWidth),
         0,
         playheadWidth,
-        cvs.height
+        cvs.height,
       );
     }
   };
@@ -197,7 +198,7 @@ export class ParamMonitor extends React.Component<Props> {
     // TODO: really need a default value...
     // Find the nearest computed value to the current time.
     const index = Math.floor(
-      Math.min(Math.max(progress, 0), 1) * (values.length - 1)
+      Math.min(Math.max(progress, 0), 1) * (values.length - 1),
     );
     const value = values.length ? values[index] : 1;
 

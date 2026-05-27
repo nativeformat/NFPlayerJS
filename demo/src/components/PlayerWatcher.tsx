@@ -19,21 +19,18 @@
  * under the License.
  */
 
-import * as React from 'react';
 import { type SmartPlayer, TimeInstant } from 'nf-player';
+import * as React from 'react';
 
 type Props = {
   player: SmartPlayer;
   // forceUpdate: boolean;
-  children: (
-    renderTime: TimeInstant,
-    playing: boolean
-  ) => React.ReactNode;
+  children: (renderTime: TimeInstant, playing: boolean) => React.ReactNode;
 };
 
 const initialState = {
   renderTime: TimeInstant.ZERO,
-  playing: false
+  playing: false,
 };
 
 type State = Readonly<typeof initialState>;
@@ -51,7 +48,7 @@ export class PlayerWatcher extends React.Component<Props, State> {
       const { player } = this.props;
       const { renderTime, playing } = player;
 
-      this.setState(state => {
+      this.setState((state) => {
         if (state.renderTime.eq(renderTime) && state.playing === playing)
           return state;
         return { renderTime, playing };
@@ -78,7 +75,7 @@ export class PlayerWatcher extends React.Component<Props, State> {
   render() {
     return this.props.children(
       this.state.renderTime,
-      this.props.player.playing
+      this.props.player.playing,
     );
   }
 }

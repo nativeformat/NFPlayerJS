@@ -19,7 +19,7 @@
  * under the License.
  */
 
-import { type Edge, Score, type Node } from 'nf-grapher';
+import { type Edge, type Node, Score } from 'nf-grapher';
 
 // Serious Bug in Grapher: Score.Graph.Nodes is of type Node[], but _could_ be TypedNode[]!
 // Note: I recall that this is by design, but this should be changed. It makes using a Score

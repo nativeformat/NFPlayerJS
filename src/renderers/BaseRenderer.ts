@@ -19,25 +19,25 @@
  * under the License.
  */
 
+import { debug as Debug } from 'debug';
+import { type Score } from 'nf-grapher';
+
+import { applyFadeIn, applyFadeOut, mixdown } from '../AudioBufferUtils';
+import { ContentCache } from '../ContentCache';
+import { DirectedScore } from '../DirectedScore';
 import {
-  SPDestinationNode,
-  type SPNode,
-  type NodePlaybackDescription,
-} from '../nodes/SPNodeFactory';
-import { TimeInstant } from '../time';
-import {
+  type CommandsMutation,
   type Mutation,
   MutationNames,
-  type CommandsMutation,
 } from '../Mutations';
-import { ContentCache } from '../ContentCache';
-import { type Score } from 'nf-grapher';
-import { DirectedScore } from '../DirectedScore';
-import { type RendererInfo, XAudioBufferFromInfo } from './RendererInfo';
+import {
+  type NodePlaybackDescription,
+  SPDestinationNode,
+  type SPNode,
+} from '../nodes/SPNodeFactory';
+import { TimeInstant } from '../time';
 import { type XAudioBuffer } from '../XAudioBuffer';
-import { applyFadeIn, applyFadeOut, mixdown } from '../AudioBufferUtils';
-
-import { debug as Debug } from 'debug';
+import { type RendererInfo, XAudioBufferFromInfo } from './RendererInfo';
 const DBG_STR = 'nf:base-renderer';
 const dbg = Debug(DBG_STR);
 

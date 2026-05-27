@@ -20,6 +20,7 @@
  */
 
 import { type Command } from 'nf-grapher';
+
 import { type ScoreAudioParam } from './params/ScoreAudioParam';
 
 export type Mutation = PushCommandsMutation | ClearCommandsMutation;

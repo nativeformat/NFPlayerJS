@@ -19,13 +19,13 @@
  * under the License.
  */
 
+import { debug as Debug } from 'debug';
+import { FileNode } from 'nf-grapher';
+
 import { type ContentCache } from '../ContentCache';
 import { TimeInstant } from '../time';
-import { FileNode } from 'nf-grapher';
-import { SPNode, type NodePlaybackDescription } from './SPNode';
-
-import { debug as Debug } from 'debug';
 import { XAudioBuffer } from '../XAudioBuffer';
+import { type NodePlaybackDescription, SPNode } from './SPNode';
 
 const DBG_STR = 'nf:filenode';
 const dbg = Debug(DBG_STR);
@@ -34,12 +34,12 @@ export class SPFileNode extends SPNode {
   protected ab: XAudioBuffer = new XAudioBuffer({
     numberOfChannels: this.info.channelCount,
     length: 1,
-    sampleRate: this.info.sampleRate
+    sampleRate: this.info.sampleRate,
   });
 
   getPlaybackDescription(
     renderTime: TimeInstant,
-    descriptions: NodePlaybackDescription[]
+    descriptions: NodePlaybackDescription[],
   ) {
     const { id, kind } = this.node;
 
@@ -47,7 +47,7 @@ export class SPFileNode extends SPNode {
       id,
       kind,
       time: renderTime,
-      file: { maxDuration: TimeInstant.fromSeconds(this.ab.duration) }
+      file: { maxDuration: TimeInstant.fromSeconds(this.ab.duration) },
     });
   }
 
@@ -103,7 +103,7 @@ export class SPFileNode extends SPNode {
     } else {
       // Started in the past or now
       contentBufferStartIndex = Math.floor(
-        nowSamples - whenSamples + (0 + offsetSamples)
+        nowSamples - whenSamples + (0 + offsetSamples),
       );
     }
 
@@ -120,7 +120,7 @@ export class SPFileNode extends SPNode {
     const output = new XAudioBuffer({
       numberOfChannels: ab.numberOfChannels,
       length: sampleCount,
-      sampleRate: hz
+      sampleRate: hz,
     });
     for (let i = 0; i < output.numberOfChannels; i++) {
       // Subarray is used below because these APIs are nuts. They don't allow
@@ -134,7 +134,7 @@ export class SPFileNode extends SPNode {
           .getChannelData(i)
           .subarray(
             offsetSamples,
-            offsetSamples + (sampleCount - outputBufferStartIndex)
+            offsetSamples + (sampleCount - outputBufferStartIndex),
           );
         output.copyToChannel(offsetted, i, outputBufferStartIndex);
       } else if (contentBufferStartIndex + sampleCount > ab.length) {
@@ -144,14 +144,14 @@ export class SPFileNode extends SPNode {
             .getChannelData(i)
             .subarray(0, ab.length - contentBufferStartIndex),
           i,
-          contentBufferStartIndex
+          contentBufferStartIndex,
         );
       } else {
         // The frame is contained within the content buffer
         ab.copyFromChannel(
           output.getChannelData(i),
           i,
-          contentBufferStartIndex
+          contentBufferStartIndex,
         );
       }
     }
@@ -162,11 +162,11 @@ export class SPFileNode extends SPNode {
   async timeChange(
     renderTime: TimeInstant,
     cache: ContentCache,
-    quantumSize: number
+    quantumSize: number,
   ) {
     await Promise.all([
       super.timeChange(renderTime, cache, quantumSize),
-      this.load(cache)
+      this.load(cache),
     ]);
   }
 
@@ -184,18 +184,18 @@ export class SPFileNode extends SPNode {
     const content = await cache.get(uri, this.dscore.graphId(), () => {
       dbg('loading file %s', uri);
       return fetch(uri)
-        .then(res => {
+        .then((res) => {
           if (!res.ok)
             throw new Error(
-              `Failed to load ${uri}. Status: ${res.status} ${res.statusText}`
+              `Failed to load ${uri}. Status: ${res.status} ${res.statusText}`,
             );
           return res.arrayBuffer();
         })
-        .then(ab => {
+        .then((ab) => {
           dbg('loaded file %s', uri);
           return this.info.decode(uri, ab);
         })
-        .then(ab => XAudioBuffer.fromAudioBuffer(ab));
+        .then((ab) => XAudioBuffer.fromAudioBuffer(ab));
     });
 
     this.ab = content;

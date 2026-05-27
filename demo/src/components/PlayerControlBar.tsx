@@ -19,9 +19,10 @@
  * under the License.
  */
 
-import styled from 'styled-components';
-import * as React from 'react';
 import { TimeInstant } from 'nf-player';
+import * as React from 'react';
+import styled from 'styled-components';
+
 import { DemoTheme } from './Theme';
 
 const StyledControlBar = styled.div`

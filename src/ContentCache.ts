@@ -20,6 +20,7 @@
  */
 
 import { debug as Debug } from 'debug';
+
 import { type XAudioBuffer } from './XAudioBuffer';
 
 const DBG_STR = 'nf:content-cache';
@@ -41,13 +42,13 @@ export class ContentCache {
     private audio = new Map<string, XAudioBuffer>(),
     // Per-score mapping of requests, so loading a single Score does not block
     // other scores, and we can know when a single Score is done.
-    private scores = new Map<string, LoadingScore>()
+    private scores = new Map<string, LoadingScore>(),
   ) {}
 
   async get(
     uri: string,
     graphId: string,
-    fetcher: () => Promise<XAudioBuffer>
+    fetcher: () => Promise<XAudioBuffer>,
   ): Promise<XAudioBuffer> {
     const existingAudio = this.audio.get(uri);
     if (existingAudio) return existingAudio;
@@ -59,7 +60,7 @@ export class ContentCache {
       // This is super hacky, just to prevent typescript from complaining
       // and allow the promise controls to escape.
       let signalLoaded: () => void = () => {};
-      let signalFailed: (err: Error) => void = _ => {};
+      let signalFailed: (err: Error) => void = (_) => {};
 
       const p = new Promise<void>((resolve, reject) => {
         signalLoaded = resolve;
@@ -71,7 +72,7 @@ export class ContentCache {
         graphId,
         loaded: p,
         signalLoaded,
-        signalFailed
+        signalFailed,
       };
 
       this.scores.set(graphId, lscore);

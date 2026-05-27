@@ -19,13 +19,14 @@
  * under the License.
  */
 
-import * as React from 'react';
 import { type TypedNode } from 'nf-grapher';
-import styled from 'styled-components';
-import { SourceMonitor } from './SourceMonitor';
 import { type NodePlaybackDescription } from 'nf-player';
+import * as React from 'react';
+import styled from 'styled-components';
+
 import { DemoTheme } from '../Theme';
 import { ParamMonitor } from './ParamMonitor';
+import { SourceMonitor } from './SourceMonitor';
 
 const niceNodeName = (name: string) => {
   const last = name.split('.').pop();
@@ -86,7 +87,7 @@ const configTableForNode = (node: TypedNode) => {
   return (
     <StyledConfigTable>
       <tbody>
-        {Object.keys(config).map(key => (
+        {Object.keys(config).map((key) => (
           <tr key={key}>
             <td>{key}</td>
             <td>

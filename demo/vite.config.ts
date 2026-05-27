@@ -1,5 +1,5 @@
-import { defineConfig } from 'vite';
 import react from '@vitejs/plugin-react';
+import { defineConfig } from 'vite';
 
 export default defineConfig({
   base: './',
@@ -9,13 +9,13 @@ export default defineConfig({
     rollupOptions: {
       input: {
         main: './index.html',
-        debug: './debug.html'
-      }
-    }
+        debug: './debug.html',
+      },
+    },
   },
   server: {
     // The wav fixture under <repo>/fixtures is shared with package tests.
-    fs: { allow: ['..'] }
+    fs: { allow: ['..'] },
   },
-  plugins: [react()]
+  plugins: [react()],
 });

@@ -1,7 +1,8 @@
 import js from '@eslint/js';
-import tseslint from 'typescript-eslint';
 import prettier from 'eslint-config-prettier';
 import licenseHeader from 'eslint-plugin-license-header';
+import simpleImportSort from 'eslint-plugin-simple-import-sort';
+import tseslint from 'typescript-eslint';
 
 const apacheHeader = [
   '/*',
@@ -49,6 +50,7 @@ export default [
     },
   },
   {
+    plugins: { 'simple-import-sort': simpleImportSort },
     rules: {
       '@typescript-eslint/consistent-type-imports': [
         'error',
@@ -58,6 +60,8 @@ export default [
         'error',
         { argsIgnorePattern: '^_', varsIgnorePattern: '^_' },
       ],
+      'simple-import-sort/imports': 'error',
+      'simple-import-sort/exports': 'error',
     },
   },
 ];

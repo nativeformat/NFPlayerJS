@@ -19,9 +19,10 @@
  * under the License.
  */
 
-import * as React from 'react';
+import { FileNode, LoopNode, type TypedNode } from 'nf-grapher';
 import { type NodePlaybackDescription } from 'nf-player';
-import { type TypedNode, FileNode, LoopNode } from 'nf-grapher';
+import * as React from 'react';
+
 import { FileNodeMonitor } from './FileNodeMonitor';
 import { LoopNodeMonitor } from './LoopNodeMonitor';
 

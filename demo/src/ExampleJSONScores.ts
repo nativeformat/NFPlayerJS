@@ -19,11 +19,12 @@
  * under the License.
  */
 
-import * as TNGJSON from '../../fixtures/TNG-Infinite-Idle-Engine.json';
-import * as TNGEngines from '../../fixtures/TNG-Crysknife007-16-899-s.wav';
-import * as RoxanneShiftedInfinite from '../../fixtures/roxanne-30s-preview-shifted-infinite.json';
+import { FileNode, type Score } from 'nf-grapher';
+
 import * as RatatatLoop from '../../fixtures/ratatat-loop.json';
-import { type Score, FileNode } from 'nf-grapher';
+import * as RoxanneShiftedInfinite from '../../fixtures/roxanne-30s-preview-shifted-infinite.json';
+import * as TNGEngines from '../../fixtures/TNG-Crysknife007-16-899-s.wav';
+import * as TNGJSON from '../../fixtures/TNG-Infinite-Idle-Engine.json';
 
 type ExampleJSON = { name: string; score: Score };
 
@@ -59,4 +60,4 @@ const examples: ExampleJSON[] = [
   },
 ];
 
-export { examples, ExampleJSON };
+export { ExampleJSON, examples };

@@ -20,11 +20,12 @@
  */
 
 import { debug as Debug } from 'debug';
-import { BaseRenderer } from './BaseRenderer';
-import { XAudioBuffer } from '../XAudioBuffer';
-import { TimeInstant } from '../time';
+
 import { mixdownToAudioBuffer } from '../AudioBufferUtils';
+import { TimeInstant } from '../time';
 import { XAudioContext } from '../WebAudioContext';
+import { XAudioBuffer } from '../XAudioBuffer';
+import { BaseRenderer } from './BaseRenderer';
 
 const DBG_STR = 'nf:script-processor-renderer';
 const dbg = Debug(DBG_STR);

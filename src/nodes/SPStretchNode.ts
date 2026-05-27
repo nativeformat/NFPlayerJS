@@ -19,17 +19,18 @@
  * under the License.
  */
 
-import { TimeInstant } from '../time';
-import { type Command } from 'nf-grapher';
-import { ScoreAudioParam } from '../params/ScoreAudioParam';
-import { SPNode, type NodePlaybackDescription } from './SPNode';
-import { SPNodeFactory } from './SPNodeFactory';
-import { mixdown, asInterleaved, asPlanar } from '../AudioBufferUtils';
-import { type ContentCache } from '../ContentCache';
-import { SoundTouch } from 'soundtouch-ts';
-import { type CommandsMutation, applyMutationToParam } from '../Mutations';
 import { debug as Debug } from 'debug';
+import { type Command } from 'nf-grapher';
+import { SoundTouch } from 'soundtouch-ts';
+
+import { asInterleaved, asPlanar, mixdown } from '../AudioBufferUtils';
+import { type ContentCache } from '../ContentCache';
+import { applyMutationToParam, type CommandsMutation } from '../Mutations';
+import { ScoreAudioParam } from '../params/ScoreAudioParam';
+import { TimeInstant } from '../time';
 import { XAudioBuffer } from '../XAudioBuffer';
+import { type NodePlaybackDescription, SPNode } from './SPNode';
+import { SPNodeFactory } from './SPNodeFactory';
 
 const DBG_STR = 'nf:stretchnode';
 const dbg = Debug(DBG_STR);

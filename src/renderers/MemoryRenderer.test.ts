@@ -19,12 +19,13 @@
  * under the License.
  */
 
+import { FileNode, Score } from 'nf-grapher';
+
+import { ContentCache } from '../ContentCache';
+import { TestRendererInfo } from '../test-utils/TestRendererInfo';
+import { TimeInstant } from '../time';
 import { MemoryRenderer } from './MemoryRenderer';
 import { type RendererInfo, XAudioBufferFromInfo } from './RendererInfo';
-import { TestRendererInfo } from '../test-utils/TestRendererInfo';
-import { Score, FileNode } from 'nf-grapher';
-import { TimeInstant } from '../time';
-import { ContentCache } from '../ContentCache';
 
 const sum = (arr: Float32Array) => arr.reduce((t, v) => t + v, 0);
 
@@ -45,8 +46,8 @@ test('play/pause fades in/out', async () => {
       file: 'test:audio',
       when: TimeInstant.ZERO.asNanos(),
       duration: TimeInstant.fromSeconds(fBuffer.duration).asNanos(),
-      offset: TimeInstant.ZERO.asNanos()
-    })
+      offset: TimeInstant.ZERO.asNanos(),
+    }),
   );
 
   // Enqueue before playing so an initial enqueue fadeIn is skipped.
@@ -87,8 +88,8 @@ test('enqueuing a score fades in/out', async () => {
       file: 'test:audio',
       when: TimeInstant.ZERO.asNanos(),
       duration: TimeInstant.fromSeconds(fBuffer.duration).asNanos(),
-      offset: TimeInstant.ZERO.asNanos()
-    })
+      offset: TimeInstant.ZERO.asNanos(),
+    }),
   );
 
   // Start playing immediately to force the score to be rolled-in due to

@@ -19,20 +19,20 @@
  * under the License.
  */
 
-import * as React from 'react';
+import { type Score } from 'nf-grapher';
 import { type SmartPlayer, TimeInstant } from 'nf-player';
-import { examples, type ExampleJSON } from '../../ExampleJSONScores';
+import * as React from 'react';
 
+import { type ExampleJSON, examples } from '../../ExampleJSONScores';
 import { MonacoEditor } from '../Monaco';
 import { PlayerControlBar } from '../PlayerControlBar';
 import { PlayerWatcher } from '../PlayerWatcher';
-import { type Score } from 'nf-grapher';
-import { FrequencyMonitor } from './FrequencyMonitor';
 import {
+  VerticalExpandableSection,
   VerticalFitArea,
   VerticalFixedSection,
-  VerticalExpandableSection,
 } from '../VerticalLayout';
+import { FrequencyMonitor } from './FrequencyMonitor';
 
 type Props = {
   player: SmartPlayer;

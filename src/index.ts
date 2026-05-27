@@ -19,29 +19,29 @@
  * under the License.
  */
 
-export { SmartPlayer } from './SmartPlayer';
-export type { NodePlaybackDescription } from './SmartPlayer';
-export { ScriptProcessorRenderer } from './renderers/ScriptProcessorRenderer';
-export { BaseRenderer } from './renderers/BaseRenderer';
-export { MemoryRenderer } from './renderers/MemoryRenderer';
-export { XAudioBufferFromInfo } from './renderers/RendererInfo';
-export type { RendererInfo } from './renderers/RendererInfo';
-export { TimeInstant } from './time';
-export { ScoreAudioParam } from './params/ScoreAudioParam';
 export type {
-  ScoreAudioParamCmd,
-  ExponentialRampToValueAtTimeCmd,
-  LinearRampToValueAtTimeCmd,
-  SetTargetAtTimeCmd,
-  SetValueAtTimeCmd,
-  SetValueCurveAtTimeCmd
-} from './params/ScoreAudioParam';
-export { MutationNames } from './Mutations';
-export type {
+  ClearCommandsMutation,
   Mutation,
   MutationBase,
   PushCommandsMutation,
-  ClearCommandsMutation
 } from './Mutations';
-export { XAudioBuffer } from './XAudioBuffer';
+export { MutationNames } from './Mutations';
+export type {
+  ExponentialRampToValueAtTimeCmd,
+  LinearRampToValueAtTimeCmd,
+  ScoreAudioParamCmd,
+  SetTargetAtTimeCmd,
+  SetValueAtTimeCmd,
+  SetValueCurveAtTimeCmd,
+} from './params/ScoreAudioParam';
+export { ScoreAudioParam } from './params/ScoreAudioParam';
+export { BaseRenderer } from './renderers/BaseRenderer';
+export { MemoryRenderer } from './renderers/MemoryRenderer';
+export type { RendererInfo } from './renderers/RendererInfo';
+export { XAudioBufferFromInfo } from './renderers/RendererInfo';
+export { ScriptProcessorRenderer } from './renderers/ScriptProcessorRenderer';
+export type { NodePlaybackDescription } from './SmartPlayer';
+export { SmartPlayer } from './SmartPlayer';
+export { TimeInstant } from './time';
 export { XAudioContext } from './WebAudioContext';
+export { XAudioBuffer } from './XAudioBuffer';

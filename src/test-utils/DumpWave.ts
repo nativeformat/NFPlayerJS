@@ -19,10 +19,11 @@
  * under the License.
  */
 
-import * as WavEncoder from 'wav-encoder';
-import { type XAudioBuffer } from '../XAudioBuffer';
-import { writeFile } from '../pio';
 import { join } from 'path';
+import * as WavEncoder from 'wav-encoder';
+
+import { writeFile } from '../pio';
+import { type XAudioBuffer } from '../XAudioBuffer';
 
 export async function dumpWave(
   output: XAudioBuffer,

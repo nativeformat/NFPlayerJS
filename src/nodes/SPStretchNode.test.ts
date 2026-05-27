@@ -20,12 +20,13 @@
  */
 
 import { FileNode, Score, StretchNode } from 'nf-grapher';
-import { TimeInstant } from '../time';
+
+import { ContentCache } from '../ContentCache';
+import { MemoryRenderer } from '../renderers/MemoryRenderer';
 import { XAudioBufferFromInfo } from '../renderers/RendererInfo';
 import { SmartPlayer } from '../SmartPlayer';
-import { MemoryRenderer } from '../renderers/MemoryRenderer';
-import { ContentCache } from '../ContentCache';
 import { TestRendererInfo } from '../test-utils/TestRendererInfo';
+import { TimeInstant } from '../time';
 
 test('Seeking produces equivalent audio at 1x stretch', async () => {
   const info = { ...TestRendererInfo, quantumSize: 400 };
