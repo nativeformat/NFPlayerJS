@@ -1,11 +1,3 @@
-# Injection hardening:
-#  * No untrusted ${{ github.event.* }} strings interpolated into run: blocks.
-#  * pull_request (not pull_request_target) — never expose secrets to fork PRs.
-#  * Least-privilege permissions: read-only by default.
-#  * actions/checkout with persist-credentials: false (no jobs push here).
-#  * Third-party actions should be SHA-pinned before merge — see MODERNIZE.md
-#    "CI follow-ups". (Tags used here, ready for a Dependabot SHA-pin pass.)
-
 name: ci
 
 on:

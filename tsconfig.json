@@ -1,5 +1,4 @@
 {
-  "//": "Solution file. Holds no source itself; `tsc -b` typechecks both projects.",
   "files": [],
   "references": [
     { "path": "./package.tsconfig.json" },

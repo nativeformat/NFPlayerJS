@@ -2,9 +2,7 @@ packages:
   - '.'
   - 'demo'
 
-# Pin exact versions on `pnpm add` (no ^ / ~).
 savePrefix: ''
 
-# Dependency install/build scripts: only these are allowed to run.
 allowBuilds:
   husky: true

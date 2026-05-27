@@ -84,7 +84,7 @@ export class App extends React.Component<AppProps, AppState> {
       analyser.connect(context.destination);
       nextRenderer = new ScriptProcessorRenderer(context, undefined);
 
-      // FFT analyzer - reaches into the renderer's private processor.
+      // FFT analyzer - note that processor is a private property
       // eslint-disable-next-line @typescript-eslint/no-explicit-any
       (nextRenderer as any).processor.connect(analyser);
     } else {

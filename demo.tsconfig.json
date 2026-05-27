@@ -1,5 +1,4 @@
 {
-  "//": "Demo app. Typecheck only — Vite emits the build.",
   "compilerOptions": {
     "composite": true,
     "noEmit": true,
