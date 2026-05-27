@@ -144,6 +144,18 @@ The demo also exposes a cut-down debug entry at `demo/debug.html` (source: `demo
 
 - The demo is deployed to GitHub Pages automatically by `pages.yml` on each push to `main`.
 
+### CI workflow actions (SHA-pinned):
+
+Third-party GitHub Actions in `.github/workflows/*.yml` are pinned to full commit SHAs for safety. To bump them, use [pinact](https://github.com/suzuki-shunsuke/pinact):
+
+```sh
+$ brew install suzuki-shunsuke/pinact/pinact
+$ pinact run --update           # resolves each tag to its latest SHA, rewrites in place
+$ pinact run --verify           # verify SHA ↔ comment match + min-age policy
+```
+
+Project policy lives in [`.pinact.yaml`](./.pinact.yaml).
+
 # Contributing 💖⌨️
 
 This project adheres to the [Open Code of Conduct](https://github.com/spotify/code-of-conduct/blob/master/code-of-conduct.md). By participating, you are expected to honor this code.
