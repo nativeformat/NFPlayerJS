@@ -43,10 +43,10 @@ const dbg = Debug(DBG_STR);
 let SHARED_SOUNDTOUCH_CTOR: typeof SoundTouch;
 /* eslint-disable @typescript-eslint/no-explicit-any */
 if (
-  typeof global !== 'undefined' &&
-  typeof (global as any).SoundTouch !== 'undefined'
+  typeof globalThis !== 'undefined' &&
+  typeof (globalThis as any).SoundTouch !== 'undefined'
 ) {
-  SHARED_SOUNDTOUCH_CTOR = (global as any).SoundTouch;
+  SHARED_SOUNDTOUCH_CTOR = (globalThis as any).SoundTouch;
 } else if (
   typeof window !== 'undefined' &&
   typeof (window as any).SoundTouch !== 'undefined'
@@ -58,7 +58,7 @@ if (
 /* eslint-enable @typescript-eslint/no-explicit-any */
 
 // This is only used to help differentiate debug logs. I don't like it,
-// but not sure of a better way without great complication (global id
+// but not sure of a better way without great complication (globalThis id
 // store???). Node ids are not checked for uniqueness, since the player
 // does not look at ids of either graphs or nodes unless a mutation arrives.
 let uniqId = 0;

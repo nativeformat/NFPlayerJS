@@ -9,6 +9,7 @@
   "types": "./dist/index.d.ts",
   "exports": {
     ".": {
+      "source": "./src/index.ts",
       "import": {
         "types": "./dist/index.d.ts",
         "default": "./dist/index.js"
@@ -43,8 +44,7 @@
     "lint": "eslint .",
     "format": "prettier --write .",
     "format:check": "prettier --check .",
-    "publint": "publint",
-    "validate": "pnpm run publint",
+    "validate": "publint",
     "clean": "rm -rf dist",
     "prepack": "pnpm run build",
     "prepare": "husky"

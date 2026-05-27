@@ -3,6 +3,9 @@ import { defineConfig } from 'vite';
 
 export default defineConfig({
   base: './',
+  resolve: {
+    conditions: ['source'],
+  },
   build: {
     outDir: 'dist',
     emptyOutDir: true,
