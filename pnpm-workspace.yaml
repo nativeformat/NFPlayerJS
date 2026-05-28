@@ -6,3 +6,8 @@ savePrefix: ''
 
 allowBuilds:
   husky: true
+
+# https://github.com/nativeformat/NFPlayerJS/security/dependabot/201 affects
+# v3/v5/v6 with caller-supplied buffer: nf-grapher only calls v4() with no args.
+overrides:
+  uuid: ^14.0.0
