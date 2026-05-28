@@ -5,6 +5,7 @@ build
 release
 dist
 dist-debug
+docs
 .cache-debug
 .cache-demo
 demo/.cache

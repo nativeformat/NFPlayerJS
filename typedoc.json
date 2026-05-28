@@ -1,0 +1,11 @@
+{
+  "$schema": "https://typedoc.org/schema.json",
+  "entryPoints": ["src/index.ts"],
+  "out": "docs",
+  "readme": "README.md",
+  "name": "nf-player",
+  "excludeExternals": true,
+  "excludePrivate": true,
+  "excludeInternal": true,
+  "githubPages": false
+}

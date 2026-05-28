@@ -45,7 +45,8 @@
     "format": "prettier --write .",
     "format:check": "prettier --check .",
     "validate": "publint",
-    "clean": "rm -rf dist",
+    "clean": "rm -rf dist docs",
+    "gen:docs": "typedoc",
     "prepack": "pnpm run build",
     "prepare": "husky"
   },
