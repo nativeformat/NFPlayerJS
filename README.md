@@ -176,6 +176,6 @@ To comply with section 6 of the LGPL, SoundTouch can be swapped out at runtime b
 
 <b id="fn-reasonable"></b> "Reasonable" is ambiguous, of course. In this case, it means "expected CPU usage if audio is the primary purpose of the experience". For example, an authoring tool or enhanced listening experience. It's still unclear to if CPU usage is low enough for a background task like listening to a playlist.
 
-[nfgrapher]: https://github.com/spotify/NFGrapher
-[playground]: https://spotify.github.io/NFPlayerJS/
-[api docs]: https://spotify.github.io/NFPlayerJS/docs/
+[nfgrapher]: https://github.com/nativeformat/NFGrapher
+[playground]: https://nativeformat.github.io/NFPlayerJS/
+[api docs]: https://nativeformat.github.io/NFPlayerJS/docs/
