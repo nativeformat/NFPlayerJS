@@ -37,6 +37,8 @@ import { FrequencyMonitor } from './FrequencyMonitor';
 type Props = {
   player: SmartPlayer;
   analyser: AnalyserNode;
+  exampleSlug: string | undefined;
+  onExampleChange: (slug: string | undefined) => void;
 };
 
 const initialState = {
@@ -49,26 +51,51 @@ type State = Readonly<{
   loading: boolean;
 }>;
 
+const resolveExample = (slug: string | undefined): ExampleJSON =>
+  (slug && examples.find((e) => e.slug === slug)) || examples[0];
+
 // Based on JSONEditor/JSONEditor
 export class WaveVisualizer extends React.Component<Props, State> {
   readonly state = initialState;
 
   private getEditorValue: () => string = () => '';
 
+  componentDidMount() {
+    const example = resolveExample(this.props.exampleSlug);
+    this.setState({ example });
+    if (example.slug !== this.props.exampleSlug) {
+      this.props.onExampleChange(example.slug);
+    }
+  }
+
+  componentDidUpdate(prevProps: Props) {
+    if (prevProps.exampleSlug !== this.props.exampleSlug) {
+      const example = resolveExample(this.props.exampleSlug);
+      if (example.slug !== this.state.example?.slug) {
+        this.setState({ example });
+      }
+      if (example.slug !== this.props.exampleSlug) {
+        this.props.onExampleChange(example.slug);
+      }
+    }
+  }
+
   onExampleSelect = async (event: React.ChangeEvent<HTMLSelectElement>) => {
     const example = examples.find(
-      (example) => example.name === event.target.value,
+      (example) => example.slug === event.target.value,
     );
 
     this.setState({
       example: example,
     });
 
-    const { player } = this.props;
+    const { player, onExampleChange } = this.props;
 
     if (player.playing) {
       player.playing = false;
     }
+
+    onExampleChange(example?.slug);
   };
 
   handlePlayPause = async () => {
@@ -98,6 +125,7 @@ export class WaveVisualizer extends React.Component<Props, State> {
         if (editorJSON !== exampleJSON) {
           this.setState({
             example: {
+              slug: 'user-edited',
               name: 'User edited',
               score: editorValue,
             },
@@ -126,10 +154,10 @@ export class WaveVisualizer extends React.Component<Props, State> {
             Examples:
             <select
               onChange={this.onExampleSelect}
-              value={example ? example.name : undefined}
+              value={example ? example.slug : undefined}
             >
               {examples.map((example) => (
-                <option key={example.name} value={example.name}>
+                <option key={example.slug} value={example.slug}>
                   {example.name}
                 </option>
               ))}

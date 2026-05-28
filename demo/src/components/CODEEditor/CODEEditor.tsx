@@ -41,12 +41,17 @@ import {
 
 type Props = {
   player: SmartPlayer;
+  exampleSlug: string | undefined;
+  onExampleChange: (slug: string | undefined) => void;
 };
 
 type State = {
   example: undefined | ExampleScript;
   loading: boolean;
 };
+
+const resolveExample = (slug: string | undefined): ExampleScript =>
+  (slug && examples.find((e) => e.slug === slug)) || examples[0];
 
 const initialState: State = {
   example: examples[0],
@@ -68,12 +73,35 @@ export class CODEEditor extends React.Component<Props, State> {
   private getEditorValue: () => string = () => '';
 
   componentDidMount() {
+    const example = resolveExample(this.props.exampleSlug);
     this.setState({
       example: {
-        name: examples[0].name,
-        script: this.processExample(examples[0]),
+        slug: example.slug,
+        name: example.name,
+        script: this.processExample(example),
       },
     });
+    if (example.slug !== this.props.exampleSlug) {
+      this.props.onExampleChange(example.slug);
+    }
+  }
+
+  componentDidUpdate(prevProps: Props) {
+    if (prevProps.exampleSlug !== this.props.exampleSlug) {
+      const example = resolveExample(this.props.exampleSlug);
+      if (example.slug !== this.state.example?.slug) {
+        this.setState({
+          example: {
+            slug: example.slug,
+            name: example.name,
+            script: this.processExample(example),
+          },
+        });
+      }
+      if (example.slug !== this.props.exampleSlug) {
+        this.props.onExampleChange(example.slug);
+      }
+    }
   }
 
   processExample(example: ExampleScript) {
@@ -102,12 +130,13 @@ export class CODEEditor extends React.Component<Props, State> {
 
   onExampleSelect = async (event: React.ChangeEvent<HTMLSelectElement>) => {
     const example = examples.find(
-      (example) => example.name === event.target.value,
+      (example) => example.slug === event.target.value,
     );
 
     if (example) {
       this.setState({
         example: {
+          slug: example.slug,
           name: example.name,
           script: this.processExample(example),
         },
@@ -118,13 +147,14 @@ export class CODEEditor extends React.Component<Props, State> {
       });
     }
 
-    const { player } = this.props;
+    const { player, onExampleChange } = this.props;
 
     if (player.playing) {
       player.playing = false;
     }
 
     player.renderTime = TimeInstant.ZERO;
+    onExampleChange(example?.slug);
   };
 
   handlePlayPause = () => {
@@ -176,10 +206,10 @@ export class CODEEditor extends React.Component<Props, State> {
             Examples:
             <select
               onChange={this.onExampleSelect}
-              value={example ? example.name : undefined}
+              value={example ? example.slug : undefined}
             >
               {examples.map((example) => (
-                <option key={example.name} value={example.name}>
+                <option key={example.slug} value={example.slug}>
                   {example.name}
                 </option>
               ))}
