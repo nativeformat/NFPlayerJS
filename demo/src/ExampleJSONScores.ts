@@ -26,7 +26,7 @@ import * as RoxanneShiftedInfinite from '../../fixtures/roxanne-30s-preview-shif
 import * as TNGEngines from '../../fixtures/TNG-Crysknife007-16-899-s.wav';
 import * as TNGJSON from '../../fixtures/TNG-Infinite-Idle-Engine.json';
 
-type ExampleJSON = { name: string; score: Score };
+type ExampleJSON = { slug: string; name: string; score: Score };
 
 // Note: The double JSON.stringify/parsing is mostly for TypeScript, so it knows
 // that the incoming JSON is actually a Score. It's hard to tell TS that we
@@ -34,10 +34,12 @@ type ExampleJSON = { name: string; score: Score };
 
 const examples: ExampleJSON[] = [
   {
+    slug: 'ratatat-forever',
     name: 'Ratatat forever',
     score: JSON.parse(JSON.stringify(RatatatLoop)).default,
   },
   {
+    slug: 'tng-engines',
     name: 'Star Trek TNG Infinite Ambient Engine Noise',
     score: JSON.parse(
       JSON.stringify({
@@ -55,6 +57,7 @@ const examples: ExampleJSON[] = [
     ).default,
   },
   {
+    slug: 'roxanne-pitched-json',
     name: 'Roxanne, but pitched on every "Roxanne" (infinite JSON version)',
     score: JSON.parse(JSON.stringify(RoxanneShiftedInfinite)).default,
   },

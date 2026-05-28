@@ -25,6 +25,7 @@ import { XAudioContext } from 'nf-player';
 import * as React from 'react';
 import styled from 'styled-components';
 
+import { type PanelSlug, parseHash, setRoute, subscribeRoute } from '../router';
 import { CODEEditor } from './CODEEditor/CODEEditor';
 import { JSONEditor } from './JSONEditor/JSONEditor';
 import { DemoTheme } from './Theme';
@@ -42,11 +43,7 @@ const StyledApplication = styled.div`
   height: 100%;
 `;
 
-enum Panels {
-  CODE,
-  JSON,
-  VISUALIZER,
-}
+const DEFAULT_PANEL: PanelSlug = 'code';
 
 // https://webaudio.github.io/web-audio-api/#AnalyserNode-attributes
 const defaultAnalyserOptions = {
@@ -56,8 +53,11 @@ const defaultAnalyserOptions = {
   maxDecibels: -30,
 };
 
+const initialRoute = parseHash();
+
 const initialAppState = {
-  panel: Panels.CODE,
+  panel: initialRoute.panel ?? DEFAULT_PANEL,
+  exampleSlug: initialRoute.exampleSlug,
   player: new SmartPlayer(),
   analyser: XAudioContext().createAnalyser(),
 };
@@ -68,7 +68,26 @@ type AppProps = unknown;
 export class App extends React.Component<AppProps, AppState> {
   readonly state: AppState = initialAppState;
 
-  switchPanel(to: Panels) {
+  private unsubscribeRoute: (() => void) | undefined;
+
+  componentDidMount() {
+    // The mounted panel's editor will write its resolved slug back via
+    // onExampleChange, which populates the URL on first load.
+    this.unsubscribeRoute = subscribeRoute((route) => {
+      const nextPanel = route.panel ?? DEFAULT_PANEL;
+      if (nextPanel !== this.state.panel) {
+        this.switchPanel(nextPanel, route.exampleSlug);
+      } else if (route.exampleSlug !== this.state.exampleSlug) {
+        this.setState({ exampleSlug: route.exampleSlug });
+      }
+    });
+  }
+
+  componentWillUnmount() {
+    this.unsubscribeRoute?.();
+  }
+
+  switchPanel(to: PanelSlug, exampleSlug?: string) {
     if (this.state.player.playing) {
       this.state.player.playing = false;
     }
@@ -78,7 +97,7 @@ export class App extends React.Component<AppProps, AppState> {
 
     let nextRenderer;
     let analyser;
-    if (to === Panels.VISUALIZER) {
+    if (to === 'visualizer') {
       const context = XAudioContext();
       analyser = new AnalyserNode(context, defaultAnalyserOptions);
       analyser.connect(context.destination);
@@ -96,8 +115,11 @@ export class App extends React.Component<AppProps, AppState> {
     const nextPlayer = new SmartPlayer(nextRenderer);
     const nextState = {
       panel: to,
+      exampleSlug,
       player: nextPlayer,
     };
+
+    setRoute({ panel: to, exampleSlug });
 
     // typescript type guard
     if (analyser !== undefined) {
@@ -110,6 +132,15 @@ export class App extends React.Component<AppProps, AppState> {
     }
   }
 
+  handlePanelButton = (to: PanelSlug) => {
+    this.switchPanel(to, undefined);
+  };
+
+  handleExampleChange = (slug: string | undefined) => {
+    this.setState({ exampleSlug: slug });
+    setRoute({ panel: this.state.panel, exampleSlug: slug });
+  };
+
   componentDidUpdate() {
     // Exposed on `window` so the playground scripts can drive the player.
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
@@ -117,27 +148,44 @@ export class App extends React.Component<AppProps, AppState> {
   }
 
   render() {
-    const { panel, player, analyser } = this.state;
+    const { panel, player, analyser, exampleSlug } = this.state;
 
     return (
       <StyledApplication>
         <VerticalFitArea>
           <VerticalFixedSection>
-            <button onClick={() => this.switchPanel(Panels.CODE)}>
-              {panel === Panels.CODE && '>'} CODE EDITOR
+            <button onClick={() => this.handlePanelButton('code')}>
+              {panel === 'code' && '>'} CODE EDITOR
             </button>
-            <button onClick={() => this.switchPanel(Panels.JSON)}>
-              {panel === Panels.JSON && '>'} JSON
+            <button onClick={() => this.handlePanelButton('json')}>
+              {panel === 'json' && '>'} JSON
             </button>
-            <button onClick={() => this.switchPanel(Panels.VISUALIZER)}>
-              {panel === Panels.VISUALIZER && '>'} VISUALIZER
+            <button onClick={() => this.handlePanelButton('visualizer')}>
+              {panel === 'visualizer' && '>'} VISUALIZER
             </button>
           </VerticalFixedSection>
           <VerticalExpandableSection>
-            {panel === Panels.JSON && <JSONEditor player={player} />}
-            {panel === Panels.CODE && <CODEEditor player={player} />}
-            {panel === Panels.VISUALIZER && (
-              <WaveVisualizer player={player} analyser={analyser} />
+            {panel === 'json' && (
+              <JSONEditor
+                player={player}
+                exampleSlug={exampleSlug}
+                onExampleChange={this.handleExampleChange}
+              />
+            )}
+            {panel === 'code' && (
+              <CODEEditor
+                player={player}
+                exampleSlug={exampleSlug}
+                onExampleChange={this.handleExampleChange}
+              />
+            )}
+            {panel === 'visualizer' && (
+              <WaveVisualizer
+                player={player}
+                analyser={analyser}
+                exampleSlug={exampleSlug}
+                onExampleChange={this.handleExampleChange}
+              />
             )}
           </VerticalExpandableSection>
         </VerticalFitArea>

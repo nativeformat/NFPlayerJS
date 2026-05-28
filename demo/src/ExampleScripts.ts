@@ -41,12 +41,14 @@ export type CompiledPlaygroundScript = (
 ) => Promise<void>;
 
 export type ExampleScript = {
+  slug: string;
   name: string;
   script: PlaygroundScript;
 };
 
 export const examples: ExampleScript[] = [
   {
+    slug: 'tng-engines-scripted',
     name: 'Star Trek TNG Infinite Ambient Engine Noise (scripted)',
     script: `
       const filePath = '${TNGEngines.default}';
@@ -161,6 +163,7 @@ export const examples: ExampleScript[] = [
     `,
   },
   {
+    slug: 'roxanne-pitched-scripted',
     name: 'Roxanne, but pitched on every "Roxanne"  (infinite scripted version)',
     script: `
       // These Globals are provided by this playground, and act as imported namespaces
@@ -216,6 +219,7 @@ export const examples: ExampleScript[] = [
     `,
   },
   {
+    slug: 'play-10-to-20',
     name: 'Load and play seconds 10 through 20 of a single file',
     script: `
       // These Globals are provided by this playground, and act as imported namespaces
@@ -244,6 +248,7 @@ export const examples: ExampleScript[] = [
     `,
   },
   {
+    slug: 'play-then-loop',
     name: 'Play the first 10 seconds of a file, then loop a single 4 beat bar forever.',
     script: `
       // These Globals are provided by this playground, and act as imported namespaces
@@ -278,6 +283,7 @@ export const examples: ExampleScript[] = [
     `,
   },
   {
+    slug: 'fade-on-interaction',
     name: 'Play a track, then quickly fade out on user interaction',
     script: `
       // These Globals are provided by this playground, and act as imported namespaces
@@ -337,6 +343,7 @@ export const examples: ExampleScript[] = [
     `,
   },
   {
+    slug: 'swap-score-on-interaction',
     name: 'Loop and Pitch Shift a track, then swap it with a modified score on User Interaction',
     script: `
       // These Globals are provided by this playground, and act as imported namespaces
@@ -420,6 +427,7 @@ export const examples: ExampleScript[] = [
     `,
   },
   {
+    slug: 'pitchshift-derail',
     name: 'Pitchshift a piano down, with a voice over the top. 30 seconds in slow both down (derail!).',
     script: `
       // These Globals are provided by this playground, and act as imported namespaces
