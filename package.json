@@ -31,7 +31,7 @@
     "type": "git",
     "url": "git+https://github.com/nativeformat/NFPlayerJS.git"
   },
-  "packageManager": "pnpm@11.2.2",
+  "packageManager": "pnpm@11.8.0",
   "engines": {
     "node": ">=20"
   },
